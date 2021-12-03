@@ -1,7 +1,6 @@
-import firebase from "firebase/app";
-import "firebase/auth";
-import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import "firebase/firestore";
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+import { GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
 
 const clientCredentials = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -13,14 +12,11 @@ const clientCredentials = {
   measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID
 };
 
-if (!firebase.getApps().length) {
-  firebase.initializeApp(clientCredentials);
-}
-
-export const auth = getAuth()
-
+const app = initializeApp(clientCredentials);
+const analytics = getAnalytics(app);
 const provider = new GoogleAuthProvider();
-provider.setCustomParameters({ prompt: 'select_account' });
+const auth = getAuth();
+provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
 
 export const signInWithGoogle = () => signInWithPopup(auth, provider)
-export default firebase;
+export default app;
