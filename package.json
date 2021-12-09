@@ -9,6 +9,8 @@
     "prettify": "prettier --write \"./**/*.{js,jsx,json,ts,tsx}\""
   },
   "dependencies": {
+    "@headlessui/react": "^1.4.2",
+    "@heroicons/react": "^1.0.5",
     "encrypt-storage": "^2.2.3",
     "firebase": "^9.5.0",
     "next": "12.0.4",

@@ -1,5 +1,6 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import Navbar from "../components/Navbar";
 
 export default function Index() {
   const [user, setUser] = useState<object | null | undefined | string>(null);
@@ -25,8 +26,8 @@ export default function Index() {
 
 function Content() {
   return (
-    <div>
-      <h1>Page content</h1>
-    </div>
+    <>
+      <Navbar />
+    </>
   );
 }
