@@ -1,6 +1,7 @@
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
+import { getFirestore } from "firebase/firestore"
 
 const clientCredentials = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -19,4 +20,5 @@ const auth = getAuth();
 provider.addScope("https://www.googleapis.com/auth/contacts.readonly");
 
 export const signInWithGoogle = () => signInWithPopup(auth, provider);
+export const db = getFirestore()
 export default app;

@@ -26,8 +26,11 @@ export default function Index() {
 
 function Content() {
   return (
-    <>
-      <Navbar />
-    </>
+    <Navbar>
+      <h1>hello</h1>
+      <h1>hello</h1>
+      <h1>hello</h1>
+      <h1>hello</h1>
+    </Navbar>
   );
 }
