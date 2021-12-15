@@ -1,15 +1,18 @@
 import { signInWithGoogle } from "../firebase/clientApp";
 import GoogleButton from "react-google-button";
-import { GoogleAuthProvider } from "firebase/auth";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import Image from "next/image";
+import Head from "next/head";
 
 export default function Login() {
   const router = useRouter();
   const [err, setErr] = useState<string | null>(null);
   return (
     <div className="flex flex-row">
+      <Head>
+        <title>Online biblioteka - prijava</title>
+      </Head>
       <div
         id="background"
         className="fixed h-screen w-screen filter blur"
@@ -49,9 +52,10 @@ export default function Login() {
                   const regex: RegExp =
                     /^[a-z]+\.[a-z]+\@(?:cetvrta-gimnazija.edu.ba)/;
                   if (user?.providerData[0].email?.match(regex)) {
+                    const data = {...user?.providerData[0], darkMode: true}
                     localStorage.setItem(
                       "currentUser",
-                      JSON.stringify(user?.providerData[0])
+                      JSON.stringify(data)
                     );
                     router.push("/");
                   } else {
@@ -67,9 +71,16 @@ export default function Login() {
           />
         </div>
         <div id="error" className="mx-auto -my-14">
-          {err !== null ? <div id="error" className="mx-auto my-auto bg-red-500 w-auto py-2 px-5 mt-2 content-center rounded shadow-lg transition ease-in-out duration-700">
-              <p className="text-white text-center">Molimo prijavite se sa domenom cetvrta-gimnazija.edu.ba</p>
-          </div> : null}
+          {err !== null ? (
+            <div
+              id="error"
+              className="mx-auto my-auto bg-red-500 w-auto py-2 px-5 mt-2 content-center rounded shadow-lg transition ease-in-out duration-700"
+            >
+              <p className="text-white text-center">
+                Molimo prijavite se sa domenom cetvrta-gimnazija.edu.ba
+              </p>
+            </div>
+          ) : null}
         </div>
       </div>
     </div>

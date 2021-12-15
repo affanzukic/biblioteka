@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { Fragment, useEffect, useState, FC } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { MenuIcon, XIcon } from "@heroicons/react/outline";
+import { BsFillMoonFill } from "react-icons/bs"
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { db } from "../firebase/clientApp";
 
@@ -15,6 +16,14 @@ let navigation = [
 
 function classNames(...classes: Array<any>) {
   return classes.filter(Boolean).join(" ");
+}
+
+function toggleDarkMode() {
+  if (typeof window !== "undefined") {
+    let currentValue = JSON.parse(localStorage.getItem("currentUser") || "{}").darkMode
+    currentValue = !currentValue
+    // let currentUser = 
+  }
 }
 
 export default function Navbar() {
@@ -92,7 +101,7 @@ export default function Navbar() {
                     height="50"
                     alt="Četvrta gimnazija logo"
                   />
-                  <p className="text-gray-700 h8-8 w-auto pl-4 text-xs sm:text-sm md:text-lg">
+                  <p className="text-gray-700 dark:text-white h8-8 w-auto pl-4 text-xs sm:text-sm md:text-lg">
                     Online biblioteka
                   </p>
                 </div>
@@ -132,6 +141,14 @@ export default function Navbar() {
                 </div>
               </div>
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+              <button
+                  type="button"
+                  className="bg-gray-800 dark:bg-gray-300 p-1 rounded-full text-gray-400 dark:text-gray-800 hover:text-white dark:hover:text-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 dark:focus:ring-offset-gray-white dark:focus:ring-gray-800 focus:ring-white"
+                  onClick={toggleDarkMode}
+                >
+                  <span className="sr-only bg-gray-900">Uključi tamni način</span>
+                  <BsFillMoonFill className="h-6 w-6" />
+                </button>
                 <Menu as="div" className="ml-3 relative">
                   <div>
                     <Menu.Button className="bg-gray-800 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
