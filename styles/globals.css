@@ -20,6 +20,13 @@
     transition-all duration-300 scale-0 origin-left;
   }
 
+  .tooltip {
+    @apply absolute w-auto p-2 -ml-16 mt-2 min-w-max rounded-md shadow-md
+    text-white bg-gray-900 
+    text-xs font-bold 
+    transition-all duration-300 scale-0 origin-left;
+  }
+
   .content-container {
     @apply flex flex-col 
     bg-gray-300 dark:bg-gray-700

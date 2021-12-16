@@ -18,19 +18,22 @@ function classNames(...classes: Array<any>) {
   return classes.filter(Boolean).join(" ");
 }
 
-function toggleDarkMode() {
-  if (typeof window !== "undefined") {
-    let currentValue = JSON.parse(localStorage.getItem("currentUser") || "{}").darkMode
-    currentValue = !currentValue
-    // let currentUser = 
-  }
-}
-
 export default function Navbar() {
   const router = useRouter();
   const [isAdmin, setIsAdmin] = useState(false);
   const [imgUrl, setImgUrl] = useState<string>("");
   const [head, setHead] = useState<string>("");
+  function toggleDarkMode() {
+    if (typeof window !== "undefined") {
+      let currentValue = JSON.parse(localStorage.getItem("currentUser") || "{}").darkMode
+      currentValue = !currentValue
+      let currentUser = JSON.parse(localStorage.getItem("currentUser") || "{}")
+      currentUser.darkMode = currentValue;
+      localStorage.removeItem("currentUser")
+      localStorage.setItem("currentUser", JSON.stringify(currentUser))
+      router.reload()
+    }
+  }
   async function fetchData() {
     const q = query(
       collection(db, "admins"),
@@ -74,7 +77,7 @@ export default function Navbar() {
     }
   }, [router]);
   return (
-    <Disclosure as="nav" className="bg-white border-b-2 sticky">
+    <Disclosure as="nav" className="bg-white dark:bg-gray-900 border-b-2 dark:border-gray-800 sticky">
       {({ open }) => (
         <>
           <Head>
@@ -95,7 +98,7 @@ export default function Navbar() {
               <div className="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
                 <div className="flex-shrink-0 flex items-center">
                   <Image
-                    className="h-8 w-auto block"
+                    className="h-8 w-8 rounded-full block"
                     src="https://cetvrta-gimnazija.edu.ba/wp-content/uploads/2018/12/4GA3.png"
                     width="50"
                     height="50"
@@ -113,7 +116,7 @@ export default function Navbar() {
                         href={item.href}
                         className={classNames(
                           item.current
-                            ? "text-black"
+                            ? "text-black dark:text-white"
                             : "text-purple-500 transition ease-in-out duration-400 hover:text-purple-700",
                           "px-3 py-2 rounded-md text-sm font-medium"
                         )}
@@ -143,11 +146,11 @@ export default function Navbar() {
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
               <button
                   type="button"
-                  className="bg-gray-800 dark:bg-gray-300 p-1 rounded-full text-gray-400 dark:text-gray-800 hover:text-white dark:hover:text-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 dark:focus:ring-offset-gray-white dark:focus:ring-gray-800 focus:ring-white"
+                  className="bg-gray-800 dark:bg-gray-300 p-1 rounded-full text-gray-400 dark:text-gray-800 hover:text-white dark:hover:text-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 dark:focus:ring-offset-gray-white dark:focus:ring-gray-800 focus:ring-white group"
                   onClick={toggleDarkMode}
                 >
-                  <span className="sr-only bg-gray-900">Uključi tamni način</span>
                   <BsFillMoonFill className="h-6 w-6" />
+                  <span className="tooltip group-hover:scale-100">Uključi tamni način</span>
                 </button>
                 <Menu as="div" className="ml-3 relative">
                   <div>
@@ -173,13 +176,13 @@ export default function Navbar() {
                     leaveFrom="transform opacity-100 scale-100"
                     leaveTo="transform opacity-0 scale-95"
                   >
-                    <Menu.Items className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+                    <Menu.Items className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white dark:bg-gray-900 dark:text-white text-black ring-1 ring-black dark:ring-gray-800 ring-opacity-5 focus:outline-none">
                       <Menu.Item>
                         {({ active }) => (
                           <button
                             className={classNames(
-                              active ? "bg-gray-100 w-full" : "",
-                              "block px-4 py-2 text-sm w-full text-left text-gray-700"
+                              active ? "dark:bg-gray-600 bg-gray-300  w-full" : "",
+                              "block px-4 py-2 text-sm w-full text-left text-gray-700 dark:text-white"
                             )}
                             onClick={() => {
                               localStorage.removeItem("currentUser");
@@ -206,8 +209,8 @@ export default function Navbar() {
                   href={item.href}
                   className={classNames(
                     item.current
-                      ? "bg-purple-500 text-white"
-                      : "text-black transition ease-in-out duration-400 hover:bg-purple-700 hover:text-white",
+                      ? "bg-purple-500 text-white dark:text-black"
+                      : "text-black dark:text-white transition ease-in-out duration-400 hover:bg-purple-700 hover:text-white",
                     "block px-3 py-2 rounded-md text-base font-medium"
                   )}
                   aria-current={item.current ? "page" : undefined}

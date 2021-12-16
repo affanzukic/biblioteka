@@ -6,8 +6,9 @@ interface StyleProps {
   darkMode: Boolean
 }
 
-export default function Index({darkMode}: StyleProps) {
+export default function Index() {
   const [loading, setLoading] = useState<boolean>(true);
+  const [darkMode, setDarkMode] = useState(true)
   let loadingTitle: String | JSX.Element = ""
   const router = useRouter();
   useEffect(() => {
@@ -18,6 +19,7 @@ export default function Index({darkMode}: StyleProps) {
       ) {
         router.push("/login");
       } else {
+        setDarkMode(JSON.parse(localStorage.getItem("currentUser") || "{}").darkMode)
         setLoading(false);
       }
     } catch (err) {
@@ -42,7 +44,7 @@ export function getStaticProps() {
   let darkMode = true;
 
   if (typeof window !== "undefined") {
-    darkMode = JSON.parse(localStorage.getItem("currentUser") ||"{}").darkMode
+    console.log()
   }
   
   return {
