@@ -21,6 +21,7 @@ function classNames(...classes: Array<any>) {
 export default function Navbar() {
   const router = useRouter();
   const [isAdmin, setIsAdmin] = useState(false);
+  const [darkMode, setDarkMode] = useState(true)
   const [imgUrl, setImgUrl] = useState<string>("");
   const [head, setHead] = useState<string>("");
   function toggleDarkMode() {
@@ -60,6 +61,7 @@ export default function Navbar() {
           : ""
       );
     }
+    setDarkMode(JSON.parse(localStorage.getItem("currentUser") || "{}").darkMode)
     fetchData();
     switch (router.pathname) {
       case "/":
@@ -86,8 +88,8 @@ export default function Navbar() {
           <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
             <div className="relative flex items-center justify-between h-16">
               <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
-                <Disclosure.Button className="inline-flex items-center justify-center p-2 rounded-md text-gray-100 hover:text-white bg-purple-500 transition ease-in-out duration-400 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
-                  <span className="sr-only">Open main menu</span>
+                <Disclosure.Button className="inline-flex items-center justify-center p-2 rounded-md text-gray-100 hover:text-white bg-purple-500 dark:bg-gray-800 transition ease-in-out duration-400 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
+                  <span className="sr-only">Otvori glavni meni</span>
                   {open ? (
                     <XIcon className="block h-6 w-6" aria-hidden="true" />
                   ) : (
@@ -150,7 +152,7 @@ export default function Navbar() {
                   onClick={toggleDarkMode}
                 >
                   <BsFillMoonFill className="h-6 w-6" />
-                  <span className="tooltip group-hover:scale-100">Uključi tamni način</span>
+                  <span className="tooltip group-hover:scale-100">{darkMode ? "Isključi tamni način" : "Uključi tamni način"}</span>
                 </button>
                 <Menu as="div" className="ml-3 relative">
                   <div>

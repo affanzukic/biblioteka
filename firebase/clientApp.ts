@@ -14,7 +14,7 @@ const clientCredentials = {
 };
 
 const app = initializeApp(clientCredentials);
-const analytics = getAnalytics(app);
+const analytics = getAnalytics(app)
 const provider = new GoogleAuthProvider();
 const auth = getAuth();
 provider.addScope("https://www.googleapis.com/auth/contacts.readonly");

@@ -1,5 +1,5 @@
 import Head from "next/head"
-import AdminSidebar from "../../components/AdminSidebar"
+import AdminSidebar from "../../components/admin/AdminSidebar"
 import { useState, useEffect } from "react"
 
 export default function Index() {
@@ -15,11 +15,7 @@ export default function Index() {
             <AdminSidebar />
             <div className="content-container">
                 <div className="content-list">
-                    <h1>Hello world</h1>
-                    <h1>Hello world</h1>
-                    <h1>Hello world</h1>
-                    <h1>Hello world</h1>
-                    <h1>Hello world</h1>
+                    <h1>Hello worldsadadsdasdasdasdsadsadsasadsadsaasdsaadsadsadsadsaasdsaadsadsadsadsaasdsaadsadsadsadsaasdsaadsadsadsadsaasdsaadsadsadsadsaasdsaadsaddadss</h1>
                 </div>
             </div>
         </div>

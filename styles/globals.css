@@ -22,7 +22,7 @@
 
   .tooltip {
     @apply absolute w-auto p-2 -ml-16 mt-2 min-w-max rounded-md shadow-md
-    text-white bg-gray-900 
+    text-white bg-gray-900 dark:text-black dark:bg-white
     text-xs font-bold 
     transition-all duration-300 scale-0 origin-left;
   }
