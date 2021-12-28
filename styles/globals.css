@@ -17,7 +17,7 @@
     @apply absolute w-auto p-2 m-2 min-w-max left-14 rounded-md shadow-md
     text-white bg-gray-900 
     text-xs font-bold 
-    transition-all duration-300 scale-0 origin-left;
+    transition-all duration-300 scale-0 origin-left z-50;
   }
 
   .tooltip {
@@ -38,7 +38,7 @@
   .content-list {
     @apply flex flex-col 
     h-full w-full 
-    mt-1 ml-16 mx-auto pl-2 px-0 pb-12 
+    mt-3 ml-20 mx-auto pl-2 px-0 pb-12 
     overflow-y-scroll dark:text-white;
   }
 

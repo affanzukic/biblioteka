@@ -4,7 +4,6 @@ import { useRouter } from "next/router";
 import { BsMoon, BsFillImageFill } from "react-icons/bs";
 import { MdHeadphones } from "react-icons/md";
 import { AiOutlineUsergroupAdd } from "react-icons/ai";
-import Image from "next/image"
 
 interface IconProp {
   icon: JSX.Element;
@@ -14,7 +13,7 @@ interface IconProp {
 
 export default function Sidebar() {
   const [darkMode, setDarkMode] = useState(true);
-  const [currentUser, setCurrentUser] = useState("")
+  const [currentUser, setCurrentUser] = useState("");
   const router = useRouter();
   function toggleDarkMode() {
     if (typeof window !== "undefined") {
@@ -33,14 +32,23 @@ export default function Sidebar() {
     setDarkMode(
       JSON.parse(localStorage.getItem("currentUser") || "{}").darkMode
     );
-    setCurrentUser(JSON.parse(localStorage.getItem("currentUser") || "{}"))
+    setCurrentUser(JSON.parse(localStorage.getItem("currentUser") || "{}"));
   }, []);
   return (
     <div
       id="sidebar"
-      className="fixed top-0 left-0 h-screen w-16 m-0 flex flex-col bg-gray-100 text-gray-900 dark:bg-gray-900 dark:text-white shadow-lg justify-center"
+      className="fixed top-0 left-0 h-screen w-16 m-0 flex flex-col bg-gray-100 text-gray-900 dark:bg-gray-900 dark:text-white shadow-lg justify-center z-50"
     >
-      <SidebarIcon icon={<img src={currentUser.photoURL} className="rounded-full" alt="user avatar" />} text={currentUser.displayName} />
+      <SidebarIcon
+        icon={
+           <img
+            src={currentUser.photoURL}
+            className="rounded-full"
+            alt="user avatar"
+          />
+        }
+        text={currentUser.displayName}
+      />
       <SidebarIcon
         icon={<IoIosArrowBack size="28" />}
         text="Nazad"
