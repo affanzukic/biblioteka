@@ -19,6 +19,6 @@ const provider = new GoogleAuthProvider();
 const auth = getAuth();
 provider.addScope("https://www.googleapis.com/auth/contacts.readonly");
 
-export const signInWithGoogle = () => signInWithPopup(auth, provider);
 export const db = getFirestore()
+export const signInWithGoogle = () => signInWithPopup(auth, provider);
 export default app;
