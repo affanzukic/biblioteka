@@ -1,13 +1,34 @@
-export default function AdminUserComponent() {
+import { MouseEventHandler } from "react";
+
+interface AdminUserProps {
+  email: String;
+  id?: String;
+  modal?: MouseEventHandler<HTMLButtonElement>
+}
+
+export default function AdminUserComponent({ email, modal }: AdminUserProps) {
   return (
-    <div id="container" className="flex flex-row space-x-10 w-full h-full p-4 rounded-lg dark:bg-gray-900 bg-gray-100" style={{ zIndex: -15 }}>
-      <div id="email" className="flex">
-        <h1>testna.adresa@cetvrta-gimnazija.edu.ba</h1>
+    <>
+      <div
+        id="container"
+        className="flex flex-row items-center space-x-10 justify-around w-full h-full p-4 rounded-lg dark:bg-gray-900 bg-gray-100"
+        style={{ zIndex: -15 }}
+      >
+        <div id="email" className="flex w-72">
+          <h1>{email}</h1>
+        </div>
+        <div id="description" className="flex">
+          <h1>Administrator</h1>
+        </div>
+        <div id="remove" className="flex">
+          <button
+            className="dark:bg-gray-700 bg-gray-400 rounded transition-all ease-in-out duration-300 dark:hover:bg-gray-300 dark:hover:text-black hover:bg-gray-700 hover:text-white py-1 px-4"
+            onClick={modal}
+          >
+            Izbriši administratora
+          </button>
+        </div>
       </div>
-      <div id="description" className="flex">
-        <h1>Administrator</h1>
-      </div>
-      <div id="remove" className="flex"></div>
-    </div>
+    </>
   );
 }

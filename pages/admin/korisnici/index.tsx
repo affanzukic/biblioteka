@@ -1,33 +1,17 @@
 import { useState, useEffect } from "react";
 import Head from "next/head";
 import AdminSidebar from "../../../components/admin/AdminSidebar";
-import { collection, getDocs } from "firebase/firestore";
-import { db } from "../../../firebase/clientApp";
 import AdminUserComponent from "../../../components/admin/AdminUserComponent"
 import AOS from "aos"
 import "aos/dist/aos.css"
+import { fetchAdmins } from "../../../utils/firebase/firebase"
 
 interface DataProps {
   admins: Array<object>
 }
 
-async function fetchAdmins() {
-  try {
-    const querySnapshot = await getDocs(collection(db, "admins"));
-    let data: object[] = [];
-    return new Promise((resolve, reject) => {
-      try {
-        querySnapshot.forEach((doc) => {
-          data = [...data, { id: doc.id, data: doc.data() }];
-        });
-        resolve(data);
-      } catch (err) {
-        reject(err);
-      }
-    });
-  } catch (err) {
-    console.log(err);
-  }
+function showModal() {
+
 }
 
 export default function Index({admins}: DataProps) {
@@ -62,28 +46,27 @@ export default function Index({admins}: DataProps) {
           </div>
           <div id="users" className="mt-4">
             {admins !== null ? (
-              <div id="user-admin-data" className="mr-24 ml-2" data-aos="fadeIn">
-                <AdminUserComponent />
+              <div id="user-admin-data" className="mr-24 ml-2 space-y-2" data-aos="fadeIn">
+                <AdminUserComponent email="testna.adresa@cetvrta-gimnazija.edu.ba" />
+                <AdminUserComponent email="jedan.dva@cetvrta-gimnazija.edu.ba" />
               </div>
             ) : null}
           </div>
         </div>
       </div>
+      {/* Add modal */}
     </div>
   );
 }
 
 async function getStaticProps() {
-  // @ts-ignore
-  let admins = []
+  let admins: object[] | undefined = []
 
   // TODO: fix type casting  
-  // @ts-ignore
   fetchAdmins().then(data => admins = data).catch(err => console.log(err))
 
   return {
     props: {
-      // @ts-ignore
       admins
     }
   }
