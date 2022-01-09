@@ -1,5 +1,6 @@
-import { collection, getDocs, doc, deleteDoc } from "firebase/firestore";
+import { collection, getDocs, doc, deleteDoc, setDoc, Timestamp } from "firebase/firestore";
 import { db } from "../../firebase/clientApp";
+import { nanoid } from "nanoid"
 
 async function fetchAdmins() {
   try {
@@ -28,9 +29,13 @@ async function deleteAdmin(id: string) {
   }
 }
 
-async function createAdmin(data: object) {
+async function createAdmin(email: string) {
   try {
-
+    const data = {
+      email,
+      createdAt: Timestamp.fromDate(new Date())
+    }
+    await setDoc(doc(db, "admins", nanoid(6).toLowerCase()), data)
   } catch (err) {
     console.log(err)
   }
