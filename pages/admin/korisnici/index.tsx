@@ -4,13 +4,16 @@ import AdminSidebar from "../../../components/admin/AdminSidebar";
 import AdminUserComponent from "../../../components/admin/AdminUserComponent";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import { deleteAdmin, fetchAdmins } from "../../../utils/firebase/firebase";
+import { deleteAdmin, fetchAdmins, createAdmin } from "../../../utils/firebase/firebase";
+import { Modal, ModalBody, ModalFooter } from "../../../components/Modal";
+import {useRouter} from "next/router";
 
 export default function Index() {
   const [darkMode, setDarkMode] = useState(true);
   const [admins, setAdmins] = useState<object[] | undefined>([]);
   const [adminId, setAdminId] = useState("");
   const [modalShown, setModalShown] = useState(false);
+  const router = useRouter()
   useEffect(() => {
     AOS.init({
       duration: 300,
@@ -21,10 +24,14 @@ export default function Index() {
     setDarkMode(
       JSON.parse(localStorage.getItem("currentUser") || "{}").darkMode
     );
-  }, [admins]);
+  }, []);
   function showModal(id: string) {
     setModalShown(!modalShown);
     setAdminId(id);
+  }
+  async function deleteWithId() {
+    await deleteAdmin(adminId)
+    router.reload()
   }
   return (
     <>
@@ -46,6 +53,7 @@ export default function Index() {
                 sadržaja, molimo dodajte ih koristeći dugme &#34;Dodaj
                 administratora&#34;.
               </p>
+              <button className="ml-4 mb-2 mt-4 px-4 py-2 add-button">Dodaj administratora</button>
             </div>
             <div id="users" className="mt-4">
               {admins !== null && typeof window !== "undefined" ? (
@@ -70,14 +78,19 @@ export default function Index() {
           </div>
         </div>
       </div>
-      {modalShown ? (
-        <div id="modal-overlay" className="absolute bg-gray-900 bg-opacity-40 w-full h-screen inset-0" data-aos="fadeIn">
-          <div id="modal-content" className="ml-24 mt-4">
-            {/* finish modal and add dark mode and light mode support */}
-            <h1 className="text-white">Hello</h1>
-          </div>
-        </div>
-      ) : null}
+      <Modal
+        title="Brisanje administratora"
+        isShown={modalShown}
+        handleClose={() => setModalShown(false)}
+      >
+        <ModalBody>
+            <p>Da li ste sigurni da želite da izbrišete administratora?</p>
+        </ModalBody>
+        <ModalFooter>
+          <button className="bg-red-600 px-4 py-2 rounded-md" onClick={() => deleteWithId()}>Izbriši</button>
+          <button className="bg-gray-400 dark:bg-gray-900 px-4 py-2 rounded-md" onClick={() => setModalShown(false)}>Zatvori</button>
+        </ModalFooter>
+      </Modal>
     </>
   );
 }

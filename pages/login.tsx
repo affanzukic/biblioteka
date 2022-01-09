@@ -52,11 +52,8 @@ export default function Login() {
                   const regex: RegExp =
                     /^[a-z]+\.[a-z]+\@(?:cetvrta-gimnazija.edu.ba)/;
                   if (user?.providerData[0].email?.match(regex)) {
-                    const data = {...user?.providerData[0], darkMode: true}
-                    localStorage.setItem(
-                      "currentUser",
-                      JSON.stringify(data)
-                    );
+                    const data = { ...user?.providerData[0], darkMode: true };
+                    localStorage.setItem("currentUser", JSON.stringify(data));
                     router.push("/");
                   } else {
                     setErr(

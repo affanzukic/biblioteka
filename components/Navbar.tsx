@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { Fragment, useEffect, useState, FC } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { MenuIcon, XIcon } from "@heroicons/react/outline";
-import { BsFillMoonFill } from "react-icons/bs"
+import { BsFillMoonFill } from "react-icons/bs";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { db } from "../firebase/clientApp";
 
@@ -21,18 +21,20 @@ function classNames(...classes: Array<any>) {
 export default function Navbar() {
   const router = useRouter();
   const [isAdmin, setIsAdmin] = useState(false);
-  const [darkMode, setDarkMode] = useState(true)
+  const [darkMode, setDarkMode] = useState(true);
   const [imgUrl, setImgUrl] = useState<string>("");
   const [head, setHead] = useState<string>("");
   function toggleDarkMode() {
     if (typeof window !== "undefined") {
-      let currentValue = JSON.parse(localStorage.getItem("currentUser") || "{}").darkMode
-      currentValue = !currentValue
-      let currentUser = JSON.parse(localStorage.getItem("currentUser") || "{}")
+      let currentValue = JSON.parse(
+        localStorage.getItem("currentUser") || "{}"
+      ).darkMode;
+      currentValue = !currentValue;
+      let currentUser = JSON.parse(localStorage.getItem("currentUser") || "{}");
       currentUser.darkMode = currentValue;
-      localStorage.removeItem("currentUser")
-      localStorage.setItem("currentUser", JSON.stringify(currentUser))
-      router.reload()
+      localStorage.removeItem("currentUser");
+      localStorage.setItem("currentUser", JSON.stringify(currentUser));
+      router.reload();
     }
   }
   async function fetchData() {
@@ -61,7 +63,9 @@ export default function Navbar() {
           : ""
       );
     }
-    setDarkMode(JSON.parse(localStorage.getItem("currentUser") || "{}").darkMode)
+    setDarkMode(
+      JSON.parse(localStorage.getItem("currentUser") || "{}").darkMode
+    );
     fetchData();
     switch (router.pathname) {
       case "/":
@@ -79,7 +83,10 @@ export default function Navbar() {
     }
   }, [router]);
   return (
-    <Disclosure as="nav" className="bg-white dark:bg-gray-900 border-b-2 dark:border-gray-800 sticky">
+    <Disclosure
+      as="nav"
+      className="bg-white dark:bg-gray-900 border-b-2 dark:border-gray-800 sticky"
+    >
       {({ open }) => (
         <>
           <Head>
@@ -146,13 +153,15 @@ export default function Navbar() {
                 </div>
               </div>
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-              <button
+                <button
                   type="button"
                   className="bg-gray-800 dark:bg-gray-300 p-1 rounded-full text-gray-400 dark:text-gray-800 hover:text-white dark:hover:text-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 dark:focus:ring-offset-gray-white dark:focus:ring-gray-800 focus:ring-white group"
                   onClick={toggleDarkMode}
                 >
                   <BsFillMoonFill className="h-6 w-6" />
-                  <span className="tooltip group-hover:scale-100">{darkMode ? "Isključi tamni način" : "Uključi tamni način"}</span>
+                  <span className="tooltip group-hover:scale-100">
+                    {darkMode ? "Isključi tamni način" : "Uključi tamni način"}
+                  </span>
                 </button>
                 <Menu as="div" className="ml-3 relative">
                   <div>
@@ -183,7 +192,9 @@ export default function Navbar() {
                         {({ active }) => (
                           <button
                             className={classNames(
-                              active ? "dark:bg-gray-600 bg-gray-300  w-full" : "",
+                              active
+                                ? "dark:bg-gray-600 bg-gray-300  w-full"
+                                : "",
                               "block px-4 py-2 text-sm w-full text-left text-gray-700 dark:text-white"
                             )}
                             onClick={() => {

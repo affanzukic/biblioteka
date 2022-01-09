@@ -41,7 +41,7 @@ export default function Sidebar() {
     >
       <SidebarIcon
         icon={
-           <img
+          <img
             src={currentUser.photoURL}
             className="rounded-full"
             alt="user avatar"

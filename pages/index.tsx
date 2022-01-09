@@ -3,13 +3,13 @@ import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 
 interface StyleProps {
-  darkMode: Boolean
+  darkMode: Boolean;
 }
 
 export default function Index() {
   const [loading, setLoading] = useState<boolean>(true);
-  const [darkMode, setDarkMode] = useState(true)
-  let loadingTitle: String | JSX.Element = ""
+  const [darkMode, setDarkMode] = useState(true);
+  let loadingTitle: String | JSX.Element = "";
   const router = useRouter();
   useEffect(() => {
     try {
@@ -19,7 +19,9 @@ export default function Index() {
       ) {
         router.push("/login");
       } else {
-        setDarkMode(JSON.parse(localStorage.getItem("currentUser") || "{}").darkMode)
+        setDarkMode(
+          JSON.parse(localStorage.getItem("currentUser") || "{}").darkMode
+        );
         setLoading(false);
       }
     } catch (err) {
@@ -29,7 +31,7 @@ export default function Index() {
   return <div>{loading ? loadingTitle : <Content darkMode={darkMode} />}</div>;
 }
 
-function Content({darkMode}: StyleProps) {
+function Content({ darkMode }: StyleProps) {
   return (
     <div id="home" className={darkMode ? "dark" : ""}>
       <Navbar />
@@ -44,12 +46,12 @@ export function getStaticProps() {
   let darkMode = true;
 
   if (typeof window !== "undefined") {
-    console.log()
+    console.log();
   }
-  
+
   return {
     props: {
-      darkMode
-    }
-  }
+      darkMode,
+    },
+  };
 }

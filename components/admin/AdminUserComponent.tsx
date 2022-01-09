@@ -1,20 +1,24 @@
 import { MouseEventHandler, useEffect } from "react";
-import AOS from "aos"
-import "aos/dist/aos.css"
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 interface AdminUserProps {
   email: String;
   id?: String;
-  modal?: MouseEventHandler<HTMLButtonElement>
+  modal?: MouseEventHandler<HTMLButtonElement>;
   aosData: String;
 }
 
-export default function AdminUserComponent({ email, modal, aosData }: AdminUserProps) {
+export default function AdminUserComponent({
+  email,
+  modal,
+  aosData,
+}: AdminUserProps) {
   useEffect(() => {
     AOS.init({
-      duration: 300
-    })
-  })
+      duration: 300,
+    });
+  });
   return (
     <>
       <div

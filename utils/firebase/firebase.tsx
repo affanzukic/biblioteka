@@ -21,11 +21,19 @@ async function fetchAdmins() {
 }
 
 async function deleteAdmin(id: string) {
-    try {
-        await deleteDoc(doc(db, "admins", id));
-    } catch (err) {
-        console.log(err)
-    }
+  try {
+    await deleteDoc(doc(db, "admins", id));
+  } catch (err) {
+    console.log(err);
+  }
 }
 
-export { fetchAdmins, deleteAdmin };
+async function createAdmin(data: object) {
+  try {
+
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+export { fetchAdmins, deleteAdmin, createAdmin };
