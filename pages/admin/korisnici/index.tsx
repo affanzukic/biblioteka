@@ -126,7 +126,7 @@ export default function Index() {
           <p className="mb-2">E-mail adresa (ime.prezime)</p>
           <div className="flex flex-row space-x-2">
             <input
-              className="dark:bg-gray-800 dark:text-white px-1 rounded-sm"
+              className="admin-input"
               type="text"
               placeholder="ime.prezime"
               onChange={(e) => setEmail(e.target.value)}

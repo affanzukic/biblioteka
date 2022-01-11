@@ -134,21 +134,6 @@ export default function Navbar() {
                         {item.name}
                       </a>
                     ))}
-                    {isAdmin ? (
-                      <a
-                        key={"Admin"}
-                        href={"/admin"}
-                        className={classNames(
-                          isAdmin && router.pathname === "/admin"
-                            ? "text-black"
-                            : "text-purple-500 transition ease-in-out duration-400 hover:text-purple-700",
-                          "px-3 py-2 rounded-md text-sm font-medium"
-                        )}
-                        aria-current={undefined}
-                      >
-                        Admin
-                      </a>
-                    ) : null}
                   </div>
                 </div>
               </div>
@@ -188,6 +173,27 @@ export default function Navbar() {
                     leaveTo="transform opacity-0 scale-95"
                   >
                     <Menu.Items className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white dark:bg-gray-900 dark:text-white text-black ring-1 ring-black dark:ring-gray-800 ring-opacity-5 focus:outline-none">
+                      <Menu.Item>
+                        {({ active }) => (
+                          <>
+                            {isAdmin ? (
+                              <button
+                                className={classNames(
+                                  active
+                                    ? "dark:bg-gray-600 bg-gray-300  w-full"
+                                    : "",
+                                  "block px-4 py-2 text-sm w-full text-left text-gray-700 dark:text-white"
+                                )}
+                                onClick={() => {
+                                  router.push("/admin");
+                                }}
+                              >
+                                Upravljačka ploča
+                              </button>
+                            ) : null}
+                          </>
+                        )}
+                      </Menu.Item>
                       <Menu.Item>
                         {({ active }) => (
                           <button

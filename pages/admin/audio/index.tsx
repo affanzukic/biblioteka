@@ -1,11 +1,80 @@
 import { useState, useEffect } from "react";
+import {
+  uploadAudio,
+  fetchAudioData
+} from "../../../utils/firebase/firebaseStorage";
+import { useRouter } from "next/router";
+import { Modal, ModalBody, ModalFooter } from "../../../components/Modal";
 import Head from "next/head";
 import AdminSidebar from "../../../components/admin/AdminSidebar";
+import LoadingIcons from "react-loading-icons";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import AdminAudioComponent from "../../../components/admin/AdminAudioComponent";
+interface AudioData {
+  title: string;
+  description: string;
+  publisher: string;
+  audioFile: File | null;
+  coverFile: File | null;
+}
 
 export default function Index() {
+  const router = useRouter();
   const [darkMode, setDarkMode] = useState(true);
+  const [data, setData] = useState<object[] | AudioData[] | null | undefined>(
+    null
+  );
+  const [dodajSadrzajModal, setDodajSadrzajModal] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [errorText, setErrorText] = useState(false);
+  const [errorFileTypeAudio, setErrorFileTypeAudio] = useState(false);
+  const [errorFileTypeImage, setErrorFileTypeImage] = useState(false);
+  const [naziv, setNaziv] = useState("");
+  const [izdavac, setIzdavac] = useState("");
+  const [opis, setOpis] = useState("");
+  const [audioFile, setAudioFile] = useState<File | null>(null);
+  const [coverFile, setCoverFile] = useState<File | null>(null);
+  async function handleUpload() {
+    if (naziv === "" || izdavac === "" || opis === "") {
+      setErrorText(true);
+      return;
+    } else {
+      setErrorText(false);
+    }
+
+    if (!audioFile!.type.match(/^(audio)\/\S+/)) {
+      setErrorFileTypeAudio(true);
+      return;
+    } else {
+      setErrorFileTypeAudio(false);
+    }
+
+    if (!coverFile!.type.match(/^(image)\/\S+/)) {
+      setErrorFileTypeImage(true);
+      return;
+    } else {
+      setErrorFileTypeImage(false);
+    }
+
+    const data: AudioData = {
+      title: naziv,
+      publisher: izdavac,
+      description: opis,
+      audioFile,
+      coverFile,
+    };
+
+    setLoading(true);
+
+    uploadAudio(data)
+      .then((response) => {
+        if (response) {
+          router.reload();
+        }
+      })
+      .catch((err) => console.log(err));
+  }
   useEffect(() => {
     AOS.init({
       duration: 300,
@@ -13,10 +82,16 @@ export default function Index() {
     setDarkMode(
       JSON.parse(localStorage.getItem("currentUser") || "{}").darkMode
     );
+    async function fetchData() {
+      const audioData = await fetchAudioData()
+      setData(audioData)
+    }
+    fetchData()
   }, []);
   return (
     <>
       <div id="admin-audio" className={darkMode ? "dark flex" : "flex"}>
+        {data !== null ? console.log(data) : null}
         <Head>
           <title>
             Online biblioteka - Admin management - Uredi audio biblioteku
@@ -28,10 +103,143 @@ export default function Index() {
             <div id="title">
               <h1 className="text-xl font-bold">Uredi audio biblioteku</h1>
             </div>
-            <div id="description"></div>
+            <div id="description">
+              <p className="mb-4">
+                Da dodate sadržaj audio biblioteke, molimo dodajte ga koristeći
+                dugme &#34;Dodaj sadržaj&#34;.
+              </p>
+              <button
+                className="ml-4 mb-2 mt-4 px-4 py-2 add-button"
+                onClick={() => setDodajSadrzajModal(!dodajSadrzajModal)}
+              >
+                Dodaj sadržaj
+              </button>
+              <div id="content" className="mt-4">
+                {data !== null ? <div className="flex flex-col space-y-4">
+                  {data?.map((unos, idx) => {
+                    return (
+                      <AdminAudioComponent key={idx} index={idx} data={unos} />
+                    )
+                  })}
+                </div> : null}
+              </div>
+            </div>
           </div>
         </div>
       </div>
+      <Modal
+        title="Dodaj sadržaj"
+        isShown={dodajSadrzajModal}
+        handleClose={() => setDodajSadrzajModal(false)}
+      >
+        <ModalBody>
+          <div className="flex flex-col">
+            <p className="mb-2">
+              Naziv knjige <p className="inline text-red-600 font-bold">*</p>
+            </p>
+            <input
+              type="text"
+              required
+              spellCheck="false"
+              placeholder="Tvrđava"
+              className="admin-input"
+              id="naziv"
+              onChange={(e) => setNaziv(e.target.value)}
+              disabled={loading}
+            />
+          </div>
+          <div className="flex flex-col mt-4">
+            <p className="mb-2">
+              Izdavač i godina izdanja{" "}
+              <p className="inline text-red-600 font-bold">*</p>
+            </p>
+            <input
+              type="text"
+              required
+              spellCheck="false"
+              placeholder="Connectum, 2014"
+              className="admin-input"
+              id="izdavac"
+              onChange={(e) => setIzdavac(e.target.value)}
+              disabled={loading}
+            />
+          </div>
+          <div className="flex flex-col mt-4">
+            <p className="mb-2">
+              Opis <p className="inline text-red-600 font-bold">*</p>{" "}
+            </p>
+            <textarea
+              rows={8}
+              required
+              spellCheck="false"
+              style={{ resize: "vertical", height: "auto" }}
+              placeholder="Kratka deskripcija"
+              className="admin-input"
+              id="opis"
+              onChange={(e) => setOpis(e.target.value)}
+              disabled={loading}
+            />
+          </div>
+          <div className="flex flex-col mt-4">
+            <p className="mb-2">
+              Audio datoteka <p className="inline text-red-600 font-bold">*</p>{" "}
+            </p>
+            <input
+              type="file"
+              accept="audio/*"
+              onChange={(e) => setAudioFile(e.target.files![0])}
+              disabled={loading}
+            />
+          </div>
+          {errorFileTypeAudio ? (
+            <p className="mt-2 text-center text-red-500 font-semibold">
+              Dozvoljeni formati su .aac, .mp3, .wma i svi ostali audio formati.
+            </p>
+          ) : null}
+          <div className="flex flex-col mt-4">
+            <p className="mb-2">
+              Cover slika <p className="inline text-red-600 font-bold">*</p>{" "}
+            </p>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => setCoverFile(e.target.files![0])}
+              disabled={loading}
+            />
+          </div>
+          {errorFileTypeImage ? (
+            <p className="mt-2 text-center text-red-500 font-semibold">
+              Dozvoljeni formati su .jpg, .jpeg, .png i svi ostali foto formati
+            </p>
+          ) : null}
+          {errorText ? (
+            <p className="mt-2 text-center text-red-500 font-semibold">
+              Morate popuniti sva polja!
+            </p>
+          ) : null}
+        </ModalBody>
+        <ModalFooter>
+          <button
+            className="bg-green-600 px-4 py-2 rounded-md flex flex-row disabled:text-gray-400 disabled:bg-green-900"
+            disabled={loading}
+            onClick={() => {
+              handleUpload();
+            }}
+          >
+            {loading && (
+              <LoadingIcons.TailSpin width={24} height={24} className="mr-2" />
+            )}
+            Dodaj
+          </button>
+          <button
+            className="bg-gray-400 dark:bg-gray-900 disabled:bg-gray-500 disabled:text-gray-400 px-4 py-2 rounded-md dark:disabled:bg-gray-800"
+            onClick={() => setDodajSadrzajModal(false)}
+            disabled={loading}
+          >
+            Zatvori
+          </button>
+        </ModalFooter>
+      </Modal>
     </>
   );
 }
