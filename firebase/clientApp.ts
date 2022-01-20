@@ -1,5 +1,4 @@
 import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
 import { GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage"
@@ -15,10 +14,8 @@ const clientCredentials = {
 };
 
 const app = initializeApp(clientCredentials);
-const analytics = getAnalytics(app);
 const provider = new GoogleAuthProvider();
 const auth = getAuth();
-provider.addScope("https://www.googleapis.com/auth/contacts.readonly");
 
 export const db = getFirestore();
 export const signInWithGoogle = () => signInWithPopup(auth, provider);

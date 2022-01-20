@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import {
   uploadAudio,
-  fetchAudioData
+  fetchAudioData,
+  deleteAudio
 } from "../../../utils/firebase/firebaseStorage";
 import { useRouter } from "next/router";
 import { Modal, ModalBody, ModalFooter } from "../../../components/Modal";
@@ -33,6 +34,9 @@ export default function Index() {
   const [naziv, setNaziv] = useState("");
   const [izdavac, setIzdavac] = useState("");
   const [opis, setOpis] = useState("");
+  const [contentId, setContentId] = useState("")
+  const [deleting, setDeleting] = useState(false)
+  const [deleteModal, setDeleteModal] = useState(false)
   const [audioFile, setAudioFile] = useState<File | null>(null);
   const [coverFile, setCoverFile] = useState<File | null>(null);
   async function handleUpload() {
@@ -75,6 +79,15 @@ export default function Index() {
       })
       .catch((err) => console.log(err));
   }
+  function showModalWithId(id: string) {
+    setDeleteModal(true)
+    setContentId(id)
+  }
+  async function deleteWithId() {
+    setDeleting(true)
+    await deleteAudio(contentId)
+    router.reload()
+  }
   useEffect(() => {
     AOS.init({
       duration: 300,
@@ -91,7 +104,6 @@ export default function Index() {
   return (
     <>
       <div id="admin-audio" className={darkMode ? "dark flex" : "flex"}>
-        {data !== null ? console.log(data) : null}
         <Head>
           <title>
             Online biblioteka - Admin management - Uredi audio biblioteku
@@ -115,10 +127,11 @@ export default function Index() {
                 Dodaj sadržaj
               </button>
               <div id="content" className="mt-4">
-                {data !== null ? <div className="flex flex-col space-y-4">
+                {data !== null ? <div className="flex flex-col space-y-4 mr-24 ml-4">
                   {data?.map((unos, idx) => {
-                    return (
-                      <AdminAudioComponent key={idx} index={idx} data={unos} />
+                    return ( 
+                      // @ts-ignore
+                      <AdminAudioComponent key={idx} index={idx} data={unos} handleDelete={() => showModalWithId(unos.id)} />
                     )
                   })}
                 </div> : null}
@@ -235,6 +248,28 @@ export default function Index() {
             className="bg-gray-400 dark:bg-gray-900 disabled:bg-gray-500 disabled:text-gray-400 px-4 py-2 rounded-md dark:disabled:bg-gray-800"
             onClick={() => setDodajSadrzajModal(false)}
             disabled={loading}
+          >
+            Zatvori
+          </button>
+        </ModalFooter>
+      </Modal>
+      <Modal title="Izbriši sadržaj" isShown={deleteModal} handleClose={() => setDeleteModal(false)}>
+        <ModalBody>
+          <p>Da li ste sigurni da želite izbrisati sadržaj?</p>
+        </ModalBody>
+        <ModalFooter>
+        <button
+            className="bg-red-600 px-4 py-2 rounded-md"
+            onClick={() => {deleteWithId()}}
+            disabled={deleting}
+          >
+            {deleting && <LoadingIcons.TailSpin width={24} height={24} className="mr-2 inline" />}
+            Izbriši
+          </button>
+          <button
+            className="bg-gray-400 dark:bg-gray-900 px-4 py-2 rounded-md"
+            onClick={() => setDeleteModal(false)}
+            disabled={deleting}
           >
             Zatvori
           </button>
