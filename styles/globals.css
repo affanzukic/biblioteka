@@ -42,8 +42,8 @@
     overflow-y-scroll dark:text-white;
   }
 
-  .content {
-    @apply bg-white text-black dark:bg-gray-700 dark:text-white h-screen
+  .content-underlay {
+    @apply bg-white text-black dark:bg-gray-700 dark:text-white min-h-screen flex flex-col
   }
 
   .modal-overlay {

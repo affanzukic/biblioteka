@@ -33,25 +33,15 @@ export default function Index() {
 
 function Content({ darkMode }: StyleProps) {
   return (
-    <div id="home" className={darkMode ? "dark" : ""}>
+    <div id="home" className={darkMode ? "dark flex flex-col" : "flex flex-col"}>
       <Navbar />
-      <div className="content">
-        <h1>Početna stranica</h1>
+      <div className="content-underlay">
+        <div id="content" className="ml-2 mt-2">
+          <div id="title" className="flex justify-center content-center mt-8 mx-auto">
+            <h1 className="text-6xl font-bold text-shadow-xl dark:text-white text-gray-700">Online biblioteka Četvrte gimnazije</h1>
+          </div>
+        </div>
       </div>
     </div>
   );
-}
-
-export function getStaticProps() {
-  let darkMode = true;
-
-  if (typeof window !== "undefined") {
-    console.log();
-  }
-
-  return {
-    props: {
-      darkMode,
-    },
-  };
 }

@@ -88,7 +88,7 @@ export default function Index() {
     await deleteImage(contentId)
     setTimeout(() => {
       router.reload()
-    }, 3000)
+    }, 5000)
   }
   useEffect(() => {
     AOS.init({
