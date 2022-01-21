@@ -150,8 +150,37 @@ async function uploadImage(data: ImageData) {
   }
 }
 
-async function fetchImage() {}
+async function fetchImage() {
+  try {
+    const querySnapshot = await getDocs(collection(db, "imageLibrary"));
+    let data: object[] = [];
+    return new Promise<Array<ImageData | object>>((resolve, reject) => {
+      try {
+        querySnapshot.forEach((doc) => {
+          data = [...data, { id: doc.id, data: doc.data() }];
+        });
+        resolve(data);
+      } catch (err) {
+        reject(err);
+      }
+    });
+  } catch (err) {
+    console.log(err);
+  }
+}
 
-async function deleteImage() {}
+async function deleteImage(id: string) {
+  try {
+    await deleteDoc(doc(db, "imageLibrary", id))
+    const listData = await listAll(ref(storage, `image/${id}`))
+    let itemsToDelete: string[] = []
+    listData.items.map(data => itemsToDelete.push(data.name))
+    itemsToDelete.forEach(async item => {
+        await deleteObject(ref(storage, `image/${id}/${item}`))
+    })
+  } catch (err) {
+    console.log(err)
+  }
+}
 
-export { uploadAudio, fetchAudioData, deleteAudio, uploadImage };
+export { uploadAudio, fetchAudioData, deleteAudio, uploadImage, fetchImage, deleteImage };

@@ -2,18 +2,25 @@ import Head from "next/head";
 import { SyntheticEvent, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { Modal, ModalBody, ModalFooter } from "../../../components/Modal";
-import { uploadImage } from "../../../utils/firebase/firebaseStorage";
+import {
+  uploadImage,
+  fetchImage,
+  deleteImage
+} from "../../../utils/firebase/firebaseStorage";
 import AdminSidebar from "../../../components/admin/AdminSidebar";
 import LoadingIcons from "react-loading-icons";
+import AdminImageComponent from "../../../components/admin/AdminImageComponent";
+import { collection, query, where, getDocs } from "firebase/firestore";
+import { db } from "../../../firebase/clientApp";
 import AOS from "aos";
 import "aos/dist/aos.css";
 
 interface ImageData {
-  title: string
-  description: string
-  publisher: string
-  coverFile: File | null
-  imageFiles: FileList | null
+  title: string;
+  description: string;
+  publisher: string;
+  coverFile: File | null;
+  imageFiles: FileList | null;
 }
 
 export default function Index() {
@@ -21,21 +28,67 @@ export default function Index() {
   const [darkMode, setDarkMode] = useState(true);
   const [loading, setLoading] = useState(false);
   const [dodajSadrzajModal, setDodajSadrzajModal] = useState(false);
-  const [files, setFiles] = useState([])
+  const [files, setFiles] = useState([]);
+  const [errorFileTypeImage, setErrorFileTypeImage] = useState(false);
+  const [errorText, setErrorText] = useState(false);
+  const [deleting, setDeleting] = useState(false)
+  const [contentId, setContentId] = useState("")
+  const [deleteModal, setDeleteModal] = useState(false)
+  const [data, setData] = useState<(object | ImageData)[] | undefined | null>(
+    null
+  );
   function onFileChange(event: SyntheticEvent) {
     // @ts-ignore
-    setFiles([...files, event.target.files])
+    setFiles([...files, event.target.files]);
   }
   async function handleSubmit(event: SyntheticEvent) {
     event.preventDefault();
     // @ts-ignore
     const formData = new FormData(event.target);
     let dataToSend = Object.fromEntries(formData);
-    dataToSend = {...dataToSend, imageFiles: files[0]}
-    setLoading(true)
+    dataToSend = { ...dataToSend, imageFiles: files[0] };
+    const { title, description, publisher, imageFiles, coverFile } = dataToSend;
+    if (
+      title === "" ||
+      description === "" ||
+      publisher === "" ||
+      imageFiles === undefined ||
+      // @ts-ignore
+      coverFile.name === ""
+    ) {
+      setErrorText(true);
+      return;
+    }
     // @ts-ignore
-    await uploadImage(dataToSend)
-    router.reload()
+    if (!coverFile!.type.match(/^(image)\/\S+/)) {
+      setErrorFileTypeImage(true);
+      return;
+    }
+    const imageFilesToCheck = Array.from(files[0]);
+    imageFilesToCheck.forEach((imageFile) => {
+      // @ts-ignore
+      if (!imageFile!.type.match(/^(image)\/\S+/)) {
+        setErrorFileTypeImage(true);
+      }
+    });
+    if (errorFileTypeImage) return;
+    setLoading(true);
+    // @ts-ignore
+    await uploadImage(dataToSend);
+    setTimeout(() => {
+      router.reload();
+    }, 5000)
+  }
+  function showModalWithId(id: string) {
+    setContentId(id)
+    setDeleteModal(true)
+  }
+  async function deleteWithId() {
+    setDeleting(true)
+    await deleteImage(contentId)
+    setTimeout(() => {
+      router.reload()
+    }, 3000)
   }
   useEffect(() => {
     AOS.init({
@@ -44,7 +97,27 @@ export default function Index() {
     setDarkMode(
       JSON.parse(localStorage.getItem("currentUser") || "{}").darkMode
     );
-  }, []);
+    fetchImage()
+      .then((res) => setData(res))
+      .catch((err) => console.log(err));
+      async function checkIfAdmin() {
+        const q = query(
+          collection(db, "admins"),
+          where(
+            "email",
+            "==",
+            JSON.parse(localStorage.getItem("currentUser") || "").email
+          )
+        );
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach((doc) => {
+          if (!doc.data().email) {
+            router.push("/")
+          }
+        });
+      }
+      checkIfAdmin()
+  }, [router]);
   return (
     <>
       <div id="admin-slikovna" className={darkMode ? "dark flex" : "flex"}>
@@ -70,6 +143,24 @@ export default function Index() {
               >
                 Dodaj sadržaj
               </button>
+              <div id="content" className="mt-4">
+                {data !== null ? (
+                  <div className="flex flex-col space-y-4 mr-24 ml-4">
+                    {data?.map((unos, idx) => {
+                      return (
+                        <AdminImageComponent
+                          key={idx}
+                          index={idx}
+                          // @ts-ignore
+                          data={unos}
+                          // @ts-ignore
+                          handleDelete={() => showModalWithId(unos.id)}
+                        />
+                      );
+                    })}
+                  </div>
+                ) : null}
+              </div>
             </div>
           </div>
         </div>
@@ -150,8 +241,22 @@ export default function Index() {
                 accept="image/*"
                 onChange={onFileChange}
                 disabled={loading}
-                />
-                <p className="mt-2">Fajlove je potrebno na kompjuteru preimenovati od po brojevima slajda, počevši od 0. (primjer 0.jpg, 1.jpg...)</p>
+              />
+              <p className="mt-2">
+                Fajlove je potrebno na kompjuteru preimenovati po brojevima
+                slajda, počevši od 0. (primjer 0.jpg, 1.jpg...)
+              </p>
+              {errorFileTypeImage ? (
+                <p className="mt-2 text-center text-red-500 font-semibold">
+                  Dozvoljeni formati su .jpg, .jpeg, .png i svi ostali foto
+                  formati
+                </p>
+              ) : null}
+              {errorText ? (
+                <p className="mt-2 text-center text-red-500 font-semibold">
+                  Morate popuniti sva polja!
+                </p>
+              ) : null}
             </div>
           </ModalBody>
           <ModalFooter>
@@ -178,6 +283,28 @@ export default function Index() {
             </button>
           </ModalFooter>
         </form>
+      </Modal>
+      <Modal title="Izbriši sadržaj" isShown={deleteModal} handleClose={() => setDeleteModal(false)}>
+        <ModalBody>
+          <p>Da li ste sigurni da želite izbrisati sadržaj?</p>
+        </ModalBody>
+        <ModalFooter>
+        <button
+            className="bg-red-600 px-4 py-2 rounded-md"
+            onClick={() => {deleteWithId()}}
+            disabled={deleting}
+          >
+            {deleting && <LoadingIcons.TailSpin width={24} height={24} className="mr-2 inline" />}
+            Izbriši
+          </button>
+          <button
+            className="bg-gray-400 dark:bg-gray-900 px-4 py-2 rounded-md"
+            onClick={() => setDeleteModal(false)}
+            disabled={deleting}
+          >
+            Zatvori
+          </button>
+        </ModalFooter>
       </Modal>
     </>
   );

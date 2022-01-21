@@ -9,6 +9,8 @@ import {
   fetchAdmins,
   createAdmin,
 } from "../../../utils/firebase/firestore";
+import { collection, query, where, getDocs } from "firebase/firestore";
+import { db } from "../../../firebase/clientApp";
 import { Modal, ModalBody, ModalFooter } from "../../../components/Modal";
 import { useRouter } from "next/router";
 
@@ -30,7 +32,24 @@ export default function Index() {
     setDarkMode(
       JSON.parse(localStorage.getItem("currentUser") || "{}").darkMode
     );
-  }, []);
+    async function checkIfAdmin() {
+      const q = query(
+        collection(db, "admins"),
+        where(
+          "email",
+          "==",
+          JSON.parse(localStorage.getItem("currentUser") || "").email
+        )
+      );
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach((doc) => {
+        if (!doc.data().email) {
+          router.push("/")
+        }
+      });
+    }
+    checkIfAdmin()
+  }, [router]);
   function showModal(id: string) {
     setModalShown(!modalShown);
     setAdminId(id);
@@ -82,7 +101,9 @@ export default function Index() {
                     return (
                       <AdminUserComponent
                         key={idx}
+                        // @ts-ignore
                         email={admin?.data?.email}
+                        // @ts-ignore
                         modal={() => showModal(admin.id)}
                         aosData="fadeIn"
                       />

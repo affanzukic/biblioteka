@@ -15,9 +15,9 @@ const clientCredentials = {
 
 const app = initializeApp(clientCredentials);
 const provider = new GoogleAuthProvider();
-const auth = getAuth();
 
 export const db = getFirestore();
+export const auth = getAuth();
 export const signInWithGoogle = () => signInWithPopup(auth, provider);
 export const storage = getStorage()
 export default app;

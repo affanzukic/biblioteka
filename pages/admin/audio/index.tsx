@@ -9,9 +9,11 @@ import { Modal, ModalBody, ModalFooter } from "../../../components/Modal";
 import Head from "next/head";
 import AdminSidebar from "../../../components/admin/AdminSidebar";
 import LoadingIcons from "react-loading-icons";
+import AdminAudioComponent from "../../../components/admin/AdminAudioComponent";
+import { collection, query, where, getDocs } from "firebase/firestore";
+import { db } from "../../../firebase/clientApp";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import AdminAudioComponent from "../../../components/admin/AdminAudioComponent";
 interface AudioData {
   title: string;
   description: string;
@@ -99,8 +101,25 @@ export default function Index() {
       const audioData = await fetchAudioData()
       setData(audioData)
     }
+    async function checkIfAdmin() {
+      const q = query(
+        collection(db, "admins"),
+        where(
+          "email",
+          "==",
+          JSON.parse(localStorage.getItem("currentUser") || "").email
+        )
+      );
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach((doc) => {
+        if (!doc.data().email) {
+          router.push("/")
+        }
+      });
+    }
+    checkIfAdmin()
     fetchData()
-  }, []);
+  }, [router]);
   return (
     <>
       <div id="admin-audio" className={darkMode ? "dark flex" : "flex"}>
