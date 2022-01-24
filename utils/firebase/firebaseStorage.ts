@@ -19,11 +19,11 @@ interface AudioData {
 }
 
 interface ImageData {
-  title: string
-  description: string
-  publisher: string
-  coverFile: File | null
-  imageFiles: FileList | null
+  title: string;
+  description: string;
+  publisher: string;
+  coverFile: File | null;
+  imageFiles: FileList | null;
 }
 
 async function uploadAudio(data: AudioData) {
@@ -58,14 +58,20 @@ async function uploadAudio(data: AudioData) {
               try {
                 setDoc(doc(db, "audioLibrary", newTitle), newData)
                   .then(() => resolve(true))
-                  .catch((err) => reject(err));
+                  .catch((err) => {
+                    throw new Error(err);
+                  });
               } catch (err) {
                 reject(err);
               }
             })
-            .catch((err) => reject(err));
+            .catch((err) => {
+              reject(err);
+            });
         })
-        .catch((err) => reject(err));
+        .catch((err) => {
+          reject(err);
+        });
     });
   } catch (err) {
     console.log(err);
@@ -93,60 +99,70 @@ async function fetchAudioData() {
 
 async function deleteAudio(id: string) {
   try {
-    await deleteDoc(doc(db, "audioLibrary", id))
-    listAll(ref(storage, `audio/${id}`)).then(listData => {
-      let itemsToDelete: string[] = []
-      listData.items.map(data => itemsToDelete.push(data.name))
-      itemsToDelete.forEach(async (item) => {
-        await deleteObject(ref(storage, `audio/${id}/${item}`))
+    await deleteDoc(doc(db, "audioLibrary", id));
+    listAll(ref(storage, `audio/${id}`))
+      .then((listData) => {
+        let itemsToDelete: string[] = [];
+        listData.items.map((data) => itemsToDelete.push(data.name));
+        itemsToDelete.forEach(async (item) => {
+          await deleteObject(ref(storage, `audio/${id}/${item}`));
+        });
       })
-    }).catch(err => console.log(err))
+      .catch((err) => {
+        throw new Error(err);
+      });
   } catch (err) {
-    console.log(err)
+    console.log(err);
   }
 }
 
 async function uploadImage(data: ImageData) {
-  if (data === null) return
+  if (data === null) return;
   try {
     return new Promise((resolve, reject) => {
-      const { title, publisher, description, coverFile, imageFiles } = data
+      const { title, publisher, description, coverFile, imageFiles } = data;
       const regex: RegExp = /[^\\]*\.(\w+)$/;
-      const newTitle = lodash.kebabCase(title).toLowerCase()
-      const coverFileExt = coverFile!.name.match(regex)![1]
+      const newTitle = lodash.kebabCase(title).toLowerCase();
+      const coverFileExt = coverFile!.name.match(regex)![1];
       const coverStorageRef = ref(
         storage,
         `image/${newTitle}/cover.${coverFileExt}`
       );
       // @ts-ignore
-      const fileList = Array.from(imageFiles)
-      uploadBytes(coverStorageRef, coverFile!).then(() => {
-        let fileArrayForDatabase: string[] = []
-        fileList.map(async (file, idx) => {
-          const name = `${idx}.${file!.name.match(regex)![1]}`
-          const imageFileRef = ref(storage, `image/${newTitle}/${name}`)
-          fileArrayForDatabase = [...fileArrayForDatabase, name]
-          await uploadBytes(imageFileRef, file)
+      const fileList = Array.from(imageFiles);
+      uploadBytes(coverStorageRef, coverFile!)
+        .then(() => {
+          let fileArrayForDatabase: string[] = [];
+          fileList.map(async (file, idx) => {
+            const name = `${idx}.${file!.name.match(regex)![1]}`;
+            const imageFileRef = ref(storage, `image/${newTitle}/${name}`);
+            fileArrayForDatabase = [...fileArrayForDatabase, name];
+            await uploadBytes(imageFileRef, file);
+          });
+          const newData = {
+            title,
+            description,
+            publisher,
+            coverFile: `cover.${coverFileExt}`,
+            imageFiles: fileArrayForDatabase,
+            dateCreated: Timestamp.fromDate(new Date()),
+          };
+          try {
+            setDoc(doc(db, "imageLibrary", newTitle), newData)
+              .then(() => resolve(true))
+              .catch((err) => {
+                throw new Error(err);
+              });
+          } catch (err) {
+            reject(err);
+          }
         })
-        const newData = {
-          title,
-          description,
-          publisher,
-          coverFile: `cover.${coverFileExt}`,
-          imageFiles: fileArrayForDatabase,
-          dateCreated: Timestamp.fromDate(new Date())
-        }
-        try {
-          setDoc(doc(db, "imageLibrary", newTitle), newData)
-            .then(() => resolve(true))
-            .catch((err) => reject(err));
-        } catch (err) {
+        .catch((err) => {
           reject(err);
-        }
-      }).catch(err => reject(err))
-    })
+        });
+    });
   } catch (err) {
-    console.log(err)
+    console.log(err);
   }
 }
 
@@ -171,16 +187,23 @@ async function fetchImage() {
 
 async function deleteImage(id: string) {
   try {
-    await deleteDoc(doc(db, "imageLibrary", id))
-    const listData = await listAll(ref(storage, `image/${id}`))
-    let itemsToDelete: string[] = []
-    listData.items.map(data => itemsToDelete.push(data.name))
-    itemsToDelete.forEach(async item => {
-        await deleteObject(ref(storage, `image/${id}/${item}`))
-    })
+    await deleteDoc(doc(db, "imageLibrary", id));
+    const listData = await listAll(ref(storage, `image/${id}`));
+    let itemsToDelete: string[] = [];
+    listData.items.map((data) => itemsToDelete.push(data.name));
+    itemsToDelete.forEach(async (item) => {
+      await deleteObject(ref(storage, `image/${id}/${item}`));
+    });
   } catch (err) {
-    console.log(err)
+    console.log(err);
   }
 }
 
-export { uploadAudio, fetchAudioData, deleteAudio, uploadImage, fetchImage, deleteImage };
+export {
+  uploadAudio,
+  fetchAudioData,
+  deleteAudio,
+  uploadImage,
+  fetchImage,
+  deleteImage,
+};

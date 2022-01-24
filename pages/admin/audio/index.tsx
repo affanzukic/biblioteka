@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import {
   uploadAudio,
   fetchAudioData,
-  deleteAudio
+  deleteAudio,
 } from "../../../utils/firebase/firebaseStorage";
 import { useRouter } from "next/router";
 import { Modal, ModalBody, ModalFooter } from "../../../components/Modal";
@@ -36,9 +36,9 @@ export default function Index() {
   const [naziv, setNaziv] = useState("");
   const [izdavac, setIzdavac] = useState("");
   const [opis, setOpis] = useState("");
-  const [contentId, setContentId] = useState("")
-  const [deleting, setDeleting] = useState(false)
-  const [deleteModal, setDeleteModal] = useState(false)
+  const [contentId, setContentId] = useState("");
+  const [deleting, setDeleting] = useState(false);
+  const [deleteModal, setDeleteModal] = useState(false);
   const [audioFile, setAudioFile] = useState<File | null>(null);
   const [coverFile, setCoverFile] = useState<File | null>(null);
   async function handleUpload() {
@@ -82,13 +82,13 @@ export default function Index() {
       .catch((err) => console.log(err));
   }
   function showModalWithId(id: string) {
-    setDeleteModal(true)
-    setContentId(id)
+    setDeleteModal(true);
+    setContentId(id);
   }
   async function deleteWithId() {
-    setDeleting(true)
-    await deleteAudio(contentId)
-    router.reload()
+    setDeleting(true);
+    await deleteAudio(contentId);
+    router.reload();
   }
   useEffect(() => {
     AOS.init({
@@ -98,8 +98,8 @@ export default function Index() {
       JSON.parse(localStorage.getItem("currentUser") || "{}").darkMode
     );
     async function fetchData() {
-      const audioData = await fetchAudioData()
-      setData(audioData)
+      const audioData = await fetchAudioData();
+      setData(audioData);
     }
     async function checkIfAdmin() {
       const q = query(
@@ -113,12 +113,12 @@ export default function Index() {
       const querySnapshot = await getDocs(q);
       querySnapshot.forEach((doc) => {
         if (!doc.data().email) {
-          router.push("/")
+          router.push("/");
         }
       });
     }
-    checkIfAdmin()
-    fetchData()
+    checkIfAdmin();
+    fetchData();
   }, [router]);
   return (
     <>
@@ -146,14 +146,21 @@ export default function Index() {
                 Dodaj sadržaj
               </button>
               <div id="content" className="mt-4">
-                {data !== null ? <div className="flex flex-col space-y-4 mr-24 ml-4">
-                  {data?.map((unos, idx) => {
-                    return ( 
-                      // @ts-ignore
-                      <AdminAudioComponent key={idx} index={idx} data={unos} handleDelete={() => showModalWithId(unos.id)} />
-                    )
-                  })}
-                </div> : null}
+                {data !== null ? (
+                  <div className="flex flex-col space-y-4 mr-24 ml-4">
+                    {data?.map((unos, idx) => {
+                      return (
+                        // @ts-ignore
+                        <AdminAudioComponent
+                          key={idx}
+                          index={idx}
+                          data={unos}
+                          handleDelete={() => showModalWithId(unos.id)}
+                        />
+                      );
+                    })}
+                  </div>
+                ) : null}
               </div>
             </div>
           </div>
@@ -272,17 +279,29 @@ export default function Index() {
           </button>
         </ModalFooter>
       </Modal>
-      <Modal title="Izbriši sadržaj" isShown={deleteModal} handleClose={() => setDeleteModal(false)}>
+      <Modal
+        title="Izbriši sadržaj"
+        isShown={deleteModal}
+        handleClose={() => setDeleteModal(false)}
+      >
         <ModalBody>
           <p>Da li ste sigurni da želite izbrisati sadržaj?</p>
         </ModalBody>
         <ModalFooter>
-        <button
+          <button
             className="bg-red-600 px-4 py-2 rounded-md"
-            onClick={() => {deleteWithId()}}
+            onClick={() => {
+              deleteWithId();
+            }}
             disabled={deleting}
           >
-            {deleting && <LoadingIcons.TailSpin width={24} height={24} className="mr-2 inline" />}
+            {deleting && (
+              <LoadingIcons.TailSpin
+                width={24}
+                height={24}
+                className="mr-2 inline"
+              />
+            )}
             Izbriši
           </button>
           <button

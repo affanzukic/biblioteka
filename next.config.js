@@ -6,7 +6,7 @@ module.exports = {
       "wallpaperaccess.com",
       "cetvrta-gimnazija.edu.ba",
       "lh3.googleusercontent.com",
-      "firebasestorage.googleapis.com"
+      "firebasestorage.googleapis.com",
     ],
   },
 };

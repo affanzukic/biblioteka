@@ -2,6 +2,8 @@ import Navbar from "../../../components/Navbar";
 import { useState, useEffect } from "react";
 import { fetchAudioData } from "../../../utils/firebase/firebaseStorage";
 import BookPreviewAudio from "../../../components/BookPreviewAudio";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 interface AudioData {
   title: string;
@@ -20,6 +22,9 @@ export default function Index() {
     setDarkMode(
       JSON.parse(localStorage.getItem("currentUser") || "{}").darkMode
     );
+    AOS.init({
+      duration: 400,
+    });
     fetchAudioData()
       .then((res) => setData(res))
       .catch((err) => console.log(err));
@@ -40,13 +45,25 @@ export default function Index() {
               Audio biblioteka
             </h1>
           </div>
-          <div id="data" className="flex flex-row flex-wrap mt-12 justify-center content-center space-y-6 space-x-6">
-            {data !== undefined ? data?.map((unos, idx) => {
-              return (
-                // @ts-ignore
-                <BookPreviewAudio bookData={unos} key={idx} />
-              )
-            }) : null}
+          <div
+            id="data"
+            className="flex flex-row flex-wrap mt-12 justify-center content-center space-y-6 space-x-6"
+            data-aos="fadeIn"
+          >
+            {data !== undefined
+              ? data?.map((unos, idx) => {
+                  return (
+                    <div data-aos="fadeIn" key={idx}>
+                      <BookPreviewAudio
+                        aosData="fadeIn"
+                        // @ts-ignore
+                        bookData={unos}
+                        key={idx}
+                      />
+                    </div>
+                  );
+                })
+              : null}
           </div>
         </div>
       </div>

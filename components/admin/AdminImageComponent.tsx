@@ -81,7 +81,12 @@ export default function AdminImageComponent({
             <p>{data.data.description}</p>
           </div>
           <div id="delete-button">
-          <button className="mt-10 bg-red-600 px-4 py-2 rounded-md text-white" onClick={handleDelete}>Izbriši</button>
+            <button
+              className="mt-10 bg-red-600 px-4 py-2 rounded-md text-white"
+              onClick={handleDelete}
+            >
+              Izbriši
+            </button>
           </div>
         </div>
       </div>
@@ -99,8 +104,17 @@ export default function AdminImageComponent({
           {imagesURL?.length !== 0
             ? imagesURL?.map((img, idx) => {
                 return (
-                  <div key={idx} className="flex flex-col content-center justify-center items-center space-y-4 mb-4">
-                    <img src={img} alt="image" key={idx} width="25%" height="25%" />
+                  <div
+                    key={idx}
+                    className="flex flex-col content-center justify-center items-center space-y-4 mb-4"
+                  >
+                    <img
+                      src={img}
+                      alt="image"
+                      key={idx}
+                      width="25%"
+                      height="25%"
+                    />
                     <p className="text-center">{idx + 1}. slika</p>
                   </div>
                 );

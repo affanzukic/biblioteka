@@ -6,7 +6,7 @@ import { db } from "../../firebase/clientApp";
 import { useRouter } from "next/router";
 
 export default function Index() {
-  const router = useRouter()
+  const router = useRouter();
   const [darkMode, setDarkMode] = useState(true);
   useEffect(() => {
     setDarkMode(
@@ -24,11 +24,11 @@ export default function Index() {
       const querySnapshot = await getDocs(q);
       querySnapshot.forEach((doc) => {
         if (!doc.data().email) {
-          router.push("/")
+          router.push("/");
         }
       });
     }
-    checkIfAdmin()
+    checkIfAdmin();
   }, [router]);
   return (
     <div id="admin" className={darkMode ? "dark flex" : "flex"}>
@@ -39,9 +39,12 @@ export default function Index() {
       <div className="content-container">
         <div className="content-list">
           <h1 className="font-bold uppercase text-xl my-4">
-            Dobro došli na upravljačku ploču online biblioteke Četvrte gimnazije Ilidža
+            Dobro došli na upravljačku ploču online biblioteke Četvrte gimnazije
+            Ilidža
           </h1>
-          <p>Da upravljate sadržajem, molimo koristite meni sa lijeve strane.</p>
+          <p>
+            Da upravljate sadržajem, molimo koristite meni sa lijeve strane.
+          </p>
         </div>
       </div>
     </div>

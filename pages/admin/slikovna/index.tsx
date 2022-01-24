@@ -5,7 +5,7 @@ import { Modal, ModalBody, ModalFooter } from "../../../components/Modal";
 import {
   uploadImage,
   fetchImage,
-  deleteImage
+  deleteImage,
 } from "../../../utils/firebase/firebaseStorage";
 import AdminSidebar from "../../../components/admin/AdminSidebar";
 import LoadingIcons from "react-loading-icons";
@@ -31,9 +31,9 @@ export default function Index() {
   const [files, setFiles] = useState([]);
   const [errorFileTypeImage, setErrorFileTypeImage] = useState(false);
   const [errorText, setErrorText] = useState(false);
-  const [deleting, setDeleting] = useState(false)
-  const [contentId, setContentId] = useState("")
-  const [deleteModal, setDeleteModal] = useState(false)
+  const [deleting, setDeleting] = useState(false);
+  const [contentId, setContentId] = useState("");
+  const [deleteModal, setDeleteModal] = useState(false);
   const [data, setData] = useState<(object | ImageData)[] | undefined | null>(
     null
   );
@@ -77,18 +77,18 @@ export default function Index() {
     await uploadImage(dataToSend);
     setTimeout(() => {
       router.reload();
-    }, 5000)
+    }, 5000);
   }
   function showModalWithId(id: string) {
-    setContentId(id)
-    setDeleteModal(true)
+    setContentId(id);
+    setDeleteModal(true);
   }
   async function deleteWithId() {
-    setDeleting(true)
-    await deleteImage(contentId)
+    setDeleting(true);
+    await deleteImage(contentId);
     setTimeout(() => {
-      router.reload()
-    }, 5000)
+      router.reload();
+    }, 5000);
   }
   useEffect(() => {
     AOS.init({
@@ -100,23 +100,23 @@ export default function Index() {
     fetchImage()
       .then((res) => setData(res))
       .catch((err) => console.log(err));
-      async function checkIfAdmin() {
-        const q = query(
-          collection(db, "admins"),
-          where(
-            "email",
-            "==",
-            JSON.parse(localStorage.getItem("currentUser") || "").email
-          )
-        );
-        const querySnapshot = await getDocs(q);
-        querySnapshot.forEach((doc) => {
-          if (!doc.data().email) {
-            router.push("/")
-          }
-        });
-      }
-      checkIfAdmin()
+    async function checkIfAdmin() {
+      const q = query(
+        collection(db, "admins"),
+        where(
+          "email",
+          "==",
+          JSON.parse(localStorage.getItem("currentUser") || "").email
+        )
+      );
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach((doc) => {
+        if (!doc.data().email) {
+          router.push("/");
+        }
+      });
+    }
+    checkIfAdmin();
   }, [router]);
   return (
     <>
@@ -284,17 +284,29 @@ export default function Index() {
           </ModalFooter>
         </form>
       </Modal>
-      <Modal title="Izbriši sadržaj" isShown={deleteModal} handleClose={() => setDeleteModal(false)}>
+      <Modal
+        title="Izbriši sadržaj"
+        isShown={deleteModal}
+        handleClose={() => setDeleteModal(false)}
+      >
         <ModalBody>
           <p>Da li ste sigurni da želite izbrisati sadržaj?</p>
         </ModalBody>
         <ModalFooter>
-        <button
+          <button
             className="bg-red-600 px-4 py-2 rounded-md"
-            onClick={() => {deleteWithId()}}
+            onClick={() => {
+              deleteWithId();
+            }}
             disabled={deleting}
           >
-            {deleting && <LoadingIcons.TailSpin width={24} height={24} className="mr-2 inline" />}
+            {deleting && (
+              <LoadingIcons.TailSpin
+                width={24}
+                height={24}
+                className="mr-2 inline"
+              />
+            )}
             Izbriši
           </button>
           <button

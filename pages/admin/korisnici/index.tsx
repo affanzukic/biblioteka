@@ -44,11 +44,11 @@ export default function Index() {
       const querySnapshot = await getDocs(q);
       querySnapshot.forEach((doc) => {
         if (!doc.data().email) {
-          router.push("/")
+          router.push("/");
         }
       });
     }
-    checkIfAdmin()
+    checkIfAdmin();
   }, [router]);
   function showModal(id: string) {
     setModalShown(!modalShown);
@@ -59,7 +59,7 @@ export default function Index() {
     router.reload();
   }
   async function addAdmin() {
-    const data = `${email}@cetvrta-gimnazija.edu.ba`
+    const data = `${email}@cetvrta-gimnazija.edu.ba`;
     await createAdmin(data);
     router.reload();
   }

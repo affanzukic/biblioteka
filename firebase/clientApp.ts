@@ -1,7 +1,7 @@
 import { initializeApp } from "firebase/app";
 import { GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
-import { getStorage } from "firebase/storage"
+import { getStorage } from "firebase/storage";
 
 const clientCredentials = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -19,5 +19,5 @@ const provider = new GoogleAuthProvider();
 export const db = getFirestore();
 export const auth = getAuth();
 export const signInWithGoogle = () => signInWithPopup(auth, provider);
-export const storage = getStorage()
+export const storage = getStorage();
 export default app;
