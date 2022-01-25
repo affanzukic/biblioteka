@@ -106,7 +106,7 @@ export default function Index() {
                     Audio knjiga
                   </h2>
                   <button
-                    className="mt-8 bg-green-600 px-4 py-2 rounded-md disabled:text-gray-400 disabled:bg-green-900 text-center hover:bg-green-900"
+                    className="mt-8 bg-green-600 px-4 py-2 rounded-md text-white disabled:text-gray-400 disabled:bg-green-900 text-center transition duration-300 hover:bg-green-900"
                     disabled={playerPlaying}
                     onClick={() => setPlayerPlaying(true)}
                   >
