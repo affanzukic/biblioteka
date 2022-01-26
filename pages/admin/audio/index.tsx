@@ -150,11 +150,12 @@ export default function Index() {
                   <div className="flex flex-col space-y-4 mr-24 ml-4">
                     {data?.map((unos, idx) => {
                       return (
-                        // @ts-ignore
                         <AdminAudioComponent
                           key={idx}
                           index={idx}
+                          // @ts-ignore
                           data={unos}
+                          // @ts-ignore
                           handleDelete={() => showModalWithId(unos.id)}
                         />
                       );

@@ -48,6 +48,9 @@ function Content({ darkMode }: StyleProps) {
               Online biblioteka Četvrte gimnazije
             </h1>
           </div>
+          <div id="description">
+            {/* TODO: Add content */}
+          </div>
         </div>
       </div>
     </div>

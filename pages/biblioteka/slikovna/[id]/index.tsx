@@ -25,7 +25,8 @@ async function fetchImages(id: string | string[], images: string[]) {
 export default function Index() {
   const router = useRouter();
   const { id } = router.query;
-  const imagesRef = useRef<null | HTMLDivElement>(null)
+  const imagesRef = useRef<null | HTMLDivElement>(null);
+  const descriptionRef = useRef<null | HTMLDivElement>(null);
   const [darkMode, setDarkMode] = useState(true);
   const [data, setData] = useState<DocumentData | undefined>(undefined);
   const [coverURL, setCoverURL] = useState("");
@@ -49,7 +50,7 @@ export default function Index() {
         .catch((err) => console.log(err));
       fetchImages(id, data?.imageFiles)
         .then((data) => {
-            setImageURLS(data)
+          setImageURLS(data);
         })
         .catch((err) => console.log(err));
     }
@@ -57,11 +58,11 @@ export default function Index() {
 
   useEffect(() => {
     if (carousel) {
-        setTimeout(() => {
-            imagesRef?.current?.scrollIntoView({behavior: "smooth"})
-        }, 500)
+      setTimeout(() => {
+        imagesRef?.current?.scrollIntoView({ behavior: "smooth" });
+      }, 500);
     }
-  }, [carousel])
+  }, [carousel]);
 
   return (
     <div
@@ -70,7 +71,7 @@ export default function Index() {
     >
       <Navbar />
       <div className="content-underlay">
-        <div id="content" className="mt-2 ml-2 h-full">
+        <div id="content" className="mt-2 ml-2 h-full" ref={descriptionRef}>
           {data !== undefined ? (
             <>
               <div
@@ -128,20 +129,42 @@ export default function Index() {
                 </div>
               </div>
               {carousel ? (
-                  <div
-                    id="center"
-                    className="flex flex-col content-center justify-center mx-auto space-y-16 my-16 w-3/4 h-1/2"
-                    ref={imagesRef}
+                <div
+                  id="center"
+                  className="flex flex-col content-center justify-center mx-auto space-y-16 my-16 w-3/4 h-1/2"
+                  ref={imagesRef}
+                >
+                  {imageURLS.map((image, idx) => {
+                    return (
+                      <div
+                        id="image"
+                        key={idx}
+                        className="flex flex-col justify-center content-center dark:bg-gray-900 bg-gray-300 rounded-lg pb-2"
+                      >
+                        <img
+                          src={image}
+                          alt="image"
+                          className="p-4 rounded-lg"
+                          key={idx}
+                        />
+                        <p className="flex mx-auto">Slika {idx + 1}</p>
+                      </div>
+                    );
+                  })}
+                  <button
+                    className="mx-auto mt-4 px-4 py-2 add-button w-1/2"
+                    onClick={() => {
+                      descriptionRef!.current!.scrollIntoView({
+                        behavior: "smooth",
+                      });
+                      setTimeout(() => {
+                        setCarousel(false);
+                      }, 600);
+                    }}
                   >
-                      {imageURLS.map((image, idx) => {
-                          return (
-                              <div id="image" key={idx} className="flex flex-col justify-center content-center dark:bg-gray-900 bg-gray-300 rounded-lg pb-2">
-                                  <img src={image} alt="image" className="p-4 rounded-lg" key={idx} />
-                                  <p className="flex mx-auto">Slika {idx + 1}</p>
-                              </div>
-                          )
-                      })}
-                  </div>
+                    Zatvori slikovnu prezentaciju
+                  </button>
+                </div>
               ) : null}
             </>
           ) : null}
