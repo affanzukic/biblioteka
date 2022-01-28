@@ -144,15 +144,15 @@ function Content({ darkMode }: StyleProps) {
             </div>
           </div>
         </div>
-          <div
-            id="copyright"
-            className="flex flex-row justify-content content-center bottom-0 mt-8 mb-4"
-          >
-            <p className="italic text-center mx-auto">
-              {new Date().getFullYear()}&copy; Četvrta gimnazija Ilidža. Sva
-              prava rezervisana.
-            </p>
-          </div>
+        <div
+          id="copyright"
+          className="flex flex-row justify-content content-center bottom-0 mt-8 mb-4"
+        >
+          <p className="italic text-center mx-auto">
+            {new Date().getFullYear()}&copy; Četvrta gimnazija Ilidža. Sva prava
+            rezervisana.
+          </p>
+        </div>
       </div>
     </div>
   );

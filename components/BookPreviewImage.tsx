@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
-import { useRouter } from "next/router"
+import { useRouter } from "next/router";
 import { ref, getDownloadURL } from "firebase/storage";
 import { storage } from "../firebase/clientApp";
-import AOS from "aos"
-import "aos/dist/aos.css"
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 interface ImageData {
   bookData: {
@@ -19,19 +19,21 @@ interface ImageData {
 }
 
 export default function BookPreviewImage(data: ImageData, aosData: string) {
-    const router = useRouter()
-    const { bookData } = data
-    const [coverURL, setCoverURL] = useState("")
-    useEffect(() => {
-        AOS.init({
-            duration: 300
-        })
-        async function fetch() {
-            const curl = await getDownloadURL(ref(storage, `image/${bookData.id}/${bookData.data.coverFile}`))
-            setCoverURL(curl)
-        }
-        fetch()
-    }, [bookData])
+  const router = useRouter();
+  const { bookData } = data;
+  const [coverURL, setCoverURL] = useState("");
+  useEffect(() => {
+    AOS.init({
+      duration: 300,
+    });
+    async function fetch() {
+      const curl = await getDownloadURL(
+        ref(storage, `image/${bookData.id}/${bookData.data.coverFile}`)
+      );
+      setCoverURL(curl);
+    }
+    fetch();
+  }, [bookData]);
   return (
     <div
       id="book-preview"

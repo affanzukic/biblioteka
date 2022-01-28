@@ -13,7 +13,7 @@ interface AudioProps {
 
 export default function AudioPlayer({ audioURL, title }: AudioProps) {
   const [state, setState] = useState(title);
-  const [volumeValue, setVolumeValue] = useState(0.0)
+  const [volumeValue, setVolumeValue] = useState(0.0);
   const { togglePlayPause, ready, loading, playing, volume } = useAudioPlayer({
     src: audioURL,
     html5: true,
@@ -23,7 +23,7 @@ export default function AudioPlayer({ audioURL, title }: AudioProps) {
     highRefreshRate: true,
   });
   useEffect(() => {
-    setVolumeValue(volume())
+    setVolumeValue(volume());
     if (!ready && !loading) {
       setState("Greška pri učitavanju fajla!");
     }
@@ -90,7 +90,10 @@ export default function AudioPlayer({ audioURL, title }: AudioProps) {
         </div>
       </div>
       <div id="volume" className="flex flex-row justify-center content-center">
-        <BsFillVolumeUpFill size="24" className="flex my-auto mr-2hover:text-gray-500 transition duration-200 dark:text-gray-400 dark:hover:text-gray-200 text-gray-700 " />
+        <BsFillVolumeUpFill
+          size="24"
+          className="flex my-auto mr-2hover:text-gray-500 transition duration-200 dark:text-gray-400 dark:hover:text-gray-200 text-gray-700 "
+        />
         <input
           type="range"
           defaultValue={volumeValue}
@@ -101,8 +104,8 @@ export default function AudioPlayer({ audioURL, title }: AudioProps) {
           value={volumeValue}
           onChange={(e) => {
             // @ts-ignore
-            setVolumeValue(e.target.value)
-            volume(e.target.value)
+            setVolumeValue(e.target.value);
+            volume(e.target.value);
           }}
         />
         <p id="currentTime" className="flex my-auto dark:text-gray-400 px-2">
