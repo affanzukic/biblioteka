@@ -42,11 +42,13 @@ export default function Sidebar() {
       <SidebarIcon
         icon={
           <img
+            // @ts-ignore
             src={currentUser.photoURL}
             className="rounded-full"
             alt="user avatar"
           />
         }
+        // @ts-ignore
         text={currentUser.displayName}
       />
       <SidebarIcon
