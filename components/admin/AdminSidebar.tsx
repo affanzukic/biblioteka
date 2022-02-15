@@ -1,7 +1,7 @@
 import { MouseEventHandler, useEffect, useState } from "react";
 import { IoIosArrowBack } from "react-icons/io";
 import { useRouter } from "next/router";
-import { BsMoon, BsFillImageFill } from "react-icons/bs";
+import { BsMoon, BsFillImageFill, BsFillCameraVideoFill } from "react-icons/bs";
 import { MdHeadphones } from "react-icons/md";
 import { AiOutlineUsergroupAdd } from "react-icons/ai";
 
@@ -70,6 +70,11 @@ export default function Sidebar() {
         icon={<BsFillImageFill size="28" />}
         text="Uredi slikovnu biblioteku"
         onClick={() => router.push("/admin/slikovna")}
+      />
+      <SidebarIcon
+        icon={<BsFillCameraVideoFill size="28" />}
+        text="Uredi video biblioteku"
+        onClick={() => router.push("/admin/video")}
       />
       <SidebarIcon
         icon={<BsMoon size="24" />}

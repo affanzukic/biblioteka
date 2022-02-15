@@ -26,6 +26,14 @@ interface ImageData {
   imageFiles: FileList | null;
 }
 
+interface IVideoData {
+  title: string;
+  description: string;
+  publisher: string;
+  coverFile: File | null;
+  videoFile: File | null;
+}
+
 async function uploadAudio(data: AudioData) {
   if (data === null) return;
   try {
@@ -199,6 +207,97 @@ async function deleteImage(id: string) {
   }
 }
 
+async function fetchVideo() {
+  try {
+    const querySnapshot = await getDocs(collection(db, "videoLibrary"));
+    let data: object[] = [];
+    return new Promise<Array<ImageData | object>>((resolve, reject) => {
+      try {
+        querySnapshot.forEach((doc) => {
+          data = [...data, { id: doc.id, data: doc.data() }];
+        });
+        resolve(data);
+      } catch (err) {
+        reject(err);
+      }
+    });
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+async function uploadVideo(data: IVideoData) {
+  if (data === null) return;
+  try {
+    return new Promise((resolve, reject) => {
+      const { videoFile, title, description, publisher, coverFile } = data;
+      const regex: RegExp = /[^\\]*\.(\w+)$/;
+      const videoExt = videoFile!.name.match(regex)![1];
+      const imageExt = coverFile!.name.match(regex)![1];
+      const newTitle = lodash.kebabCase(title).toLowerCase();
+      const videoStorageRef = ref(
+        storage,
+        `video/${newTitle}/${newTitle}.${videoExt}`
+      );
+      const imageStorageRef = ref(
+        storage,
+        `video/${newTitle}/cover.${imageExt}`
+      );
+      uploadBytes(videoStorageRef, videoFile!)
+        .then((snapshot) => {
+          uploadBytes(imageStorageRef, coverFile!)
+            .then((snapshot) => {
+              const newData = {
+                title,
+                description,
+                publisher,
+                videoFile: `${newTitle}.${videoExt}`,
+                coverFile: `cover.${imageExt}`,
+                dateCreated: Timestamp.fromDate(new Date()),
+              };
+              try {
+                setDoc(doc(db, "videoLibrary", newTitle), newData)
+                  .then(() => resolve(true))
+                  .catch((err) => {
+                    throw new Error(err);
+                  });
+              } catch (err) {
+                reject(err);
+              }
+            })
+            .catch((err) => {
+              reject(err);
+            });
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+async function deleteVideo(id: string) {
+  try {
+    await deleteDoc(doc(db, "videoLibrary", id));
+    listAll(ref(storage, `video/${id}`))
+      .then((listData) => {
+        let itemsToDelete: string[] = [];
+        listData.items.map((data) => itemsToDelete.push(data.name));
+        itemsToDelete.forEach(async (item) => {
+          await deleteObject(ref(storage, `video/${id}/${item}`));
+        });
+        console.log(itemsToDelete)
+      })
+      .catch((err) => {
+        throw new Error(err);
+      });
+  } catch (err) {
+    console.log(err);
+  }
+}
+
 export {
   uploadAudio,
   fetchAudioData,
@@ -206,4 +305,7 @@ export {
   uploadImage,
   fetchImage,
   deleteImage,
+  fetchVideo,
+  uploadVideo,
+  deleteVideo
 };
