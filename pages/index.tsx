@@ -7,7 +7,7 @@ import BookPreviewAudio from "../components/BookPreviewAudio";
 import BookPreviewImage from "../components/BookPreviewImage";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import { copyFile } from "fs";
+import AllBooksPreview from "../components/AllBooksPreview";
 
 interface StyleProps {
   darkMode: Boolean;
@@ -82,9 +82,6 @@ function Content({ darkMode }: StyleProps) {
             id="description"
             className="flex flex-col mt-8 justify-center content-center mx-auto"
           >
-            <p className="text-center font-semibold text-xl underline">
-              Dobro došli u online biblioteku Četvrte gimnazije Ilidža!
-            </p>
             <p className="text-center font-semibold text-xl mt-2 italic">
               Da bi započeli svoju avanturu u našoj biblioteci, molimo izaberite
               tip knjige koji želite iznad u navigacijskoj traci.
@@ -98,49 +95,11 @@ function Content({ darkMode }: StyleProps) {
             <p className="font-bold text-2xl text-shadow-lg">
               Najnovije knjige
             </p>
-            <p className="mt-4 font-semibold text-xl">Audio knjige</p>
             <div
-              id="audio-latest"
-              className="flex flex-row flex-wrap my-12 justify-center content-center space-y-6 space-x-6 p-4 rounded-lg dark:bg-gray-800 bg-gray-200"
+              id="books-latest"
+              className="flex my-12 justify-start content-center p-4 rounded-lg dark:bg-gray-800 bg-gray-200 min-w-full"
             >
-              {audioData !== undefined
-                ? // @ts-ignore
-                  audioData?.map((data, idx) => {
-                    return (
-                      <div data-aos="fadeIn" key={idx}>
-                        <BookPreviewAudio
-                          // @ts-ignore
-                          aosData="fadeIn"
-                          // @ts-ignore
-                          bookData={data}
-                          key={idx}
-                        />
-                      </div>
-                    );
-                  })
-                : null}
-            </div>
-            <p className="mt-4 font-semibold text-xl">Slikovne knjige</p>
-            <div
-              id="image-latest"
-              className="flex flex-row flex-wrap my-12 justify-center content-center space-y-6 space-x-6 p-4 rounded-lg dark:bg-gray-800 bg-gray-200"
-            >
-              {imageData !== undefined
-                ? // @ts-ignore
-                  imageData?.map((data, idx) => {
-                    return (
-                      <div data-aos="fadeIn" key={idx}>
-                        <BookPreviewImage
-                          // @ts-ignore
-                          aosData="fadeIn"
-                          // @ts-ignore
-                          bookData={data}
-                          key={idx}
-                        />
-                      </div>
-                    );
-                  })
-                : null}
+             <AllBooksPreview /> 
             </div>
           </div>
         </div>
