@@ -12,6 +12,7 @@ let navigation = [
   { name: "Početna", href: "/", current: false },
   { name: "Audio biblioteka", href: "/biblioteka/audio", current: false },
   { name: "Slikovna biblioteka", href: "/biblioteka/slikovna", current: false },
+  { name: "Video biblioteka", href: "/biblioteka/video", current: false },
 ];
 
 function classNames(...classes: Array<any>) {
