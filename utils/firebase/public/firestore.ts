@@ -38,7 +38,7 @@ async function fetchImageBook(id: string) {
 }
 
 async function fetchVideoBook(id: string) {
-  return new Promise((resolve, reject) => {
+  return new Promise<DocumentData | undefined>((resolve, reject) => {
     try {
       const docRef = doc(db, "videoLibrary", id);
       getDoc(docRef)
