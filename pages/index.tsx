@@ -3,8 +3,6 @@ import { useEffect, useState } from "react";
 import { DocumentData } from "firebase/firestore";
 import { fetchAudioData, fetchImage } from "../utils/firebase/firebaseStorage";
 import Navbar from "../components/Navbar";
-import BookPreviewAudio from "../components/BookPreviewAudio";
-import BookPreviewImage from "../components/BookPreviewImage";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import AllBooksPreview from "../components/AllBooksPreview";
