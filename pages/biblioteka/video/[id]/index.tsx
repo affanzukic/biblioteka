@@ -26,7 +26,9 @@ export default function Index() {
     if (id !== undefined) {
       // @ts-ignore
       fetchVideoBook(id)
+      // @ts-ignore
         .then((videoData) => setData(videoData))
+      // @ts-ignore
         .catch((err) => console.log(err));
     }
     async function fetchData() {

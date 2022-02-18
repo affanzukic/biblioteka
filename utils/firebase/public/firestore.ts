@@ -1,5 +1,5 @@
 import { db } from "../../../firebase/clientApp";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, DocumentData } from "firebase/firestore";
 
 async function fetchAudioBook(id: string) {
   return new Promise((resolve, reject) => {
@@ -20,7 +20,7 @@ async function fetchAudioBook(id: string) {
 }
 
 async function fetchImageBook(id: string) {
-  return new Promise((resolve, reject) => {
+  return new Promise<DocumentData | undefined>((resolve, reject) => {
     try {
       const docRef = doc(db, "imageLibrary", id);
       getDoc(docRef)
