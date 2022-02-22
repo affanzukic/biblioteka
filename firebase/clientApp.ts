@@ -15,6 +15,9 @@ const clientCredentials = {
 
 const app = initializeApp(clientCredentials);
 const provider = new GoogleAuthProvider();
+provider.setCustomParameters({
+  prompt: 'select_account'
+});
 
 export const db = getFirestore();
 export const auth = getAuth();

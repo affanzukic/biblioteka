@@ -1,7 +1,11 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { DocumentData } from "firebase/firestore";
-import { fetchAudioData, fetchImage } from "../utils/firebase/firebaseStorage";
+import {
+  fetchAudioData,
+  fetchImage,
+  fetchVideo,
+} from "../utils/firebase/firebaseStorage";
 import Navbar from "../components/Navbar";
 import AOS from "aos";
 import "aos/dist/aos.css";
@@ -43,6 +47,9 @@ function Content({ darkMode }: StyleProps) {
   const [imageData, setImageData] = useState<DocumentData | undefined>(
     undefined
   );
+  const [videoData, setVideoData] = useState<DocumentData | undefined>(
+    undefined
+  );
   useEffect(() => {
     AOS.init({
       duration: 500,
@@ -59,6 +66,12 @@ function Content({ darkMode }: StyleProps) {
         setImageData(res);
       })
       .catch((err) => console.log(err));
+    fetchVideo()
+      .then((res) => {
+        res?.slice(0, 5);
+        setVideoData(res);
+      })
+      .catch((err) => console.log(err));
   }, []);
   return (
     <div
@@ -72,7 +85,7 @@ function Content({ darkMode }: StyleProps) {
             id="title"
             className="flex justify-center content-center mt-8 mx-auto"
           >
-            <h1 className="text-6xl font-bold text-shadow-xl dark:text-white text-gray-700">
+            <h1 className="text-6xl text-center font-bold text-shadow-xl dark:text-white text-gray-700">
               Online biblioteka Četvrte gimnazije
             </h1>
           </div>
@@ -81,8 +94,7 @@ function Content({ darkMode }: StyleProps) {
             className="flex flex-col mt-8 justify-center content-center mx-auto"
           >
             <p className="text-center font-semibold text-xl mt-2 italic">
-              Da bi započeli svoju avanturu u našoj biblioteci, molimo izaberite
-              tip knjige koji želite iznad u navigacijskoj traci.
+              Započnite svoju sljedeću avanturu ovdje!
             </p>
           </div>
           <div
@@ -95,9 +107,9 @@ function Content({ darkMode }: StyleProps) {
             </p>
             <div
               id="books-latest"
-              className="flex my-12 justify-start content-center p-4 rounded-lg dark:bg-gray-800 bg-gray-200 min-w-full"
+              className="flex my-12 justify-start content-center p-4 rounded-lg dark:bg-gray-800 bg-gray-400 min-w-full"
             >
-             <AllBooksPreview /> 
+              <AllBooksPreview audioBooks={audioData} imageBooks={imageData} videoBooks={videoData} />
             </div>
           </div>
         </div>

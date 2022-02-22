@@ -34,6 +34,15 @@ interface IVideoData {
   videoFile: File | null;
 }
 
+interface VideoData {
+  title: string
+  description: string
+  publisher: string
+  coverFile: string
+  videoFile: string
+  dateCreated: Timestamp
+}
+
 async function uploadAudio(data: AudioData) {
   if (data === null) return;
   try {
@@ -211,7 +220,7 @@ async function fetchVideo() {
   try {
     const querySnapshot = await getDocs(collection(db, "videoLibrary"));
     let data: object[] = [];
-    return new Promise<Array<ImageData | object>>((resolve, reject) => {
+    return new Promise<Array<VideoData | object>>((resolve, reject) => {
       try {
         querySnapshot.forEach((doc) => {
           data = [...data, { id: doc.id, data: doc.data() }];
