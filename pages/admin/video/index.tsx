@@ -153,6 +153,22 @@ export default function Index() {
                   disabled={loading}
                 />
               </div>
+              <div className="flex flex-col mt-4">
+                <p className="mb-2">
+                  Jezik <p className="inline text-red-600 font-bold">*</p>
+                </p>
+                <select
+                  id="language"
+                  className="admin-input"
+                  defaultValue="Bosnian"
+                  name="language"
+                  required
+                  disabled={loading}
+                >
+                  <option value="English">Engleski</option>
+                  <option value="Bosnian">Bosanski</option>
+                </select>
+              </div>
               <div id="description" className="flex flex-col space-y-2">
                 <label htmlFor="description">Opis</label>
                 <textarea

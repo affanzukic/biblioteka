@@ -149,7 +149,8 @@ export default function Index() {
                 {data !== null ? (
                   <div className="flex flex-col space-y-4 mr-24 ml-4">
                     {data?.map((unos, idx) => {
-                      return (
+                      return ( 
+                      <>
                         <AdminImageComponent
                           key={idx}
                           index={idx}
@@ -158,6 +159,7 @@ export default function Index() {
                           // @ts-ignore
                           handleDelete={() => showModalWithId(unos.id)}
                         />
+                      </>
                       );
                     })}
                   </div>
@@ -221,6 +223,16 @@ export default function Index() {
                 disabled={loading}
               />
             </div>
+            <div className="flex flex-col mt-4">
+            <p className="mb-2">
+              Jezik{" "}
+              <p className="inline text-red-600 font-bold">*</p>
+            </p>
+            <select id="language" className="admin-input" defaultValue="Bosnian" name="language" required disabled={loading}>
+              <option value="English">Engleski</option>
+              <option value="Bosnian">Bosanski</option>
+            </select>
+          </div>
             <div className="flex flex-col mt-4">
               <p className="mb-2">
                 Opis <p className="inline text-red-600 font-bold">*</p>{" "}
