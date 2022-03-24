@@ -48,14 +48,13 @@ export default function AdminAudioComponent({
     fetch();
   }, [data]);
   return (
-    <>
       <div
-        id="container"
-        className="flex flex-col w-full h-full rounded-lg dark:bg-gray-900 bg-gray-200"
+        id={`audio-container-${data.id}`}
+        className="flex flex-col w-full h-full rounded-lg dark:bg-gray-900 bg-gray-200 z-50"
         data-aos="fadeIn"
       >
         <div
-          id="index"
+          id={`audio-index-${data.id}`}
           className="flex px-4 py-2 dark:bg-gray-900 bg-gray-400 rounded-t-lg"
         >
           <p className="font-bold">{index + 1}.</p>
@@ -104,6 +103,5 @@ export default function AdminAudioComponent({
           </div>
         </div>
       </div>
-    </>
   );
 }

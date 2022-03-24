@@ -14,6 +14,7 @@ import { collection, query, where, getDocs } from "firebase/firestore";
 import { db } from "../../../firebase/clientApp";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import AdminSliderComponent from "../../../components/admin/AdminSliderComponent";
 interface AudioData {
   title: string;
   description: string;
@@ -24,7 +25,7 @@ interface AudioData {
   coverFile: File | null;
 }
 
-type ILanguage = "English" | "Bosnian"
+type ILanguage = "English" | "Bosnian";
 
 export default function Index() {
   const router = useRouter();
@@ -40,8 +41,8 @@ export default function Index() {
   const [naziv, setNaziv] = useState("");
   const [izdavac, setIzdavac] = useState("");
   const [opis, setOpis] = useState("");
-  const [author, setAuthor] = useState("")
-  const [language, setLanguage] = useState<ILanguage>("Bosnian")
+  const [author, setAuthor] = useState("");
+  const [language, setLanguage] = useState<ILanguage>("Bosnian");
   const [contentId, setContentId] = useState("");
   const [deleting, setDeleting] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
@@ -76,7 +77,7 @@ export default function Index() {
       audioFile,
       coverFile,
       author,
-      language
+      language,
     };
 
     setLoading(true);
@@ -153,24 +154,9 @@ export default function Index() {
               >
                 Dodaj sadržaj
               </button>
-              <div id="content" className="mt-4">
-                {data !== null ? (
-                  <div className="flex flex-col space-y-4 mr-24 ml-4">
-                    {data?.map((unos, idx) => {
-                      return (
-                        <AdminAudioComponent
-                          key={idx}
-                          index={idx}
-                          // @ts-ignore
-                          data={unos}
-                          // @ts-ignore
-                          handleDelete={() => showModalWithId(unos.id)}
-                        />
-                      );
-                    })}
-                  </div>
-                ) : null}
-              </div>
+            </div>
+            <div id="content" className="flex mt-8">
+            <AdminSliderComponent />
             </div>
           </div>
         </div>
@@ -214,8 +200,7 @@ export default function Index() {
           </div>
           <div className="flex flex-col mt-4">
             <p className="mb-2">
-              Autor{" "}
-              <p className="inline text-red-600 font-bold">*</p>
+              Autor <p className="inline text-red-600 font-bold">*</p>
             </p>
             <input
               type="text"
@@ -230,13 +215,20 @@ export default function Index() {
           </div>
           <div className="flex flex-col mt-4">
             <p className="mb-2">
-              Jezik{" "}
-              <p className="inline text-red-600 font-bold">*</p>
+              Jezik <p className="inline text-red-600 font-bold">*</p>
             </p>
-            <select id="language" className="admin-input" defaultValue="Bosnian" name="language" required onChange={(event) => {
-              // @ts-ignore
-              setLanguage(event.target.value)
-            }} disabled={loading}>
+            <select
+              id="language"
+              className="admin-input"
+              defaultValue="Bosnian"
+              name="language"
+              required
+              onChange={(event) => {
+                // @ts-ignore
+                setLanguage(event.target.value);
+              }}
+              disabled={loading}
+            >
               <option value="English">Engleski</option>
               <option value="Bosnian">Bosanski</option>
             </select>
