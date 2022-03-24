@@ -65,12 +65,12 @@ function Content({ darkMode }: StyleProps) {
     });
     fetchAudioData()
       .then((res) => {
-        // @ts-ignore
         const bosanski = res?.filter((data) => {
+          // @ts-ignore
           return data.data.language === "Bosanski";
         });
-        // @ts-ignore
         const english = res?.filter((data) => {
+          // @ts-ignore
           return data.data.language === "English";
         });
         english?.slice(0, 5);
@@ -81,12 +81,12 @@ function Content({ darkMode }: StyleProps) {
       .catch((err) => console.log(err));
     fetchImage()
       .then((res) => {
-        // @ts-ignore
         const bosanski = res?.filter((data) => {
+          // @ts-ignore
           return data.data.language === "Bosanski";
         });
-        // @ts-ignore
         const english = res?.filter((data) => {
+          // @ts-ignore
           return data.data.language === "English";
         });
         english?.slice(0, 5);
@@ -97,12 +97,12 @@ function Content({ darkMode }: StyleProps) {
       .catch((err) => console.log(err));
     fetchVideo()
       .then((res) => {
-        // @ts-ignore
         const bosanski = res?.filter((data) => {
+          // @ts-ignore
           return data.data.language === "Bosanski";
         });
-        // @ts-ignore
         const english = res?.filter((data) => {
+          // @ts-ignore
           return data.data.language === "English";
         });
         english?.slice(0, 5);
