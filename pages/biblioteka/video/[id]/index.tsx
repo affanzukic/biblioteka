@@ -26,9 +26,9 @@ export default function Index() {
     if (id !== undefined) {
       // @ts-ignore
       fetchVideoBook(id)
-      // @ts-ignore
+        // @ts-ignore
         .then((videoData) => setData(videoData))
-      // @ts-ignore
+        // @ts-ignore
         .catch((err) => console.log(err));
     }
     async function fetchData() {
@@ -96,10 +96,12 @@ export default function Index() {
                     <p>{data?.publisher}</p>
                   </div>
                   <div id="author">
-                    <h2 className="uppercase font-bold">
-                      Autor
-                    </h2>
+                    <h2 className="uppercase font-bold">Autor</h2>
                     <p>{data?.author}</p>
+                  </div>
+                  <div id="language">
+                    <h2 className="uppercase font-bold">Jezik</h2>
+                    <p>{data?.language}</p>
                   </div>
                   <div id="description">
                     <h2 className="uppercase font-bold">Kratki opis</h2>
@@ -107,8 +109,11 @@ export default function Index() {
                   </div>
                 </div>
               </div>
-              <div id="video" className="flex flex-col content-center justify-center space-y-8 mt-16 pb-8 mx-auto">
-                    <h2 className="uppercase mx-auto font-bold">Video</h2>
+              <div
+                id="video"
+                className="flex flex-col content-center justify-center space-y-8 mt-16 pb-8 mx-auto"
+              >
+                <h2 className="uppercase mx-auto font-bold">Video</h2>
                 <video src={videoUrl} controls width="600px" height="300px" />
               </div>
             </>

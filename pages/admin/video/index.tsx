@@ -60,7 +60,6 @@ export default function Index() {
           </title>
         </Head>
         <AdminSidebar />
-        {data !== undefined && console.log(data)}
         <div className="content-container">
           <div className="content-list mb-4">
             <div id="title">
@@ -160,13 +159,13 @@ export default function Index() {
                 <select
                   id="language"
                   className="admin-input"
-                  defaultValue="Bosnian"
+                  defaultValue="Bosanski"
                   name="language"
                   required
                   disabled={loading}
                 >
-                  <option value="English">Engleski</option>
-                  <option value="Bosnian">Bosanski</option>
+                  <option value="English">English</option>
+                  <option value="Bosanski">Bosanski</option>
                 </select>
               </div>
               <div id="description" className="flex flex-col space-y-2">

@@ -13,6 +13,7 @@ interface ImageData {
     coverFile: string;
     imageFiles: string[];
     author: string;
+    language: string;
   };
 }
 
@@ -80,6 +81,10 @@ export default function AdminImageComponent({
           <div id="author">
             <p className="uppercase font-bold">Autor</p>
             <p>{data.data.author === "" ? "-" : data.data.author}</p>
+          </div>
+          <div id="language">
+            <p className="uppercase font-bold">Jezik</p>
+            <p>{data.data.language === "" ? "-" : data.data.language}</p>
           </div>
           <div id="description">
             <p className="uppercase font-bold">Deskripcija</p>

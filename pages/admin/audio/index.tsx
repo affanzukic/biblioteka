@@ -24,7 +24,7 @@ interface AudioData {
   coverFile: File | null;
 }
 
-type ILanguage = "English" | "Bosnian"
+type ILanguage = "English" | "Bosanski";
 
 export default function Index() {
   const router = useRouter();
@@ -40,8 +40,8 @@ export default function Index() {
   const [naziv, setNaziv] = useState("");
   const [izdavac, setIzdavac] = useState("");
   const [opis, setOpis] = useState("");
-  const [author, setAuthor] = useState("")
-  const [language, setLanguage] = useState<ILanguage>("Bosnian")
+  const [author, setAuthor] = useState("");
+  const [language, setLanguage] = useState<ILanguage>("Bosanski");
   const [contentId, setContentId] = useState("");
   const [deleting, setDeleting] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
@@ -76,7 +76,7 @@ export default function Index() {
       audioFile,
       coverFile,
       author,
-      language
+      language,
     };
 
     setLoading(true);
@@ -214,8 +214,7 @@ export default function Index() {
           </div>
           <div className="flex flex-col mt-4">
             <p className="mb-2">
-              Autor{" "}
-              <p className="inline text-red-600 font-bold">*</p>
+              Autor <p className="inline text-red-600 font-bold">*</p>
             </p>
             <input
               type="text"
@@ -230,15 +229,22 @@ export default function Index() {
           </div>
           <div className="flex flex-col mt-4">
             <p className="mb-2">
-              Jezik{" "}
-              <p className="inline text-red-600 font-bold">*</p>
+              Jezik <p className="inline text-red-600 font-bold">*</p>
             </p>
-            <select id="language" className="admin-input" defaultValue="Bosnian" name="language" required onChange={(event) => {
-              // @ts-ignore
-              setLanguage(event.target.value)
-            }} disabled={loading}>
-              <option value="English">Engleski</option>
-              <option value="Bosnian">Bosanski</option>
+            <select
+              id="language"
+              className="admin-input"
+              defaultValue="Bosanski"
+              name="language"
+              required
+              onChange={(event) => {
+                // @ts-ignore
+                setLanguage(event.target.value);
+              }}
+              disabled={loading}
+            >
+              <option value="English">English</option>
+              <option value="Bosanski">Bosanski</option>
             </select>
           </div>
           <div className="flex flex-col mt-4">

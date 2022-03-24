@@ -11,6 +11,7 @@ interface IVideoData {
   coverFile: string;
   videoFile: string;
   author: string;
+  language: string;
 }
 
 interface IVideoProps {
@@ -79,6 +80,10 @@ export default function AdminVideoComponent({
               <p className="uppercase font-bold">Autor</p>
               <p>{data.author}</p>
             </div>
+            <div id="language">
+              <p className="uppercase font-bold">Jezik</p>
+              <p>{data.language}</p>
+            </div>
             <div id="description">
               <p className="uppercase font-bold">Deskripcija</p>
               <p>{data.description}</p>
@@ -90,7 +95,13 @@ export default function AdminVideoComponent({
           >
             <p className="uppercase font-bold">Video fajl</p>
             {videoUrl !== "" && (
-              <video className="mt-4 p-2 bg-gray-800" width="300px" height="150px" controls src={videoUrl} />
+              <video
+                className="mt-4 p-2 bg-gray-800"
+                width="300px"
+                height="150px"
+                controls
+                src={videoUrl}
+              />
             )}
             <button
               className="mt-10 bg-red-600 px-4 py-2 rounded-md text-white"

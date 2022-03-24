@@ -19,6 +19,7 @@ interface ImageData {
   title: string;
   description: string;
   publisher: string;
+  language: string;
   coverFile: File | null;
   imageFiles: FileList | null;
   author: string;
@@ -48,12 +49,21 @@ export default function Index() {
     const formData = new FormData(event.target);
     let dataToSend = Object.fromEntries(formData);
     dataToSend = { ...dataToSend, imageFiles: files[0] };
-    const { title, description, publisher, author, imageFiles, coverFile } = dataToSend;
+    const {
+      title,
+      description,
+      language,
+      publisher,
+      author,
+      imageFiles,
+      coverFile,
+    } = dataToSend;
     if (
       title === "" ||
       description === "" ||
       publisher === "" ||
       author === "" ||
+      language === "" ||
       imageFiles === undefined ||
       // @ts-ignore
       coverFile.name === ""
@@ -149,17 +159,17 @@ export default function Index() {
                 {data !== null ? (
                   <div className="flex flex-col space-y-4 mr-24 ml-4">
                     {data?.map((unos, idx) => {
-                      return ( 
-                      <>
-                        <AdminImageComponent
-                          key={idx}
-                          index={idx}
-                          // @ts-ignore
-                          data={unos}
-                          // @ts-ignore
-                          handleDelete={() => showModalWithId(unos.id)}
-                        />
-                      </>
+                      return (
+                        <>
+                          <AdminImageComponent
+                            key={idx}
+                            index={idx}
+                            // @ts-ignore
+                            data={unos}
+                            // @ts-ignore
+                            handleDelete={() => showModalWithId(unos.id)}
+                          />
+                        </>
                       );
                     })}
                   </div>
@@ -209,8 +219,7 @@ export default function Index() {
             </div>
             <div className="flex flex-col mt-4">
               <p className="mb-2">
-                Autor{" "}
-                <p className="inline text-red-600 font-bold">*</p>
+                Autor <p className="inline text-red-600 font-bold">*</p>
               </p>
               <input
                 name="author"
@@ -224,15 +233,21 @@ export default function Index() {
               />
             </div>
             <div className="flex flex-col mt-4">
-            <p className="mb-2">
-              Jezik{" "}
-              <p className="inline text-red-600 font-bold">*</p>
-            </p>
-            <select id="language" className="admin-input" defaultValue="Bosnian" name="language" required disabled={loading}>
-              <option value="English">Engleski</option>
-              <option value="Bosnian">Bosanski</option>
-            </select>
-          </div>
+              <p className="mb-2">
+                Jezik <p className="inline text-red-600 font-bold">*</p>
+              </p>
+              <select
+                id="language"
+                className="admin-input"
+                defaultValue="Bosanski"
+                name="language"
+                required
+                disabled={loading}
+              >
+                <option value="English">English</option>
+                <option value="Bosanski">Bosanski</option>
+              </select>
+            </div>
             <div className="flex flex-col mt-4">
               <p className="mb-2">
                 Opis <p className="inline text-red-600 font-bold">*</p>{" "}

@@ -41,35 +41,74 @@ export default function Index() {
 }
 
 function Content({ darkMode }: StyleProps) {
-  const [audioData, setAudioData] = useState<DocumentData | undefined>(
-    undefined
-  );
-  const [imageData, setImageData] = useState<DocumentData | undefined>(
-    undefined
-  );
-  const [videoData, setVideoData] = useState<DocumentData | undefined>(
-    undefined
-  );
+  const [audioDataBosnian, setAudioDataBosnian] = useState<
+    DocumentData | undefined
+  >(undefined);
+  const [imageDataBosnian, setImageDataBosnian] = useState<
+    DocumentData | undefined
+  >(undefined);
+  const [videoDataBosnian, setVideoDataBosnian] = useState<
+    DocumentData | undefined
+  >(undefined);
+  const [audioDataEnglish, setAudioDataEnglish] = useState<
+    DocumentData | undefined
+  >(undefined);
+  const [imageDataEnglish, setImageDataEnglish] = useState<
+    DocumentData | undefined
+  >(undefined);
+  const [videoDataEnglish, setVideoDataEnglish] = useState<
+    DocumentData | undefined
+  >(undefined);
   useEffect(() => {
     AOS.init({
       duration: 500,
     });
     fetchAudioData()
       .then((res) => {
-        res?.slice(0, 5);
-        setAudioData(res);
+        // @ts-ignore
+        const bosanski = res?.filter((data) => {
+          return data.data.language === "Bosanski";
+        });
+        // @ts-ignore
+        const english = res?.filter((data) => {
+          return data.data.language === "English";
+        });
+        english?.slice(0, 5);
+        bosanski?.slice(0, 5);
+        setAudioDataBosnian(bosanski);
+        setAudioDataEnglish(english);
       })
       .catch((err) => console.log(err));
     fetchImage()
       .then((res) => {
-        res?.slice(0, 5);
-        setImageData(res);
+        // @ts-ignore
+        const bosanski = res?.filter((data) => {
+          return data.data.language === "Bosanski";
+        });
+        // @ts-ignore
+        const english = res?.filter((data) => {
+          return data.data.language === "English";
+        });
+        english?.slice(0, 5);
+        bosanski?.slice(0, 5);
+        setImageDataBosnian(bosanski);
+        setImageDataEnglish(english);
       })
       .catch((err) => console.log(err));
     fetchVideo()
       .then((res) => {
-        res?.slice(0, 5);
-        setVideoData(res);
+        // @ts-ignore
+        const bosanski = res?.filter((data) => {
+          return data.data.language === "Bosanski";
+        });
+        // @ts-ignore
+        const english = res?.filter((data) => {
+          return data.data.language === "English";
+        });
+        english?.slice(0, 5);
+        bosanski?.slice(0, 5);
+        setVideoDataBosnian(bosanski);
+        setVideoDataEnglish(english);
       })
       .catch((err) => console.log(err));
   }, []);
@@ -83,10 +122,10 @@ function Content({ darkMode }: StyleProps) {
         <div id="content" className="ml-2 mt-2">
           <div
             id="title"
-            className="flex justify-center content-center mt-16 mx-auto"
+            className="flex justify-center content-center mt-16 mx-auto px-4"
           >
             <h1 className="text-6xl text-center font-bold text-shadow-xl dark:text-white text-gray-700">
-              Online biblioteka &ldquo;Četvrta gimnazija&rdquo;
+              Online biblioteka &ldquo;Četvrta gimnazija Ilidža&rdquo;
             </h1>
           </div>
           <div
@@ -94,22 +133,44 @@ function Content({ darkMode }: StyleProps) {
             className="flex flex-col mt-8 justify-center content-center mx-auto"
           >
             <p className="text-center font-semibold text-xl mt-2 italic">
-              Započnite svoju sljedeću avanturu ovdje!
+              Započnite svoju sljedeću avanturu ovdje sa COMICS &amp; VOICE
+              LIBRARY!
             </p>
           </div>
           <div
-            id="latest"
+            id="latest-bosnian"
             className="flex flex-col content-center justify-center mt-24 mx-4"
             data-aos="fadeIn"
           >
             <p className="font-bold text-2xl text-shadow-lg">
-              Najnovije knjige
+              Bosanski jezik i književnost
             </p>
             <div
-              id="books-latest"
+              id="books-latest-bosnian"
               className="flex my-6 justify-start content-center p-4 rounded-lg dark:bg-gray-800 bg-gray-400 min-w-full"
             >
-              <AllBooksPreview audioBooks={audioData} imageBooks={imageData} videoBooks={videoData} />
+              <AllBooksPreview
+                audioBooks={audioDataBosnian}
+                imageBooks={imageDataBosnian}
+                videoBooks={videoDataBosnian}
+              />
+            </div>
+          </div>
+          <div
+            id="latest-english"
+            className="flex flex-col content-center justify-center mt-6 mx-4"
+            data-aos="fadeIn"
+          >
+            <p className="font-bold text-2xl text-shadow-lg">Engleski jezik</p>
+            <div
+              id="books-latest-english"
+              className="flex my-6 justify-start content-center p-4 rounded-lg dark:bg-gray-800 bg-gray-400 min-w-full"
+            >
+              <AllBooksPreview
+                audioBooks={audioDataEnglish}
+                imageBooks={imageDataEnglish}
+                videoBooks={videoDataEnglish}
+              />
             </div>
           </div>
         </div>
