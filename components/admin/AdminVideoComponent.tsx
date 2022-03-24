@@ -10,6 +10,7 @@ interface IVideoData {
   publisher: string;
   coverFile: string;
   videoFile: string;
+  author: string;
 }
 
 interface IVideoProps {
@@ -73,6 +74,10 @@ export default function AdminVideoComponent({
             <div id="publisher">
               <p className="uppercase font-bold">Izdavač i godina izdanja</p>
               <p>{data.publisher}</p>
+            </div>
+            <div id="author">
+              <p className="uppercase font-bold">Autor</p>
+              <p>{data.author}</p>
             </div>
             <div id="description">
               <p className="uppercase font-bold">Deskripcija</p>

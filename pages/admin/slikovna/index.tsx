@@ -21,6 +21,7 @@ interface ImageData {
   publisher: string;
   coverFile: File | null;
   imageFiles: FileList | null;
+  author: string;
 }
 
 export default function Index() {
@@ -47,11 +48,12 @@ export default function Index() {
     const formData = new FormData(event.target);
     let dataToSend = Object.fromEntries(formData);
     dataToSend = { ...dataToSend, imageFiles: files[0] };
-    const { title, description, publisher, imageFiles, coverFile } = dataToSend;
+    const { title, description, publisher, author, imageFiles, coverFile } = dataToSend;
     if (
       title === "" ||
       description === "" ||
       publisher === "" ||
+      author === "" ||
       imageFiles === undefined ||
       // @ts-ignore
       coverFile.name === ""
@@ -200,6 +202,22 @@ export default function Index() {
                 placeholder="Connectum, 2014"
                 className="admin-input"
                 id="izdavac"
+                disabled={loading}
+              />
+            </div>
+            <div className="flex flex-col mt-4">
+              <p className="mb-2">
+                Autor{" "}
+                <p className="inline text-red-600 font-bold">*</p>
+              </p>
+              <input
+                name="author"
+                type="text"
+                required
+                spellCheck="false"
+                placeholder="Meša Selimović"
+                className="admin-input"
+                id="author"
                 disabled={loading}
               />
             </div>

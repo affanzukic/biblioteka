@@ -83,10 +83,10 @@ function Content({ darkMode }: StyleProps) {
         <div id="content" className="ml-2 mt-2">
           <div
             id="title"
-            className="flex justify-center content-center mt-8 mx-auto"
+            className="flex justify-center content-center mt-16 mx-auto"
           >
             <h1 className="text-6xl text-center font-bold text-shadow-xl dark:text-white text-gray-700">
-              Online biblioteka Četvrte gimnazije
+              Online biblioteka &ldquo;Četvrta gimnazija&rdquo;
             </h1>
           </div>
           <div
@@ -107,7 +107,7 @@ function Content({ darkMode }: StyleProps) {
             </p>
             <div
               id="books-latest"
-              className="flex my-12 justify-start content-center p-4 rounded-lg dark:bg-gray-800 bg-gray-400 min-w-full"
+              className="flex my-6 justify-start content-center p-4 rounded-lg dark:bg-gray-800 bg-gray-400 min-w-full"
             >
               <AllBooksPreview audioBooks={audioData} imageBooks={imageData} videoBooks={videoData} />
             </div>

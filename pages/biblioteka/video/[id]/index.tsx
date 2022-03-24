@@ -95,6 +95,12 @@ export default function Index() {
                     </h2>
                     <p>{data?.publisher}</p>
                   </div>
+                  <div id="author">
+                    <h2 className="uppercase font-bold">
+                      Autor
+                    </h2>
+                    <p>{data?.author}</p>
+                  </div>
                   <div id="description">
                     <h2 className="uppercase font-bold">Kratki opis</h2>
                     <p>{data?.description}</p>

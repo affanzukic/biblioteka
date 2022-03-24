@@ -18,9 +18,13 @@ interface AudioData {
   title: string;
   description: string;
   publisher: string;
+  author: string;
+  language: string;
   audioFile: File | null;
   coverFile: File | null;
 }
+
+type ILanguage = "English" | "Bosnian"
 
 export default function Index() {
   const router = useRouter();
@@ -36,6 +40,8 @@ export default function Index() {
   const [naziv, setNaziv] = useState("");
   const [izdavac, setIzdavac] = useState("");
   const [opis, setOpis] = useState("");
+  const [author, setAuthor] = useState("")
+  const [language, setLanguage] = useState<ILanguage>("Bosnian")
   const [contentId, setContentId] = useState("");
   const [deleting, setDeleting] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
@@ -69,6 +75,8 @@ export default function Index() {
       description: opis,
       audioFile,
       coverFile,
+      author,
+      language
     };
 
     setLoading(true);
@@ -203,6 +211,35 @@ export default function Index() {
               onChange={(e) => setIzdavac(e.target.value)}
               disabled={loading}
             />
+          </div>
+          <div className="flex flex-col mt-4">
+            <p className="mb-2">
+              Autor{" "}
+              <p className="inline text-red-600 font-bold">*</p>
+            </p>
+            <input
+              type="text"
+              required
+              spellCheck="false"
+              placeholder="Meša Selimović"
+              className="admin-input"
+              id="author"
+              onChange={(e) => setAuthor(e.target.value)}
+              disabled={loading}
+            />
+          </div>
+          <div className="flex flex-col mt-4">
+            <p className="mb-2">
+              Jezik{" "}
+              <p className="inline text-red-600 font-bold">*</p>
+            </p>
+            <select id="language" className="admin-input" defaultValue="Bosnian" name="language" required onChange={(event) => {
+              // @ts-ignore
+              setLanguage(event.target.value)
+            }} disabled={loading}>
+              <option value="English">Engleski</option>
+              <option value="Bosnian">Bosanski</option>
+            </select>
           </div>
           <div className="flex flex-col mt-4">
             <p className="mb-2">

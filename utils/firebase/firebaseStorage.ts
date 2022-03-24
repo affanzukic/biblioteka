@@ -13,6 +13,8 @@ import lodash from "lodash";
 interface AudioData {
   title: string;
   description: string;
+  author: string;
+  language: string;
   publisher: string;
   audioFile: File | null;
   coverFile: File | null;
@@ -21,6 +23,8 @@ interface AudioData {
 interface ImageData {
   title: string;
   description: string;
+  author: string;
+  language: string;
   publisher: string;
   coverFile: File | null;
   imageFiles: FileList | null;
@@ -30,24 +34,36 @@ interface IVideoData {
   title: string;
   description: string;
   publisher: string;
+  language: string;
+  author: string;
   coverFile: File | null;
   videoFile: File | null;
 }
 
 interface VideoData {
-  title: string
-  description: string
-  publisher: string
-  coverFile: string
-  videoFile: string
-  dateCreated: Timestamp
+  title: string;
+  description: string;
+  author: string;
+  publisher: string;
+  language: string;
+  coverFile: string;
+  videoFile: string;
+  dateCreated: Timestamp;
 }
 
 async function uploadAudio(data: AudioData) {
   if (data === null) return;
   try {
     return new Promise((resolve, reject) => {
-      const { audioFile, title, description, publisher, coverFile } = data;
+      const {
+        audioFile,
+        title,
+        language,
+        author,
+        description,
+        publisher,
+        coverFile,
+      } = data;
       const regex: RegExp = /[^\\]*\.(\w+)$/;
       const audioExt = audioFile!.name.match(regex)![1];
       const imageExt = coverFile!.name.match(regex)![1];
@@ -68,6 +84,8 @@ async function uploadAudio(data: AudioData) {
                 title,
                 description,
                 publisher,
+                author,
+                language,
                 audioFile: `${newTitle}.${audioExt}`,
                 coverFile: `cover.${imageExt}`,
                 dateCreated: Timestamp.fromDate(new Date()),
@@ -137,7 +155,15 @@ async function uploadImage(data: ImageData) {
   if (data === null) return;
   try {
     return new Promise((resolve, reject) => {
-      const { title, publisher, description, coverFile, imageFiles } = data;
+      const {
+        title,
+        author,
+        language,
+        publisher,
+        description,
+        coverFile,
+        imageFiles,
+      } = data;
       const regex: RegExp = /[^\\]*\.(\w+)$/;
       const newTitle = lodash.kebabCase(title).toLowerCase();
       const coverFileExt = coverFile!.name.match(regex)![1];
@@ -160,6 +186,8 @@ async function uploadImage(data: ImageData) {
             title,
             description,
             publisher,
+            author,
+            language,
             coverFile: `cover.${coverFileExt}`,
             imageFiles: fileArrayForDatabase,
             dateCreated: Timestamp.fromDate(new Date()),
@@ -239,7 +267,15 @@ async function uploadVideo(data: IVideoData) {
   if (data === null) return;
   try {
     return new Promise((resolve, reject) => {
-      const { videoFile, title, description, publisher, coverFile } = data;
+      const {
+        videoFile,
+        author,
+        language,
+        title,
+        description,
+        publisher,
+        coverFile,
+      } = data;
       const regex: RegExp = /[^\\]*\.(\w+)$/;
       const videoExt = videoFile!.name.match(regex)![1];
       const imageExt = coverFile!.name.match(regex)![1];
@@ -260,6 +296,8 @@ async function uploadVideo(data: IVideoData) {
                 title,
                 description,
                 publisher,
+                author,
+                language,
                 videoFile: `${newTitle}.${videoExt}`,
                 coverFile: `cover.${imageExt}`,
                 dateCreated: Timestamp.fromDate(new Date()),
@@ -297,7 +335,7 @@ async function deleteVideo(id: string) {
         itemsToDelete.forEach(async (item) => {
           await deleteObject(ref(storage, `video/${id}/${item}`));
         });
-        console.log(itemsToDelete)
+        console.log(itemsToDelete);
       })
       .catch((err) => {
         throw new Error(err);
@@ -316,5 +354,5 @@ export {
   deleteImage,
   fetchVideo,
   uploadVideo,
-  deleteVideo
+  deleteVideo,
 };

@@ -140,6 +140,19 @@ export default function Index() {
                   disabled={loading}
                 />
               </div>
+              <div id="author" className="flex flex-col space-y-2">
+                <label htmlFor="author">Autor</label>
+                <input
+                  type="text"
+                  required
+                  name="author"
+                  spellCheck="false"
+                  placeholder="Connectum, 2004."
+                  className="admin-input"
+                  id="author"
+                  disabled={loading}
+                />
+              </div>
               <div id="description" className="flex flex-col space-y-2">
                 <label htmlFor="description">Opis</label>
                 <textarea

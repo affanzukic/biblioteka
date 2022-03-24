@@ -12,6 +12,7 @@ interface AudioData {
     description: string;
     audioFile: string;
     coverFile: string;
+    author: string;
   };
 }
 
@@ -74,6 +75,10 @@ export default function AdminAudioComponent({
             <div id="publisher">
               <p className="uppercase font-bold">Izdavač i godina izdanja</p>
               <p>{data.data.publisher}</p>
+            </div>
+            <div id="author">
+              <p className="uppercase font-bold">Autor</p>
+              <p>{data.data.author === "" ? "-" : data.data.author}</p>
             </div>
             <div id="description">
               <p className="uppercase font-bold">Deskripcija</p>
