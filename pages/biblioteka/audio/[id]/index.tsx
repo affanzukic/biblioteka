@@ -8,7 +8,7 @@ import { fetchAudioBook } from "../../../../utils/firebase/public/firestore";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import AudioPlayer from "../../../../components/AudioPlayer";
-import Head from "next/head"
+import Head from "next/head";
 
 async function fetchAudioFile(id: String | String[], audioFile: String) {
   const aurl = await getDownloadURL(ref(storage, `audio/${id}/${audioFile}`));
@@ -63,9 +63,9 @@ export default function Index() {
         <div id="content" className="mt-2 ml-2 h-full">
           {data !== undefined ? (
             <>
-            <Head>
-              <title>Online biblioteka - {data?.title}</title>
-            </Head>
+              <Head>
+                <title>Online biblioteka - {data?.title}</title>
+              </Head>
               <div
                 id="title"
                 className="flex flex-row content-center justify-center mt-8 mx-auto"
@@ -98,10 +98,12 @@ export default function Index() {
                     <p>{data?.publisher}</p>
                   </div>
                   <div id="author">
-                    <h2 className="uppercase font-bold">
-                      Autor
-                    </h2>
+                    <h2 className="uppercase font-bold">Autor</h2>
                     <p>{data?.author}</p>
+                  </div>
+                  <div id="language">
+                    <h2 className="uppercase font-bold">Jezik</h2>
+                    <p>{data?.language}</p>
                   </div>
                   <div id="description">
                     <h2 className="uppercase font-bold">Kratki opis</h2>

@@ -5,7 +5,7 @@ import { fetchImageBook } from "../../../../utils/firebase/public/firestore";
 import { ref, getDownloadURL } from "firebase/storage";
 import { storage } from "../../../../firebase/clientApp";
 import Navbar from "../../../../components/Navbar";
-import Head from "next/head"
+import Head from "next/head";
 import AOS from "aos";
 import "aos/dist/aos.css";
 
@@ -75,9 +75,9 @@ export default function Index() {
         <div id="content" className="mt-2 ml-2 h-full" ref={descriptionRef}>
           {data !== undefined ? (
             <>
-            <Head>
-              <title>Online biblioteka - {data?.title}</title>
-            </Head>
+              <Head>
+                <title>Online biblioteka - {data?.title}</title>
+              </Head>
               <div
                 id="title"
                 className="flex flex-row content-center justify-center mt-8 mx-auto"
@@ -110,10 +110,12 @@ export default function Index() {
                     <p>{data?.publisher}</p>
                   </div>
                   <div id="author">
-                    <h2 className="uppercase font-bold">
-                      Autor
-                    </h2>
+                    <h2 className="uppercase font-bold">Autor</h2>
                     <p>{data?.author}</p>
+                  </div>
+                  <div id="language">
+                    <h2 className="uppercase font-bold">Jezik</h2>
+                    <p>{data?.language}</p>
                   </div>
                   <div id="description">
                     <h2 className="uppercase font-bold">Kratki opis</h2>

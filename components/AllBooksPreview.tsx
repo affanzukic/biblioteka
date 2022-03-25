@@ -1,14 +1,14 @@
 import { DocumentData } from "firebase/firestore";
 import { useState, useEffect } from "react";
-import BookPreviewAudio from "./BookPreviewAudio"
-import BookPreviewImage from "./BookPreviewImage"
-import BookPreviewVideo from "./BookPreviewVideo"
+import BookPreviewAudio from "./BookPreviewAudio";
+import BookPreviewImage from "./BookPreviewImage";
+import BookPreviewVideo from "./BookPreviewVideo";
 
-type ActiveTab = "audio" | "slika" | "video"
+type ActiveTab = "audio" | "slika" | "video";
 interface IPreviewProps {
-  audioBooks: DocumentData | undefined
-  imageBooks: DocumentData | undefined
-  videoBooks: DocumentData | undefined
+  audioBooks: DocumentData | undefined;
+  imageBooks: DocumentData | undefined;
+  videoBooks: DocumentData | undefined;
 }
 
 let tabs = [
@@ -29,25 +29,29 @@ let tabs = [
   },
 ];
 
-export default function AllBooksPreview({audioBooks, imageBooks, videoBooks}: IPreviewProps) {
-  const [activeTab, setActiveTab] = useState<ActiveTab>("audio")
+export default function AllBooksPreview({
+  audioBooks,
+  imageBooks,
+  videoBooks,
+}: IPreviewProps) {
+  const [activeTab, setActiveTab] = useState<ActiveTab>("audio");
   useEffect(() => {
-    const activeTab = tabs.find(tab => {
-      return tab.active
-    })
+    const activeTab = tabs.find((tab) => {
+      return tab.active;
+    });
     // @ts-ignore
-    setActiveTab(activeTab.id)
-  }, [])
+    setActiveTab(activeTab.id);
+  }, []);
   function chooseTab(id: string) {
-    tabs.map(tab => {
-      tab.active = false
-    })
-    const newTab = tabs.find(tab => {
-      return tab.id === id
-    })
-    newTab!.active = true
+    tabs.map((tab) => {
+      tab.active = false;
+    });
+    const newTab = tabs.find((tab) => {
+      return tab.id === id;
+    });
+    newTab!.active = true;
     // @ts-ignore
-    setActiveTab(newTab!.id)
+    setActiveTab(newTab!.id);
   }
   return (
     <div id="all-books" className="flex flex-col w-full">
@@ -70,33 +74,37 @@ export default function AllBooksPreview({audioBooks, imageBooks, videoBooks}: IP
           );
         })}
       </div>
-      <div id="content" className="flex mt-4 dark:bg-black bg-white rounded-lg transition duration-300 px-2 py-4">
+      <div
+        id="content"
+        className="flex mt-4 dark:bg-black bg-white rounded-lg transition duration-300 px-2 py-4"
+      >
         {activeTab === "audio" ? (
           <div id="books" className="flex flex-row flex-wrap space-x-4">
-          {/* @ts-ignore */}
+            {/* @ts-ignore */}
             {audioBooks?.map((book, idx) => {
-              return (
-                <BookPreviewAudio key={idx} bookData={book} />
-              )
+              return <BookPreviewAudio key={idx} bookData={book} />;
             })}
           </div>
         ) : activeTab === "slika" ? (
           <div id="books" className="flex flex-row flex-wrap space-x-4">
-          {/* @ts-ignore */}
+            {/* @ts-ignore */}
             {imageBooks?.map((book, idx) => {
-              return (
-                <BookPreviewImage key={idx} bookData={book} />
-              )
+              return <BookPreviewImage key={idx} bookData={book} />;
             })}
           </div>
         ) : (
           <div id="books" className="flex flex-row flex-wrap space-x-4">
-            {videoBooks?.length === 0 && <div id="error-message" className="flex content-center justify-center"><p className="mx-auto">Trenutno nema knjiga!</p></div>}
-          {/* @ts-ignore */}
+            {videoBooks?.length === 0 && (
+              <div
+                id="error-message"
+                className="flex content-center justify-center"
+              >
+                <p className="mx-auto">Trenutno nema knjiga!</p>
+              </div>
+            )}
+            {/* @ts-ignore */}
             {videoBooks?.map((book, idx) => {
-              return (
-                <BookPreviewVideo key={idx} bookData={book} />
-              )
+              return <BookPreviewVideo key={idx} bookData={book} />;
             })}
           </div>
         )}

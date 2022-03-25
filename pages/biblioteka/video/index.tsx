@@ -29,9 +29,9 @@ export default function Index() {
       className={darkMode ? "dark flex flex-col" : "flex flex-col"}
     >
       <Navbar />
-        <Head>
-            <title>Online biblioteka - Video biblioteka</title>
-        </Head>
+      <Head>
+        <title>Online biblioteka - Video biblioteka</title>
+      </Head>
       <div className="content-underlay">
         <div id="content" className="ml-2 mt-2">
           <div
