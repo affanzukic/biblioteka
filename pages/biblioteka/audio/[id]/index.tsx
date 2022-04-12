@@ -77,7 +77,7 @@ export default function Index() {
               </div>
               <div
                 id="content"
-                className="flex flex-row mt-16 space-x-64 justify-center content-center"
+                className="flex flex-row mt-16 space-x-64 justify-between content-center mx-8"
                 data-aos="fadeIn"
               >
                 <div
@@ -110,9 +110,10 @@ export default function Index() {
                     <p>{data?.description}</p>
                   </div>
                 </div>
+              </div>
                 <div
                   id="audio-book"
-                  className="flex flex-col justify-center content-center px-auto"
+                  className="flex flex-col justify-center content-center px-auto mx-32 pt-20 pb-10"
                 >
                   <h2 className="uppercase font-bold text-center">
                     Audio knjiga
@@ -125,7 +126,6 @@ export default function Index() {
                     Pokreni audio knjigu
                   </button>
                 </div>
-              </div>
               {playerPlaying ? (
                 <AudioPlayer audioURL={audioURL} title={data?.title} />
               ) : null}
