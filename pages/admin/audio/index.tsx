@@ -25,11 +25,7 @@ interface AudioData {
   coverFile: File | null;
 }
 
-<<<<<<< HEAD
-type ILanguage = "English" | "Bosnian";
-=======
 type ILanguage = "English" | "Bosanski";
->>>>>>> 9833db54c3fe2b1718b884a5eb9ab0ff350ba53e
 
 export default function Index() {
   const router = useRouter();
@@ -46,11 +42,7 @@ export default function Index() {
   const [izdavac, setIzdavac] = useState("");
   const [opis, setOpis] = useState("");
   const [author, setAuthor] = useState("");
-<<<<<<< HEAD
-  const [language, setLanguage] = useState<ILanguage>("Bosnian");
-=======
   const [language, setLanguage] = useState<ILanguage>("Bosanski");
->>>>>>> 9833db54c3fe2b1718b884a5eb9ab0ff350ba53e
   const [contentId, setContentId] = useState("");
   const [deleting, setDeleting] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
@@ -228,11 +220,7 @@ export default function Index() {
             <select
               id="language"
               className="admin-input"
-<<<<<<< HEAD
-              defaultValue="Bosnian"
-=======
               defaultValue="Bosanski"
->>>>>>> 9833db54c3fe2b1718b884a5eb9ab0ff350ba53e
               name="language"
               required
               onChange={(event) => {
@@ -241,13 +229,8 @@ export default function Index() {
               }}
               disabled={loading}
             >
-<<<<<<< HEAD
-              <option value="English">Engleski</option>
-              <option value="Bosnian">Bosanski</option>
-=======
               <option value="English">English</option>
               <option value="Bosanski">Bosanski</option>
->>>>>>> 9833db54c3fe2b1718b884a5eb9ab0ff350ba53e
             </select>
           </div>
           <div className="flex flex-col mt-4">
