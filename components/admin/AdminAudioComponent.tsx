@@ -1,8 +1,6 @@
 import { useState, useEffect, MouseEventHandler } from "react";
 import { storage } from "../../firebase/clientApp";
 import { ref, getDownloadURL } from "firebase/storage";
-import AOS from "aos";
-import "aos/dist/aos.css";
 
 interface AudioData {
   id: string;
@@ -31,9 +29,6 @@ export default function AdminAudioComponent({
   const [coverURL, setCoverURL] = useState("");
   const [audioURL, setAudioURL] = useState("");
   useEffect(() => {
-    AOS.init({
-      duration: 300,
-    });
     async function fetch() {
       // @ts-ignore
       const aurl = await getDownloadURL(
@@ -51,8 +46,7 @@ export default function AdminAudioComponent({
   return (
       <div
         id={`audio-container-${data.id}`}
-        className="flex flex-col w-full h-full rounded-lg dark:bg-gray-900 bg-gray-200 z-50"
-        data-aos="fadeIn"
+        className="flex flex-col w-full h-full rounded-lg dark:bg-gray-900 bg-gray-200"
       >
         <div
           id={`audio-index-${data.id}`}
@@ -64,10 +58,10 @@ export default function AdminAudioComponent({
           id="content"
           className="flex flex-row rounded-b-lg space-x-32 px-4 py-4 justify-around dark:bg-gray-800 bg-gray-200"
         >
-          <div id="image">
-            {coverURL !== "" && <img src={coverURL} alt="cover photo" />}
+          <div id="image" className="flex justify-center content-center">
+            {coverURL !== "" && <img src={coverURL} width="300vw" height="300vh" alt="cover photo" />}
           </div>
-          <div id="data" className="flex flex-col space-y-8">
+          <div id="data" className="flex flex-col space-y-8 w-[20vw]">
             <div id="title">
               <p className="uppercase font-bold">Naslov</p>
               <p>{data.data.title}</p>

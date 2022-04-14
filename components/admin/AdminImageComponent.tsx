@@ -1,8 +1,6 @@
 import { MouseEventHandler, useState, useEffect } from "react";
 import { storage } from "../../firebase/clientApp";
 import { ref, getDownloadURL } from "firebase/storage";
-import AOS from "aos";
-import "aos/dist/aos.css";
 
 interface ImageData {
   id: string;
@@ -31,9 +29,6 @@ export default function AdminImageComponent({
   const [coverURL, setCoverURL] = useState<string | null>(null);
   const [imagesURL, setImagesURL] = useState<Array<string> | null>([]);
   useEffect(() => {
-    AOS.init({
-      duration: 300,
-    });
     async function fetch() {
       let URLArray: string[] = [];
       data.data.imageFiles.forEach(async (file) => {
@@ -54,7 +49,6 @@ export default function AdminImageComponent({
     <div
       id="container"
       className="flex flex-col w-full h-full rounded-lg dark:bg-gray-900 bg-gray-200"
-      data-aos="fadeIn"
     >
       <div
         id="index"
@@ -66,10 +60,10 @@ export default function AdminImageComponent({
         id="content-data"
         className="flex flex-row space-x-32 px-4 py-4 justify-around dark:bg-gray-800 bg-gray-200"
       >
-        <div id="cover">
-          {coverURL !== null && <img src={coverURL} alt="cover photo" />}
+        <div id="cover" className="flex w-[30vw] justify-center content-center">
+          {coverURL !== null && <img src={coverURL} width="500vw" height="50vh" alt="cover photo" />}
         </div>
-        <div id="data" className="flex flex-col space-y-8">
+        <div id="data" className="flex flex-col space-y-8 w-[50vw]">
           <div id="title">
             <p className="uppercase font-bold">Naslov</p>
             <p>{data.data.title}</p>

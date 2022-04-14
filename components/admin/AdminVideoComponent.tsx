@@ -1,6 +1,4 @@
 import { useState, useEffect, MouseEventHandler } from "react";
-import AOS from "aos";
-import "aos/dist/aos.css";
 import { storage } from "../../firebase/clientApp";
 import { ref, getDownloadURL } from "firebase/storage";
 
@@ -30,9 +28,6 @@ export default function AdminVideoComponent({
   const [coverUrl, setCoverUrl] = useState("");
   const [videoUrl, setVideoUrl] = useState("");
   useEffect(() => {
-    AOS.init({
-      duration: 300,
-    });
     async function fetchFiles() {
       // @ts-ignore
       const vurl = await getDownloadURL(
@@ -52,7 +47,6 @@ export default function AdminVideoComponent({
       <div
         id="container"
         className="flex flex-col w-full h-full rounded-lg dark:bg-gray-900 bg-gray-200"
-        data-aos="fadeIn"
       >
         <div
           id="index"
@@ -64,10 +58,10 @@ export default function AdminVideoComponent({
           id="content"
           className="flex flex-row rounded-b-lg space-x-32 px-4 py-4 justify-around dark:bg-gray-800 bg-gray-200"
         >
-          <div id="image">
-            {coverUrl !== "" && <img src={coverUrl} alt="cover photo" />}
+          <div id="image" className="flex justify-center content-center w-[40vw]">
+            {coverUrl !== "" && <img src={coverUrl} height="500vh" width="500vw" alt="cover photo" />}
           </div>
-          <div id="data" className="flex flex-col space-y-8">
+          <div id="data" className="flex flex-col space-y-8 w-[40vw]">
             <div id="title">
               <p className="uppercase font-bold">Naslov</p>
               <p>{data.title}</p>
@@ -89,16 +83,15 @@ export default function AdminVideoComponent({
               <p>{data.description}</p>
             </div>
           </div>
+        </div>
           <div
-            id="audio"
-            className="flex flex-col justify-center content-center -mt-14"
+            id="video"
+            className="flex flex-col mt-20 mx-auto p-4 justify-center content-center"
           >
             <p className="uppercase font-bold">Video fajl</p>
             {videoUrl !== "" && (
               <video
-                className="mt-4 p-2 bg-gray-800"
-                width="300px"
-                height="150px"
+                className="mt-4 w-full h-full bg-gray-800"
                 controls
                 src={videoUrl}
               />
@@ -110,7 +103,6 @@ export default function AdminVideoComponent({
               Izbriši
             </button>
           </div>
-        </div>
       </div>
     </>
   );

@@ -14,7 +14,6 @@ import { collection, query, where, getDocs } from "firebase/firestore";
 import { db } from "../../../firebase/clientApp";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import AdminSliderComponent from "../../../components/admin/AdminSliderComponent";
 interface AudioData {
   title: string;
   description: string;
@@ -79,9 +78,7 @@ export default function Index() {
       author,
       language,
     };
-
     setLoading(true);
-
     uploadAudio(data)
       .then((response) => {
         if (response) {
@@ -156,7 +153,19 @@ export default function Index() {
               </button>
             </div>
             <div id="content" className="flex mt-8">
-            <AdminSliderComponent />
+              {data !== null ? (
+                <div
+                  id="components"
+                  className="grid grid-cols-1 gap-8 justify-center content-center mr-24"
+                >
+                  {data?.map((unos, idx) => {
+                    return (
+                      // @ts-ignore
+                      <AdminAudioComponent key={idx} data={unos} index={idx} handleDelete={() => showModalWithId(unos.id)} />
+                    );
+                  })}
+                </div>
+              ) : null}
             </div>
           </div>
         </div>
