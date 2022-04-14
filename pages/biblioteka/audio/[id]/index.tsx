@@ -82,14 +82,13 @@ export default function Index() {
               >
                 <div
                   id="cover"
-                  className="p-2 dark:bg-gray-900 bg-gray-400 rounded-lg"
+                  className="flex content-center justify-center rounded-lg"
                 >
-                  {coverURL !== "" && <img src={coverURL} alt="cover" />}
-                  <p className="mt-2 text-center">Cover</p>
+                  {coverURL !== "" && <img src={coverURL} className="my-auto rounded-lg border-2 dark:border-white border-black" height="500vh" width="500vw" alt="cover" />}
                 </div>
                 <div
                   id="info"
-                  className="flex flex-col space-y-8 justify-center content-center"
+                  className="flex flex-col space-y-8 justify-center content-center w-[90vw]"
                 >
                   <div id="publisher">
                     <h2 className="uppercase font-bold">

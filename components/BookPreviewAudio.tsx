@@ -38,7 +38,7 @@ export default function BookPreviewAudio(data: AudioData, aosData: string) {
   return (
     <div
       id="book-preview"
-      className="flex flex-col w-max rounded-lg dark:bg-gray-900 bg-gray-400 p-2"
+      className="flex flex-col w-max mx-auto rounded-lg dark:bg-gray-900 bg-gray-400 p-2"
       onClick={() => router.push(`/biblioteka/audio/${bookData.id}`)}
       style={{ cursor: "pointer" }}
       data-aos={aosData}

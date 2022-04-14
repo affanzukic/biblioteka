@@ -89,19 +89,18 @@ export default function Index() {
               </div>
               <div
                 id="content"
-                className="flex flex-row mt-16 space-x-64 justify-center content-center"
+                className="flex flex-row mt-16 space-x-64 justify-between content-center mx-8"
                 data-aos="fadeIn"
               >
                 <div
                   id="cover"
-                  className="p-2 dark:bg-gray-900 bg-gray-400 rounded-lg"
+                  className="flex content-center justify-center rounded-lg"
                 >
-                  {coverURL !== "" && <img src={coverURL} alt="cover" />}
-                  <p className="mt-2 text-center">Cover</p>
+                  {coverURL !== "" && <img src={coverURL} className="my-auto rounded-lg border-2 dark:border-white border-black" height="500vh" width="500vw" alt="cover" />}
                 </div>
                 <div
                   id="info"
-                  className="flex flex-col space-y-8 justify-center content-center"
+                  className="flex flex-col space-y-8 justify-center content-center w-[90vw]"
                 >
                   <div id="publisher">
                     <h2 className="uppercase font-bold">
@@ -122,9 +121,10 @@ export default function Index() {
                     <p>{data?.description}</p>
                   </div>
                 </div>
+              </div>
                 <div
                   id="image-book"
-                  className="flex flex-col justify-center content-center px-auto"
+                  className="flex flex-col justify-center content-center px-auto mx-32 pt-20 pb-10"
                 >
                   <h2 className="uppercase font-bold text-center">
                     Slikovna knjiga
@@ -139,7 +139,6 @@ export default function Index() {
                     Pokreni slikovnu prezentaciju
                   </button>
                 </div>
-              </div>
               {carousel ? (
                 <div
                   id="center"

@@ -68,20 +68,23 @@ export default function Navbar() {
       JSON.parse(localStorage.getItem("currentUser") || "{}").darkMode
     );
     fetchData();
-    switch (router.pathname) {
-      case "/":
-        navigation[0].current = true;
-        setHead("Online biblioteka - Početna");
-        break;
-      case "/biblioteka/audio":
-        setHead("Online biblioteka - Audio biblioteka");
-        navigation[1].current = true;
-        break;
-      case "/biblioteka/slikovna":
-        setHead("Online biblioteka - Slikovna biblioteka");
-        navigation[2].current = true;
-        break;
+    const regexAudio = /^(?:\/audio)+/
+    const regexSlikovna = /^(?:\/slikovna)+/
+    const regexVideo = /^(?:\/video)+/
+    if (router.pathname.match(regexAudio)) {
+      setHead("Online biblioteka - Audio biblioteka");
+      navigation[1].current = true;
+    } else if (router.pathname.match(regexSlikovna)) {
+      setHead("Online biblioteka - Slikovna biblioteka");
+      navigation[2].current = true;
+    } else if (router.pathname.match(regexVideo)) {
+      setHead("Online biblioteka - Video biblioteka");
+      navigation[3].current = true;
+    } else {
+      navigation[0].current = true;
+      setHead("Online biblioteka - Početna");
     }
+    // TODO: Fix nav logic
   }, [router]);
   return (
     <Disclosure

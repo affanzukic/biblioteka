@@ -44,7 +44,7 @@ export default function Index() {
           </div>
           <div
             id="data"
-            className="flex flex-row flex-wrap mt-12 justify-center content-center space-y-6 space-x-6"
+            className="grid sm:grid-cols-3 md:grid-cols-6 grid-cols-2 gap-8 mt-12 justify-center content-center mx-auto px-6"
             data-aos="fadeIn"
           >
             {data !== undefined ? (
