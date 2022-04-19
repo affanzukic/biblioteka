@@ -39,7 +39,7 @@ export default function Index() {
             className="flex justify-center content-center mt-8 mx-auto"
           >
             <h1 className="text-6xl font-bold text-shadow-xl dark:text-white text-gray-700">
-              Slikovna biblioteka
+              Video biblioteka
             </h1>
           </div>
           <div
