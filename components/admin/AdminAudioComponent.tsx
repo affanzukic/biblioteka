@@ -58,19 +58,19 @@ export default function AdminAudioComponent({
       </div>
       <div
         id="content"
-        className="flex flex-row rounded-b-lg space-x-32 px-4 py-4 justify-around dark:bg-gray-800 bg-gray-200"
+        className="flex flex-row rounded-b-lg space-x-16 px-4 py-4 justify-evenly dark:bg-gray-800 bg-gray-200"
       >
-        <div id="image" className="flex justify-center content-center">
+        <div id="image" className="flex h-[70%] justify-center content-center my-auto">
           {coverURL !== "" && (
             <img
               src={coverURL}
               width="300vw"
-              height="300vh"
+              height="100vh"
               alt="cover photo"
             />
           )}
         </div>
-        <div id="data" className="flex flex-col space-y-8 w-[20vw]">
+        <div id="data" className="flex flex-col space-y-8 w-[30%]">
           <div id="title">
             <p className="uppercase font-bold">Naslov</p>
             <p>{data.data.title}</p>
