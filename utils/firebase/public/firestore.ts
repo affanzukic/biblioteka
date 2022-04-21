@@ -4,7 +4,7 @@ import { doc, getDoc, DocumentData } from "firebase/firestore";
 async function fetchAudioBook(id: string) {
   return new Promise((resolve, reject) => {
     try {
-      const docRef = doc(db, "audioLibrary", id);
+      const docRef = doc(db!, "audioLibrary", id!);
       getDoc(docRef)
         .then((doc) => {
           const data = doc.data();

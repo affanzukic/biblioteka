@@ -160,8 +160,14 @@ export default function Index() {
                 >
                   {data?.map((unos, idx) => {
                     return (
-                      // @ts-ignore
-                      <AdminAudioComponent key={idx} data={unos} index={idx} handleDelete={() => showModalWithId(unos.id)} />
+                      <AdminAudioComponent
+                        key={idx}
+                        // @ts-ignore
+                        data={unos}
+                        index={idx}
+                        // @ts-ignore
+                        handleDelete={() => showModalWithId(unos.id)}
+                      />
                     );
                   })}
                 </div>
