@@ -7,6 +7,10 @@ import { DocumentData } from "firebase/firestore";
 import { storage } from "../../../../firebase/clientApp";
 import { ref, getDownloadURL } from "firebase/storage";
 
+/** 
+ * ! FIX EVERYTHING AFTER A MASSIVE FUCK-UP !
+*/
+
 export default function Id() {
   const router = useRouter();
   const { id } = router.query;

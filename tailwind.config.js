@@ -25,5 +25,5 @@ module.exports = {
   variants: {
     extend: {},
   },
-  plugins: [require("tailwindcss-textshadow"), require('tailwind-scrollbar')],
+  plugins: [require("tailwindcss-textshadow")],
 };
