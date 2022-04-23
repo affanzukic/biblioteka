@@ -8,6 +8,10 @@ import { BsFillMoonFill } from "react-icons/bs";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { db } from "../firebase/clientApp";
 
+/** 
+ * ! FIX MENU !
+*/
+
 let navigation = [
   { name: "Početna", href: "/", current: false },
   { name: "Audio biblioteka", href: "/biblioteka/audio", current: false },

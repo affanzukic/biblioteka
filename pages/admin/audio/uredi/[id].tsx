@@ -42,6 +42,7 @@ export default function Id() {
       fetchData();
     }
   }, [data]);
+
   return (
     <>
       <div
@@ -82,7 +83,7 @@ export default function Id() {
               >
                 <div
                   id="cover-photo"
-                  className="flex justify-center content-center my-auto"
+                  className="flex flex-col justify-center content-center my-auto"
                 >
                   <img
                     src={imgURL}
@@ -90,6 +91,7 @@ export default function Id() {
                     width="300vw"
                     height="100vh"
                   />
+                  
                 </div>
               </div>
             )}

@@ -151,6 +151,10 @@ async function deleteAudio(id: string) {
   }
 }
 
+/**
+ * ! ADD UPDATE FUNCTION ! 
+ */
+
 async function uploadImage(data: ImageData) {
   if (data === null) return;
   try {
