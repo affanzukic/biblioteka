@@ -68,9 +68,9 @@ export default function Navbar() {
       JSON.parse(localStorage.getItem("currentUser") || "{}").darkMode
     );
     fetchData();
-    const regexAudio = /(?:\/audio)+/
-    const regexSlikovna = /(?:\/slikovna)+/
-    const regexVideo = /(?:\/video)+/
+    const regexAudio = /(?:\/audio)+/;
+    const regexSlikovna = /(?:\/slikovna)+/;
+    const regexVideo = /(?:\/video)+/;
     if (router.pathname.match(regexAudio)) {
       setHead("Online biblioteka - Audio biblioteka");
       navigation[1].current = true;

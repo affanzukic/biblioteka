@@ -61,7 +61,9 @@ export default function AdminImageComponent({
         className="flex flex-row space-x-32 px-4 py-4 justify-around dark:bg-gray-800 bg-gray-200"
       >
         <div id="cover" className="flex w-[30vw] justify-center content-center">
-          {coverURL !== null && <img src={coverURL} width="500vw" height="50vh" alt="cover photo" />}
+          {coverURL !== null && (
+            <img src={coverURL} width="500vw" height="50vh" alt="cover photo" />
+          )}
         </div>
         <div id="data" className="flex flex-col space-y-8 w-[50vw]">
           <div id="title">

@@ -58,8 +58,18 @@ export default function AdminVideoComponent({
           id="content"
           className="flex flex-row rounded-b-lg space-x-32 px-4 py-4 justify-around dark:bg-gray-800 bg-gray-200"
         >
-          <div id="image" className="flex justify-center content-center w-[40vw]">
-            {coverUrl !== "" && <img src={coverUrl} height="500vh" width="500vw" alt="cover photo" />}
+          <div
+            id="image"
+            className="flex justify-center content-center w-[40vw]"
+          >
+            {coverUrl !== "" && (
+              <img
+                src={coverUrl}
+                height="500vh"
+                width="500vw"
+                alt="cover photo"
+              />
+            )}
           </div>
           <div id="data" className="flex flex-col space-y-8 w-[40vw]">
             <div id="title">
@@ -84,25 +94,25 @@ export default function AdminVideoComponent({
             </div>
           </div>
         </div>
-          <div
-            id="video"
-            className="flex flex-col mt-20 mx-auto p-4 justify-center content-center"
+        <div
+          id="video"
+          className="flex flex-col mt-20 mx-auto p-4 justify-center content-center"
+        >
+          <p className="uppercase font-bold">Video fajl</p>
+          {videoUrl !== "" && (
+            <video
+              className="mt-4 w-full h-full bg-gray-800"
+              controls
+              src={videoUrl}
+            />
+          )}
+          <button
+            className="mt-10 bg-red-600 px-4 py-2 rounded-md text-white"
+            onClick={handleDelete}
           >
-            <p className="uppercase font-bold">Video fajl</p>
-            {videoUrl !== "" && (
-              <video
-                className="mt-4 w-full h-full bg-gray-800"
-                controls
-                src={videoUrl}
-              />
-            )}
-            <button
-              className="mt-10 bg-red-600 px-4 py-2 rounded-md text-white"
-              onClick={handleDelete}
-            >
-              Izbriši
-            </button>
-          </div>
+            Izbriši
+          </button>
+        </div>
       </div>
     </>
   );

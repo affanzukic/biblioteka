@@ -3,7 +3,7 @@ module.exports = {
   reactStrictMode: true,
   experimental: {
     concurrentFeatures: true,
-    reactRoot: "concurrent"
+    reactRoot: "concurrent",
   },
   images: {
     domains: [

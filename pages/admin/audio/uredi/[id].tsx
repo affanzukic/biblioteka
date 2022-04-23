@@ -7,17 +7,17 @@ import { DocumentData } from "firebase/firestore";
 import { storage } from "../../../../firebase/clientApp";
 import { ref, getDownloadURL } from "firebase/storage";
 
-/** 
+/**
  * ! FIX EVERYTHING AFTER A MASSIVE FUCK-UP !
-*/
+ */
 
 export default function Id() {
   const router = useRouter();
   const { id } = router.query;
   const [darkMode, setDarkMode] = useState(true);
   const [data, setData] = useState<DocumentData | undefined>(undefined);
-  const [imgURL, setImgURL] = useState<string | undefined>(undefined)
-  const [audioURL, setAudioUrl] = useState<string | undefined>(undefined)
+  const [imgURL, setImgURL] = useState<string | undefined>(undefined);
+  const [audioURL, setAudioUrl] = useState<string | undefined>(undefined);
   useEffect(() => {
     setDarkMode(
       JSON.parse(localStorage.getItem("currentUser") || "{}").darkMode
@@ -29,15 +29,19 @@ export default function Id() {
   }, [id]);
   useEffect(() => {
     async function fetchData() {
-      const imgUrl = await getDownloadURL(ref(storage, `audio/${id}/${data!.coverFile}`))
-      const audioUrl = await getDownloadURL(ref(storage, `audio/${id}/${data!.audioFile}`))
-      setImgURL(imgUrl)
-      setAudioUrl(audioUrl)
+      const imgUrl = await getDownloadURL(
+        ref(storage, `audio/${id}/${data!.coverFile}`)
+      );
+      const audioUrl = await getDownloadURL(
+        ref(storage, `audio/${id}/${data!.audioFile}`)
+      );
+      setImgURL(imgUrl);
+      setAudioUrl(audioUrl);
     }
     if (data !== undefined) {
-      fetchData()
+      fetchData();
     }
-  }, [data])
+  }, [data]);
   return (
     <>
       <div
@@ -76,8 +80,16 @@ export default function Id() {
                 id="content"
                 className="flex flex-row space-x-16 justify-between content-center mx-auto mt-10 dark:bg-gray-800 p-4 rounded-md"
               >
-                <div id="cover-photo" className="flex justify-center content-center my-auto">
-                  <img src={imgURL} alt="cover photo" width="300vw" height="100vh" />
+                <div
+                  id="cover-photo"
+                  className="flex justify-center content-center my-auto"
+                >
+                  <img
+                    src={imgURL}
+                    alt="cover photo"
+                    width="300vw"
+                    height="100vh"
+                  />
                 </div>
               </div>
             )}

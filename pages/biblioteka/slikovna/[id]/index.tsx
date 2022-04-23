@@ -96,7 +96,15 @@ export default function Index() {
                   id="cover"
                   className="flex content-center justify-center rounded-lg"
                 >
-                  {coverURL !== "" && <img src={coverURL} className="my-auto rounded-lg border-2 dark:border-white border-black" height="500vh" width="500vw" alt="cover" />}
+                  {coverURL !== "" && (
+                    <img
+                      src={coverURL}
+                      className="my-auto rounded-lg border-2 dark:border-white border-black"
+                      height="500vh"
+                      width="500vw"
+                      alt="cover"
+                    />
+                  )}
                 </div>
                 <div
                   id="info"
@@ -122,23 +130,23 @@ export default function Index() {
                   </div>
                 </div>
               </div>
-                <div
-                  id="image-book"
-                  className="flex flex-col justify-center content-center px-auto mx-32 pt-20 pb-10"
+              <div
+                id="image-book"
+                className="flex flex-col justify-center content-center px-auto mx-32 pt-20 pb-10"
+              >
+                <h2 className="uppercase font-bold text-center">
+                  Slikovna knjiga
+                </h2>
+                <button
+                  className="mt-8 bg-green-600 px-4 py-2 rounded-md text-white disabled:text-gray-400 disabled:bg-green-900 text-center transition duration-300 hover:bg-green-900"
+                  disabled={carousel}
+                  onClick={() => {
+                    setCarousel(true);
+                  }}
                 >
-                  <h2 className="uppercase font-bold text-center">
-                    Slikovna knjiga
-                  </h2>
-                  <button
-                    className="mt-8 bg-green-600 px-4 py-2 rounded-md text-white disabled:text-gray-400 disabled:bg-green-900 text-center transition duration-300 hover:bg-green-900"
-                    disabled={carousel}
-                    onClick={() => {
-                      setCarousel(true);
-                    }}
-                  >
-                    Pokreni slikovnu prezentaciju
-                  </button>
-                </div>
+                  Pokreni slikovnu prezentaciju
+                </button>
+              </div>
               {carousel ? (
                 <div
                   id="center"

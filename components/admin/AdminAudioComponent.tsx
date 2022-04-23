@@ -1,7 +1,7 @@
 import { useState, useEffect, MouseEventHandler } from "react";
 import { storage } from "../../firebase/clientApp";
 import { ref, getDownloadURL } from "firebase/storage";
-import { useRouter } from "next/router"
+import { useRouter } from "next/router";
 
 interface AudioData {
   id: string;
@@ -27,7 +27,7 @@ export default function AdminAudioComponent({
   index,
   handleDelete,
 }: DataProps) {
-  const router = useRouter()
+  const router = useRouter();
   const [coverURL, setCoverURL] = useState("");
   const [audioURL, setAudioURL] = useState("");
   useEffect(() => {
@@ -60,7 +60,10 @@ export default function AdminAudioComponent({
         id="content"
         className="flex flex-row rounded-b-lg space-x-16 px-4 py-4 justify-evenly dark:bg-gray-800 bg-gray-200"
       >
-        <div id="image" className="flex h-[70%] justify-center content-center my-auto">
+        <div
+          id="image"
+          className="flex h-[70%] justify-center content-center my-auto"
+        >
           {coverURL !== "" && (
             <img
               src={coverURL}
@@ -106,10 +109,12 @@ export default function AdminAudioComponent({
             <button
               id="edit"
               className="bg-green-600 px-4 py-2 rounded-md text-white mt-10"
-              onClick={() => router.push({
-                pathname: "/admin/audio/uredi/[id]",
-                query: { id: data.id }
-              })}
+              onClick={() =>
+                router.push({
+                  pathname: "/admin/audio/uredi/[id]",
+                  query: { id: data.id },
+                })
+              }
             >
               Uredi
             </button>

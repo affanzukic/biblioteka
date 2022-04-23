@@ -82,7 +82,15 @@ export default function Index() {
                   id="cover"
                   className="flex content-center justify-center rounded-lg"
                 >
-                  {coverUrl !== "" && <img src={coverUrl} className="my-auto rounded-lg border-2 dark:border-white border-black" height="500vh" width="500vw" alt="cover" />}
+                  {coverUrl !== "" && (
+                    <img
+                      src={coverUrl}
+                      className="my-auto rounded-lg border-2 dark:border-white border-black"
+                      height="500vh"
+                      width="500vw"
+                      alt="cover"
+                    />
+                  )}
                 </div>
                 <div
                   id="info"

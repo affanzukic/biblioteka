@@ -115,7 +115,11 @@ function Content({ darkMode }: StyleProps) {
   return (
     <div
       id="home"
-      className={darkMode ? "dark flex flex-col scrollbar-none" : "flex flex-col scrollbar-none"}
+      className={
+        darkMode
+          ? "dark flex flex-col scrollbar-none"
+          : "flex flex-col scrollbar-none"
+      }
     >
       <Navbar />
       <div className="content-underlay">
