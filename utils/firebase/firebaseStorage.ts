@@ -16,8 +16,8 @@ interface AudioData {
   author: string;
   language: string;
   publisher: string;
-  audioFile: File | null;
-  coverFile: File | null;
+  audioFile?: File | null;
+  coverFile?: File | null;
 }
 
 interface ImageData {
@@ -151,9 +151,29 @@ async function deleteAudio(id: string) {
   }
 }
 
-/**
- * ! ADD UPDATE FUNCTION ! 
- */
+async function updateAudio(id: string, newData: AudioData) {
+  if (id === null || newData === null) return;
+  try {
+    let newAudio = false
+    let newCover = false
+    if (newData?.audioFile?.name !== "") newAudio = true;
+    if (newData?.coverFile?.name !== "") newCover = true;
+
+    if (!newAudio) delete newData?.audioFile
+    if (!newCover) delete newData?.coverFile
+
+    if (newAudio) {
+      // TODO: Implement replacing audio file
+    }
+
+    if (newCover) {
+      // TODO: Implement replacing cover file
+    }
+
+  } catch (error) {
+    console.error(error)
+  }
+}
 
 async function uploadImage(data: ImageData) {
   if (data === null) return;
@@ -359,4 +379,5 @@ export {
   fetchVideo,
   uploadVideo,
   deleteVideo,
+  updateAudio
 };
