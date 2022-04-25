@@ -7,9 +7,10 @@ import {
   deleteDoc,
   setDoc,
   Timestamp,
+  updateDoc,
 } from "firebase/firestore";
 import lodash from "lodash";
-import { fetchAudioBook } from "./public/firestore";
+import { fetchAudioBook, fetchImageBook } from "./public/firestore";
 
 interface AudioData {
   title: string;
@@ -155,42 +156,50 @@ async function deleteAudio(id: string) {
 async function updateAudio(id: string, newData: AudioData) {
   if (id === null || newData === null) return;
   try {
-    let newAudio = false
-    let newCover = false
+    let newAudio = false;
+    let newCover = false;
     if (newData?.audioFile?.name !== "") newAudio = true;
     if (newData?.coverFile?.name !== "") newCover = true;
 
-    if (!newAudio) delete newData?.audioFile
-    if (!newCover) delete newData?.coverFile
+    if (!newAudio) delete newData?.audioFile;
+    if (!newCover) delete newData?.coverFile;
 
     const regex: RegExp = /[^\\]*\.(\w+)$/;
 
     if (newAudio) {
-      const { audioFile, title } = newData!
+      const { audioFile, title } = newData!;
       const audioExt = audioFile!.name.match(regex)![1];
       const newTitle = lodash.kebabCase(title).toLowerCase();
-      const audioRef = ref(storage, `audio/${id}/${newTitle}.${audioExt}`)
-      const oldData = await fetchAudioBook(id) as unknown
+      const audioRef = ref(storage, `audio/${id}/${newTitle}.${audioExt}`);
+      const oldData = (await fetchAudioBook(id)) as unknown;
       // @ts-ignore
-      const oldAudio = oldData!.audioFile
-      await deleteObject(ref(storage, `audio/${id}/${oldAudio}`))
-      await uploadBytes(audioRef, audioFile!)
+      const oldAudio = oldData!.audioFile;
+      await deleteObject(ref(storage, `audio/${id}/${oldAudio}`));
+      await uploadBytes(audioRef, audioFile!);
     }
 
     if (newCover) {
-      const { coverFile } = newData!
-      const coverExt = coverFile!.name.match(regex)![1]
-      const oldData = await fetchAudioBook(id) as unknown
-      const coverRef = ref(storage, `audio/${id}/cover.${coverExt}`)
+      const { coverFile } = newData!;
+      const coverExt = coverFile!.name.match(regex)![1];
+      const oldData = (await fetchAudioBook(id)) as unknown;
+      const coverRef = ref(storage, `audio/${id}/cover.${coverExt}`);
       // @ts-ignore
-      const oldCover = oldData!.coverFile
-      await deleteObject(ref(storage, `audio/${id}/${oldCover}`))
-      await uploadBytes(coverRef, coverFile!)
+      const oldCover = oldData!.coverFile;
+      await deleteObject(ref(storage, `audio/${id}/${oldCover}`));
+      await uploadBytes(coverRef, coverFile!);
     }
 
-    // TODO: Implement the rest of the update function
+    const audioRef = doc(db, "audioLibrary", id);
+    const { title, author, description, language, publisher } = newData!;
+    await updateDoc(audioRef, {
+      title,
+      author,
+      description,
+      language,
+      publisher,
+    });
   } catch (error) {
-    console.error(error)
+    console.error(error);
   }
 }
 
@@ -284,6 +293,71 @@ async function deleteImage(id: string) {
     });
   } catch (err) {
     console.log(err);
+  }
+}
+
+async function updateImage(id: string, newData: ImageData) {
+  if (id === null || newData === null) return;
+  try {
+    let newImages = false;
+    let newCover = false;
+
+    if (newData?.imageFiles?.length !== 0) newImages = true;
+    if (newData?.coverFile?.name !== "") newCover = true;
+
+    const regex: RegExp = /[^\\]*\.(\w+)$/;
+    let fileArrayForDatabase: string[] = []
+
+    if (newCover) {
+      const { coverFile } = newData!;
+      const coverExt = coverFile!.name.match(regex)![1];
+      const oldData = (await fetchImageBook(id)) as unknown;
+      const coverRef = ref(storage, `image/${id}/cover.${coverExt}`);
+      // @ts-ignore
+      const oldCover = oldData!.coverFile;
+      await deleteObject(ref(storage, `image/${id}/${oldCover}`));
+      await uploadBytes(coverRef, coverFile!);
+    }
+
+    if (newImages) {
+      const { imageFiles } = newData!;
+      const fileList = Array.from(imageFiles!);
+      const oldData = (await fetchImageBook(id)) as unknown;
+      // @ts-ignore
+      const oldCover = oldData!.coverFile;
+      const listData = await listAll(ref(storage, `image/${id}`));
+      const { title } = newData!
+      const newTitle = lodash.kebabCase(title).toLowerCase()
+
+      let itemsToDelete: string[] = [];
+      listData.items.map((data) => itemsToDelete.push(data.name));
+      itemsToDelete = itemsToDelete.filter((item) => item !== oldCover)
+      itemsToDelete.forEach(async (item) => {
+        await deleteObject(ref(storage, `image/${id}/${item}`));
+      })
+
+      fileList.map(async (file, idx) => {
+        const name = `${idx}.${file!.name.match(regex)![1]}`;
+        const imageFileRef = ref(storage, `image/${newTitle}/${name}`);
+        fileArrayForDatabase = [...fileArrayForDatabase, name];
+        await uploadBytes(imageFileRef, file);
+      });
+    }
+
+    const imageRef = doc(db, 'imageLibrary', id)
+    const { author, description, language, publisher, title } = newData!
+    let newBook = {
+      title, author, description, language, publisher
+    }
+
+    if (fileArrayForDatabase.length !== 0) {
+      // @ts-ignore
+      newBook = {...newBook, imageFiles: fileArrayForDatabase}
+    }
+
+    await updateDoc(imageRef, newBook)
+  } catch (error) {
+    console.error(error);
   }
 }
 
@@ -398,5 +472,6 @@ export {
   fetchVideo,
   uploadVideo,
   deleteVideo,
-  updateAudio
+  updateAudio,
+  updateImage,
 };
