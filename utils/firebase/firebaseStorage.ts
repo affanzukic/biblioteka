@@ -9,6 +9,7 @@ import {
   Timestamp,
 } from "firebase/firestore";
 import lodash from "lodash";
+import { fetchAudioBook } from "./public/firestore";
 
 interface AudioData {
   title: string;
@@ -162,14 +163,32 @@ async function updateAudio(id: string, newData: AudioData) {
     if (!newAudio) delete newData?.audioFile
     if (!newCover) delete newData?.coverFile
 
+    const regex: RegExp = /[^\\]*\.(\w+)$/;
+
     if (newAudio) {
-      // TODO: Implement replacing audio file
+      const { audioFile, title } = newData!
+      const audioExt = audioFile!.name.match(regex)![1];
+      const newTitle = lodash.kebabCase(title).toLowerCase();
+      const audioRef = ref(storage, `audio/${id}/${newTitle}.${audioExt}`)
+      const oldData = await fetchAudioBook(id) as unknown
+      // @ts-ignore
+      const oldAudio = oldData!.audioFile
+      await deleteObject(ref(storage, `audio/${id}/${oldAudio}`))
+      await uploadBytes(audioRef, audioFile!)
     }
 
     if (newCover) {
-      // TODO: Implement replacing cover file
+      const { coverFile } = newData!
+      const coverExt = coverFile!.name.match(regex)![1]
+      const oldData = await fetchAudioBook(id) as unknown
+      const coverRef = ref(storage, `audio/${id}/cover.${coverExt}`)
+      // @ts-ignore
+      const oldCover = oldData!.coverFile
+      await deleteObject(ref(storage, `audio/${id}/${oldCover}`))
+      await uploadBytes(coverRef, coverFile!)
     }
 
+    // TODO: Implement the rest of the update function
   } catch (error) {
     console.error(error)
   }
