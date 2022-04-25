@@ -462,6 +462,51 @@ async function deleteVideo(id: string) {
   }
 }
 
+async function updateVideo(id: string, newData: IVideoData) {
+  if (id === null || newData === null) return;
+  try {
+    let newCover = false
+    let newVideo = false
+
+    if (newData?.videoFile?.name !== '') newVideo = true
+    if (newData?.coverFile?.name !== '') newCover = true
+
+    const regex: RegExp = /[^\\]*\.(\w+)$/;
+
+    if (newCover) {
+      const { coverFile } = newData!;
+      const coverExt = coverFile!.name.match(regex)![1];
+      const oldData = (await fetchImageBook(id)) as unknown;
+      const coverRef = ref(storage, `video/${id}/cover.${coverExt}`);
+      // @ts-ignore
+      const oldCover = oldData!.coverFile;
+      await deleteObject(ref(storage, `video/${id}/${oldCover}`));
+      await uploadBytes(coverRef, coverFile!);
+    }
+
+    if (newVideo) {
+      const { videoFile, title } = newData!;
+      const videoExt = videoFile!.name.match(regex)![1];
+      const newTitle = lodash.kebabCase(title).toLowerCase();
+      const videoRef = ref(storage, `video/${id}/${newTitle}.${videoExt}`);
+      const oldData = (await fetchAudioBook(id)) as unknown;
+      // @ts-ignore
+      const oldAudio = oldData!.audioFile;
+      await deleteObject(ref(storage, `video/${id}/${oldAudio}`));
+      await uploadBytes(videoRef, videoFile!);
+    }
+
+    const { title, author, description, language, publisher } = newData!
+    const videoRef = doc(db, 'videoLibrary', id)
+
+    await updateDoc(videoRef, {
+      title, author, description, language, publisher
+    })
+  } catch (error) {
+    console.error(error)
+  }
+}
+
 export {
   uploadAudio,
   fetchAudioData,
@@ -474,4 +519,5 @@ export {
   deleteVideo,
   updateAudio,
   updateImage,
+  updateVideo
 };
