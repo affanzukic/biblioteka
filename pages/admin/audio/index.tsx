@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, memo } from "react";
 import {
   uploadAudio,
   fetchAudioData,
@@ -26,7 +26,7 @@ interface AudioData {
 
 type ILanguage = "English" | "Bosanski";
 
-export default function Index() {
+const Index = memo(() => {
   const router = useRouter();
   const [darkMode, setDarkMode] = useState(true);
   const [data, setData] = useState<object[] | AudioData[] | null | undefined>(
@@ -360,4 +360,6 @@ export default function Index() {
       </Modal>
     </>
   );
-}
+})
+
+export default Index;

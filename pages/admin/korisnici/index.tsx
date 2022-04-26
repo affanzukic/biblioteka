@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, memo } from "react";
 import Head from "next/head";
 import AdminSidebar from "../../../components/admin/AdminSidebar";
 import AdminUserComponent from "../../../components/admin/AdminUserComponent";
@@ -14,7 +14,7 @@ import { db } from "../../../firebase/clientApp";
 import { Modal, ModalBody, ModalFooter } from "../../../components/Modal";
 import { useRouter } from "next/router";
 
-export default function Index() {
+const Index = memo(() => {
   const [darkMode, setDarkMode] = useState(true);
   const [admins, setAdmins] = useState<object[] | undefined>([]);
   const [adminId, setAdminId] = useState("");
@@ -172,4 +172,6 @@ export default function Index() {
       </Modal>
     </>
   );
-}
+})
+
+export default Index;

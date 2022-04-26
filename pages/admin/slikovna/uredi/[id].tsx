@@ -9,7 +9,6 @@ import { ref, getDownloadURL } from "firebase/storage";
 import { storage } from "../../../../firebase/clientApp";
 
 import "aos/dist/aos.css";
-
 interface ImageData {
   title: string;
   description: string;

@@ -1,4 +1,4 @@
-import { useState, useEffect, SyntheticEvent, useRef } from "react";
+import { useState, useEffect, SyntheticEvent, useRef, memo } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import AdminSidebar from "../../../../components/admin/AdminSidebar";
@@ -22,7 +22,7 @@ interface AudioData {
   coverFile: File | null;
 }
 
-export default function Id() {
+const Id = memo(() => {
   const router = useRouter();
   const { id } = router.query;
   const [darkMode, setDarkMode] = useState(true);
@@ -311,4 +311,6 @@ export default function Id() {
       </div>
     </>
   );
-}
+})
+
+export default Id;
