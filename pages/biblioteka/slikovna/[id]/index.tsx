@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, memo } from "react";
 import { useRouter } from "next/router";
 import { DocumentData } from "firebase/firestore";
 import { fetchImageBook } from "../../../../utils/firebase/public/firestore";
@@ -23,7 +23,7 @@ async function fetchImages(id: string | string[], images: string[]) {
   return imageURLS;
 }
 
-export default function Index() {
+const Index = memo(() => {
   const router = useRouter();
   const { id } = router.query;
   const imagesRef = useRef<null | HTMLDivElement>(null);
@@ -191,4 +191,6 @@ export default function Index() {
       </div>
     </div>
   );
-}
+})
+
+export default Index;

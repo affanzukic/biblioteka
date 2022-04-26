@@ -1,6 +1,6 @@
 import { DocumentData } from "firebase/firestore";
 import { useRouter } from "next/router";
-import { useState, useEffect } from "react";
+import { useState, useEffect, memo } from "react";
 import { ref, getDownloadURL } from "firebase/storage";
 import { storage } from "../../../../firebase/clientApp";
 import Navbar from "../../../../components/Navbar";
@@ -20,7 +20,7 @@ async function fetchCoverFile(id: String | String[], coverFile: String) {
   return curl;
 }
 
-export default function Index() {
+const Index = memo(() => {
   const router = useRouter();
   const { id } = router.query;
   const [darkMode, setDarkMode] = useState(true);
@@ -142,4 +142,6 @@ export default function Index() {
       </div>
     </div>
   );
-}
+})
+
+export default Index;

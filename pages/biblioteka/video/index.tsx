@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, memo } from "react";
 import Head from "next/head";
 import Navbar from "../../../components/Navbar";
 import { fetchVideo } from "../../../utils/firebase/firebaseStorage";
@@ -7,7 +7,7 @@ import { DocumentData } from "firebase/firestore";
 import AOS from "aos";
 import "aos/dist/aos.css";
 
-export default function Index() {
+const Index = memo(() => {
   const [data, setData] = useState<DocumentData | undefined>(undefined);
   const [darkMode, setDarkMode] = useState(true);
   useEffect(() => {
@@ -80,4 +80,6 @@ export default function Index() {
       </div>
     </div>
   );
-}
+})
+
+export default Index;

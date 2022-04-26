@@ -2,7 +2,7 @@ import Image from "next/image";
 import Head from "next/head";
 import AOS from "aos";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect, useState, memo } from "react";
 import { Disclosure } from "@headlessui/react";
 import { MenuIcon, XIcon } from "@heroicons/react/outline";
 import { BsFillMoonFill } from "react-icons/bs";
@@ -11,6 +11,11 @@ import { db } from "../firebase/clientApp";
 
 import "aos/dist/aos.css";
 
+
+function classNames(...classes: Array<any>) {
+  return classes.filter(Boolean).join(" ");
+}
+
 let navigation = [
   { name: "Početna", href: "/", current: false },
   { name: "Audio biblioteka", href: "/biblioteka/audio", current: false },
@@ -18,11 +23,7 @@ let navigation = [
   { name: "Video biblioteka", href: "/biblioteka/video", current: false },
 ];
 
-function classNames(...classes: Array<any>) {
-  return classes.filter(Boolean).join(" ");
-}
-
-export default function Navbar() {
+const Navbar = memo(() => {
   const router = useRouter();
   const [isAdmin, setIsAdmin] = useState(false);
   const [darkMode, setDarkMode] = useState(true);
@@ -230,4 +231,6 @@ export default function Navbar() {
       )}
     </Disclosure>
   );
-}
+});
+
+export default Navbar;

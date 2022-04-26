@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, memo } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import { DocumentData } from "firebase/firestore";
@@ -9,7 +9,7 @@ import { storage } from "../../../../firebase/clientApp";
 import { ref, getDownloadURL } from "firebase/storage";
 import Navbar from "../../../../components/Navbar";
 
-export default function Index() {
+const Index = memo(() => {
   const router = useRouter();
   const { id } = router.query;
   const [darkMode, setDarkMode] = useState(true);
@@ -129,4 +129,6 @@ export default function Index() {
       </div>
     </div>
   );
-}
+})
+
+export default Index;

@@ -1,5 +1,5 @@
 import Navbar from "../../../components/Navbar";
-import { useEffect, useState } from "react";
+import { useEffect, useState, memo } from "react";
 import { fetchImage } from "../../../utils/firebase/firebaseStorage";
 import BookPreviewImage from "../../../components/BookPreviewImage";
 import AOS from "aos";
@@ -13,7 +13,7 @@ interface ImageData {
   imageFiles: string[];
 }
 
-export default function Index() {
+const Index = memo(() => {
   const [darkMode, setDarkMode] = useState(true);
   const [data, setData] = useState<(object | ImageData)[] | undefined>(
     undefined
@@ -78,4 +78,6 @@ export default function Index() {
       </div>
     </div>
   );
-}
+})
+
+export default Index;
