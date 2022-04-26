@@ -119,12 +119,12 @@ const Id = memo(() => {
                     Nazad
                   </button>
                 </div>
-                {loading ? <div id="loading-div" data-aos="fadeInOut" className="flex justify-center content-center rounded-md h-[50vh] w-[94vw] dark:bg-gray-900 bg-gray-400">
+                {loading ? <div id="loading-div" data-aos="fadeInOut" className="flex justify-center content-center rounded-md h-[50vh] w-[90vw] dark:bg-gray-900 bg-gray-400">
                   <LoadingIcons.TailSpin className="my-auto" />
                 </div> :
                 <div
                   id="content"
-                  className="flex flex-col sm:flex-row space-x-16 space-y-8 sm:space-y-0 justify-evenly py-8 content-center min-h-[50vh] h-fit w-[94vw] mt-10 dark:bg-gray-900 bg-gray-400 p-4 rounded-md"
+                  className="flex flex-col sm:flex-row space-x-16 space-y-8 sm:space-y-0 justify-evenly py-8 content-center min-h-[50vh] h-fit w-[92vw] mt-10 dark:bg-gray-900 bg-gray-400 p-4 rounded-md"
                 >
                   <div
                     id="cover-photo"
@@ -179,7 +179,7 @@ const Id = memo(() => {
                   </div>
                   <div
                     id="book-data"
-                    className="flex flex-col space-y-2 w-[40vw]"
+                    className="flex flex-col space-y-2 w-[40vw] justify-center content-center"
                   >
                     <div id="book-title" className="flex flex-col space-y-1">
                       <label htmlFor="title">Naslov</label>
