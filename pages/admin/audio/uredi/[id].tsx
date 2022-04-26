@@ -67,9 +67,9 @@ export default function Id() {
     event.preventDefault();
     const fd = new FormData(event.target as HTMLFormElement);
     const newData = Object.fromEntries(fd) as unknown;
-    // setLoading(true)
+    setLoading(true)
     await updateAudio(id as string, newData as AudioData)
-    // router.push("/admin/audio")
+    router.push("/admin/audio")
   }
   return (
     <>
