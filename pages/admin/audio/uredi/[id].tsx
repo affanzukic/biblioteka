@@ -31,7 +31,7 @@ const Id = memo(() => {
   const [audioURL, setAudioURL] = useState<string | undefined>(undefined);
   const [showDeleteCover, setShowDeleteCover] = useState(false);
   const [showDeleteAudio, setShowDeleteAudio] = useState(false);
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
   const coverRef = useRef<HTMLInputElement | null>(null);
   const audioRef = useRef<HTMLInputElement | null>(null);
   useEffect(() => {
@@ -67,9 +67,9 @@ const Id = memo(() => {
     event.preventDefault();
     const fd = new FormData(event.target as HTMLFormElement);
     const newData = Object.fromEntries(fd) as unknown;
-    setLoading(true)
-    await updateAudio(id as string, newData as AudioData)
-    router.push("/admin/audio")
+    setLoading(true);
+    await updateAudio(id as string, newData as AudioData);
+    router.push("/admin/audio");
   }
   return (
     <>
@@ -119,191 +119,201 @@ const Id = memo(() => {
                     Nazad
                   </button>
                 </div>
-                {loading ? <div id="loading-div" data-aos="fadeInOut" className="flex justify-center content-center rounded-md h-[50vh] w-[90vw] dark:bg-gray-900 bg-gray-400">
-                  <LoadingIcons.TailSpin className="my-auto" />
-                </div> :
-                <div
-                  id="content"
-                  className="flex flex-col sm:flex-row space-x-16 space-y-8 sm:space-y-0 justify-evenly py-8 content-center min-h-[50vh] h-fit w-[92vw] mt-10 dark:bg-gray-900 bg-gray-400 p-4 rounded-md"
-                >
+                {loading ? (
                   <div
-                    id="cover-photo"
-                    className="flex flex-col justify-center content-center flex-shrink-0 space-y-4 my-auto"
+                    id="loading-div"
+                    data-aos="fadeInOut"
+                    className="flex justify-center content-center rounded-md h-[50vh] w-[90vw] dark:bg-gray-900 bg-gray-400"
                   >
-                    <img
-                      src={imgURL}
-                      alt="cover photo"
-                      width="300vw"
-                      height="100vh"
-                    />
-                    <button
-                      id="change-cover"
-                      onClick={() => coverRef?.current?.click()}
-                      className="text-left sm:text-center bg-green-600 text-white rounded-md px-2 py-1"
-                    >
-                      Promjeni
-                    </button>
-                    <input
-                      id="coverFile"
-                      name="coverFile"
-                      type="file"
-                      accept="image/*"
-                      ref={coverRef}
-                      onChange={(event) => {
-                        if (event.target.files!.length !== 0) {
-                          setShowDeleteCover(true);
-                        }
-                      }}
-                      hidden
-                    />
-                    {showDeleteCover && (
-                      <div
-                        id="new-cover-added"
-                        className="flex flex-col space-y-1"
-                        data-aos="fadeInOut"
-                      >
-                        <p className="mx-auto">Novi cover je dodan</p>
-                        <button
-                          id="delete-new-cover"
-                          className="bg-red-600 rounded-md px-2 py-1"
-                          onClick={() => {
-                            // @ts-ignore
-                            coverRef?.current?.value = null;
-                            setShowDeleteCover(false);
-                          }}
-                        >
-                          Izbriši novi cover
-                        </button>
-                      </div>
-                    )}
+                    <LoadingIcons.TailSpin className="my-auto" />
                   </div>
+                ) : (
                   <div
-                    id="book-data"
-                    className="flex flex-col space-y-2 w-[40vw] justify-center content-center"
-                  >
-                    <div id="book-title" className="flex flex-col space-y-1">
-                      <label htmlFor="title">Naslov</label>
-                      <input
-                        type="text"
-                        id="title"
-                        name="title"
-                        defaultValue={data?.title}
-                        className="admin-input px-2 py-1"
-                      />
-                    </div>
-                    <div id="book-author" className="flex flex-col space-y-1">
-                      <label htmlFor="author">Autor</label>
-                      <input
-                        type="text"
-                        id="author"
-                        name="author"
-                        defaultValue={data?.author}
-                        className="admin-input px-2 py-1"
-                      />
-                    </div>
-                    <div
-                      id="book-publisher"
-                      className="flex flex-col space-y-1"
-                    >
-                      <label htmlFor="publisher">Izdavač</label>
-                      <input
-                        type="text"
-                        id="publisher"
-                        name="publisher"
-                        defaultValue={data?.publisher}
-                        className="admin-input px-2 py-1"
-                      />
-                    </div>
-                    <div id="book-language" className="flex flex-col space-y-1">
-                      <label htmlFor="language">Jezik</label>
-                      <select
-                        id="language"
-                        name="language"
-                        defaultValue={data?.language}
-                        className="admin-input px-2 py-1"
-                      >
-                        <option value="Bosanski">Bosanski</option>
-                        <option value="English">English</option>
-                      </select>
-                    </div>
-                    <div
-                      id="book-description"
-                      className="flex flex-col space-y-1"
-                    >
-                      <label htmlFor="description">Kratka deskripcija</label>
-                      <textarea
-                        rows={8}
-                        spellCheck={false}
-                        style={{ resize: "vertical", height: "auto" }}
-                        id="description"
-                        name="description"
-                        defaultValue={data?.description}
-                        className="admin-input px-2 py-1"
-                      />
-                    </div>
-                  </div>
-                  <div
-                    id="book-audio"
-                    className="flex flex-col justify-center content-center space-y-8"
+                    id="content"
+                    className="flex flex-col sm:flex-row space-x-16 space-y-8 sm:space-y-0 justify-evenly py-8 content-center min-h-[50vh] h-fit w-[92vw] mt-10 dark:bg-gray-900 bg-gray-400 p-4 rounded-md"
                   >
                     <div
-                      id="current-audio-file"
-                      className="flex flex-col space-y-1"
+                      id="cover-photo"
+                      className="flex flex-col justify-center content-center flex-shrink-0 space-y-4 my-auto"
                     >
-                      <p className="mx-auto">Audio fajl</p>
-                      {audioURL !== "" && (
-                        <audio
-                          className="mt-4 p-2 rounded-full bg-gray-800"
-                          controls
-                        >
-                          <source src={audioURL} />
-                        </audio>
-                      )}
-                    </div>
-                    <div id="add-new-audio-wrapper" className="flex flex-col">
+                      <img
+                        src={imgURL}
+                        alt="cover photo"
+                        width="300vw"
+                        height="100vh"
+                      />
                       <button
-                        id="add-new-audio"
-                        className="bg-green-600 text-white rounded-md px-2 py-1"
-                        onClick={() => audioRef?.current?.click()}
+                        id="change-cover"
+                        onClick={() => coverRef?.current?.click()}
+                        className="text-left sm:text-center bg-green-600 text-white rounded-md px-2 py-1"
                       >
                         Promjeni
                       </button>
                       <input
+                        id="coverFile"
+                        name="coverFile"
                         type="file"
-                        accept="audio/*"
-                        id="audioFile"
-                        name="audioFile"
-                        hidden
+                        accept="image/*"
+                        ref={coverRef}
                         onChange={(event) => {
                           if (event.target.files!.length !== 0) {
-                            setShowDeleteAudio(true);
+                            setShowDeleteCover(true);
                           }
                         }}
-                        ref={audioRef}
+                        hidden
                       />
-                    </div>
-                    {showDeleteAudio && (
-                      <div
-                        id="new-audio-added"
-                        className="flex flex-col space-y-1"
-                        data-aos="fadeInOut"
-                      >
-                        <p className="mx-auto">Novi audio fajl je dodan</p>
-                        <button
-                          id="delete-new-audio"
-                          className="bg-red-600 rounded-md px-2 py-1"
-                          onClick={() => {
-                            // @ts-ignore
-                            audioRef?.current?.value = null;
-                            setShowDeleteAudio(false);
-                          }}
+                      {showDeleteCover && (
+                        <div
+                          id="new-cover-added"
+                          className="flex flex-col space-y-1"
+                          data-aos="fadeInOut"
                         >
-                          Izbriši novi audio fajl
-                        </button>
+                          <p className="mx-auto">Novi cover je dodan</p>
+                          <button
+                            id="delete-new-cover"
+                            className="bg-red-600 rounded-md px-2 py-1"
+                            onClick={() => {
+                              // @ts-ignore
+                              coverRef?.current?.value = null;
+                              setShowDeleteCover(false);
+                            }}
+                          >
+                            Izbriši novi cover
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                    <div
+                      id="book-data"
+                      className="flex flex-col space-y-2 w-[40vw] justify-center content-center"
+                    >
+                      <div id="book-title" className="flex flex-col space-y-1">
+                        <label htmlFor="title">Naslov</label>
+                        <input
+                          type="text"
+                          id="title"
+                          name="title"
+                          defaultValue={data?.title}
+                          className="admin-input px-2 py-1"
+                        />
                       </div>
-                    )}
+                      <div id="book-author" className="flex flex-col space-y-1">
+                        <label htmlFor="author">Autor</label>
+                        <input
+                          type="text"
+                          id="author"
+                          name="author"
+                          defaultValue={data?.author}
+                          className="admin-input px-2 py-1"
+                        />
+                      </div>
+                      <div
+                        id="book-publisher"
+                        className="flex flex-col space-y-1"
+                      >
+                        <label htmlFor="publisher">Izdavač</label>
+                        <input
+                          type="text"
+                          id="publisher"
+                          name="publisher"
+                          defaultValue={data?.publisher}
+                          className="admin-input px-2 py-1"
+                        />
+                      </div>
+                      <div
+                        id="book-language"
+                        className="flex flex-col space-y-1"
+                      >
+                        <label htmlFor="language">Jezik</label>
+                        <select
+                          id="language"
+                          name="language"
+                          defaultValue={data?.language}
+                          className="admin-input px-2 py-1"
+                        >
+                          <option value="Bosanski">Bosanski</option>
+                          <option value="English">English</option>
+                        </select>
+                      </div>
+                      <div
+                        id="book-description"
+                        className="flex flex-col space-y-1"
+                      >
+                        <label htmlFor="description">Kratka deskripcija</label>
+                        <textarea
+                          rows={8}
+                          spellCheck={false}
+                          style={{ resize: "vertical", height: "auto" }}
+                          id="description"
+                          name="description"
+                          defaultValue={data?.description}
+                          className="admin-input px-2 py-1"
+                        />
+                      </div>
+                    </div>
+                    <div
+                      id="book-audio"
+                      className="flex flex-col justify-center content-center space-y-8"
+                    >
+                      <div
+                        id="current-audio-file"
+                        className="flex flex-col space-y-1"
+                      >
+                        <p className="mx-auto">Audio fajl</p>
+                        {audioURL !== "" && (
+                          <audio
+                            className="mt-4 p-2 rounded-full bg-gray-800"
+                            controls
+                          >
+                            <source src={audioURL} />
+                          </audio>
+                        )}
+                      </div>
+                      <div id="add-new-audio-wrapper" className="flex flex-col">
+                        <button
+                          id="add-new-audio"
+                          className="bg-green-600 text-white rounded-md px-2 py-1"
+                          onClick={() => audioRef?.current?.click()}
+                        >
+                          Promjeni
+                        </button>
+                        <input
+                          type="file"
+                          accept="audio/*"
+                          id="audioFile"
+                          name="audioFile"
+                          hidden
+                          onChange={(event) => {
+                            if (event.target.files!.length !== 0) {
+                              setShowDeleteAudio(true);
+                            }
+                          }}
+                          ref={audioRef}
+                        />
+                      </div>
+                      {showDeleteAudio && (
+                        <div
+                          id="new-audio-added"
+                          className="flex flex-col space-y-1"
+                          data-aos="fadeInOut"
+                        >
+                          <p className="mx-auto">Novi audio fajl je dodan</p>
+                          <button
+                            id="delete-new-audio"
+                            className="bg-red-600 rounded-md px-2 py-1"
+                            onClick={() => {
+                              // @ts-ignore
+                              audioRef?.current?.value = null;
+                              setShowDeleteAudio(false);
+                            }}
+                          >
+                            Izbriši novi audio fajl
+                          </button>
+                        </div>
+                      )}
+                    </div>
                   </div>
-                </div> }
+                )}
               </form>
             )}
           </div>
@@ -311,6 +321,8 @@ const Id = memo(() => {
       </div>
     </>
   );
-})
+});
+
+Id.displayName = 'Id'
 
 export default Id;

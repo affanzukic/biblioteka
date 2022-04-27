@@ -174,4 +174,6 @@ const Index = memo(() => {
   );
 })
 
+Index.displayName = 'Index'
+
 export default Index;
