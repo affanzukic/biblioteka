@@ -10,6 +10,7 @@ import { storage } from "../../../../firebase/clientApp";
 import LoadingIcons from "react-loading-icons";
 
 import "aos/dist/aos.css";
+import { updateImage } from "../../../../utils/firebase/firebaseStorage";
 interface ImageData {
   title: string;
   description: string;
@@ -29,7 +30,9 @@ const Id = memo(() => {
   const [data, setData] = useState<DocumentData | undefined>(undefined);
   const [loading, setLoading] = useState(false);
   const [showDeleteCover, setShowDeleteCover] = useState(false);
+  const [showDeleteImages, setShowDeleteImages] = useState(false)
   const coverRef = useRef<HTMLInputElement | null>(null);
+  const imageRef = useRef<HTMLInputElement | null>(null)
   useEffect(() => {
     AOS.init({
       duration: 200,
@@ -63,7 +66,9 @@ const Id = memo(() => {
     event.preventDefault();
     const fd = new FormData(event.target as HTMLFormElement);
     const newData = Object.fromEntries(fd) as unknown;
-    console.log(newData);
+    setLoading(true)
+    await updateImage(id as string, newData as ImageData)
+    router.push('/admin/slikovna')
   }
   return (
     <>
@@ -245,8 +250,54 @@ const Id = memo(() => {
                         />
                       </div>
                     </div>
-                    <div id="book-images" className='flex flex-col justify-center content-center space-y-8'>
-                        
+                    <div
+                      id="book-images"
+                      className="flex flex-col justify-center content-center space-y-8"
+                    >
+                      <p id="description-images" className="mx-auto">
+                        Slike
+                      </p>
+                      <div
+                        id="buttons-images"
+                        className="flex flex-col justify-center content-center space-y-2"
+                      >
+                        <input
+                          type="file"
+                          id="imageFiles"
+                          name="imageFiles"
+                          accept="image/*"
+                          multiple
+                          hidden
+                          ref={imageRef}
+                        />
+                        <button
+                          id="add-new-images"
+                          className="bg-green-600 text-white rounded-md px-2 py-1"
+                          onClick={() => imageRef?.current?.click()}
+                        >
+                          Promjeni slike
+                        </button>
+                        {showDeleteImages && (
+                        <div
+                          id="new-images-added"
+                          className="flex flex-col space-y-1"
+                          data-aos="fadeInOut"
+                        >
+                          <p className="mx-auto">Nove slike su dodane</p>
+                          <button
+                            id="delete-new-images"
+                            className="bg-red-600 rounded-md px-2 py-1"
+                            onClick={() => {
+                              // @ts-ignore
+                              imageRef?.current?.value = null;
+                              setShowDeleteImages(false);
+                            }}
+                          >
+                            Izbriši nove slike
+                          </button>
+                        </div>
+                      )}
+                      </div>
                     </div>
                   </div>
                 )}
@@ -259,6 +310,6 @@ const Id = memo(() => {
   );
 });
 
-Id.displayName = 'Id'
+Id.displayName = "Id";
 
 export default Id;

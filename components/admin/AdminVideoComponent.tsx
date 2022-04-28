@@ -1,6 +1,7 @@
 import { useState, useEffect, MouseEventHandler } from "react";
 import { storage } from "../../firebase/clientApp";
 import { ref, getDownloadURL } from "firebase/storage";
+import { useRouter } from "next/router";
 
 interface IVideoData {
   title: string;
@@ -27,6 +28,7 @@ export default function AdminVideoComponent({
 }: IVideoProps) {
   const [coverUrl, setCoverUrl] = useState("");
   const [videoUrl, setVideoUrl] = useState("");
+  const router = useRouter();
   useEffect(() => {
     async function fetchFiles() {
       // @ts-ignore
@@ -106,12 +108,29 @@ export default function AdminVideoComponent({
               src={videoUrl}
             />
           )}
-          <button
-            className="mt-10 bg-red-600 px-4 py-2 rounded-md text-white"
-            onClick={handleDelete}
+          <div
+            id="buttons"
+            className="flex flex-col justify-center content-center space-y-2"
           >
-            Izbriši
-          </button>
+            <button
+              id="edit"
+              className="bg-green-600 px-4 py-2 rounded-md text-white mt-10"
+              onClick={() =>
+                router.push({
+                  pathname: "/admin/video/uredi/[id]",
+                  query: { id },
+                })
+              }
+            >
+              Uredi
+            </button>
+            <button
+              className="mt-10 bg-red-600 px-4 py-2 rounded-md text-white"
+              onClick={handleDelete}
+            >
+              Izbriši
+            </button>
+          </div>
         </div>
       </div>
     </>
