@@ -102,6 +102,9 @@ const Id = memo(() => {
                     Nazad
                   </button>
                 </div>
+                <div id="book-data" className="flex flex-col space-y-2 w-[40vw] justify-center content-center">
+                  {/* TODO: add remaining video edit page */}
+                </div>
               </form>
             )}
           </div>
