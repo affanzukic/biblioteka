@@ -268,7 +268,7 @@ const Id = memo(() => {
                           hidden
                           ref={videoRef}
                         />
-                        <video controls autoPlay={false}>
+                        <video id="videoPreview" controls autoPlay={false}>
                           <source src={videoURL} type="video" />
                         </video>
                         <button
