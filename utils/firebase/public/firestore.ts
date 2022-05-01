@@ -5,7 +5,7 @@ async function fetchAudioBook(id: string) {
   return new Promise((resolve, reject) => {
     try {
       const docRef = doc(db, "audioLibrary", id);
-      getDoc(docRef)
+      getDoc(docRef!)
         .then((doc) => {
           const data = doc.data();
           resolve(data);

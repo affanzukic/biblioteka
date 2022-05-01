@@ -1,6 +1,7 @@
 import { MouseEventHandler, useState, useEffect } from "react";
 import { storage } from "../../firebase/clientApp";
 import { ref, getDownloadURL } from "firebase/storage";
+import router from "next/router";
 
 interface ImageData {
   id: string;
@@ -61,7 +62,9 @@ export default function AdminImageComponent({
         className="flex flex-row space-x-32 px-4 py-4 justify-around dark:bg-gray-800 bg-gray-200"
       >
         <div id="cover" className="flex w-[30vw] justify-center content-center">
-          {coverURL !== null && <img src={coverURL} width="500vw" height="50vh" alt="cover photo" />}
+          {coverURL !== null && (
+            <img src={coverURL} width="500vw" height="50vh" alt="cover photo" />
+          )}
         </div>
         <div id="data" className="flex flex-col space-y-8 w-[50vw]">
           <div id="title">
@@ -84,8 +87,21 @@ export default function AdminImageComponent({
             <p className="uppercase font-bold">Deskripcija</p>
             <p>{data.data.description}</p>
           </div>
-          <div id="delete-button">
+          <div id="buttons" className="flex flex-col space-y-4">
             <button
+              id="edit"
+              className="bg-green-600 px-4 py-2 rounded-md text-white mt-10"
+              onClick={() =>
+                router.push({
+                  pathname: "/admin/slikovna/uredi/[id]",
+                  query: { id: data.id },
+                })
+              }
+            >
+              Uredi
+            </button>
+            <button
+              id="delete"
               className="mt-10 bg-red-600 px-4 py-2 rounded-md text-white"
               onClick={handleDelete}
             >

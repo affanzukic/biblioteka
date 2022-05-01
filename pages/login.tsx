@@ -1,11 +1,11 @@
 import { signInWithGoogle } from "../firebase/clientApp";
 import GoogleButton from "react-google-button";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useState, memo } from "react";
 import Image from "next/image";
 import Head from "next/head";
 
-export default function Login() {
+const Login = memo(() => {
   const router = useRouter();
   const [err, setErr] = useState<string | null>(null);
   return (
@@ -82,4 +82,8 @@ export default function Login() {
       </div>
     </div>
   );
-}
+});
+
+Login.displayName = 'Login'
+
+export default Login;

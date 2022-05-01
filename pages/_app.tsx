@@ -5,7 +5,9 @@ import { AudioPlayerProvider } from "react-use-audio-player";
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <AudioPlayerProvider>
-      <Component {...pageProps} />
+      <main>
+        <Component {...pageProps} />
+      </main>
     </AudioPlayerProvider>
   );
 }

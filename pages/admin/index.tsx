@@ -1,11 +1,11 @@
 import Head from "next/head";
 import AdminSidebar from "../../components/admin/AdminSidebar";
-import { useState, useEffect } from "react";
+import { useState, useEffect, memo } from "react";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { db } from "../../firebase/clientApp";
 import { useRouter } from "next/router";
 
-export default function Index() {
+const Index = memo(() => {
   const router = useRouter();
   const [darkMode, setDarkMode] = useState(true);
   useEffect(() => {
@@ -49,4 +49,8 @@ export default function Index() {
       </div>
     </div>
   );
-}
+});
+
+Index.displayName = 'Index'
+
+export default Index;

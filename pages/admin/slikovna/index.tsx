@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { SyntheticEvent, useEffect, useState } from "react";
+import { SyntheticEvent, useEffect, useState, memo } from "react";
 import { useRouter } from "next/router";
 import { Modal, ModalBody, ModalFooter } from "../../../components/Modal";
 import {
@@ -25,7 +25,7 @@ interface ImageData {
   author: string;
 }
 
-export default function Index() {
+const Index = memo(() => {
   const router = useRouter();
   const [darkMode, setDarkMode] = useState(true);
   const [loading, setLoading] = useState(false);
@@ -365,4 +365,8 @@ export default function Index() {
       </Modal>
     </>
   );
-}
+})
+
+Index.displayName = 'Index'
+
+export default Index;

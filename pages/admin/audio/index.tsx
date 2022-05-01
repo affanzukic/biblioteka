@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, memo } from "react";
 import {
   uploadAudio,
   fetchAudioData,
@@ -26,7 +26,7 @@ interface AudioData {
 
 type ILanguage = "English" | "Bosanski";
 
-export default function Index() {
+const Index = memo(() => {
   const router = useRouter();
   const [darkMode, setDarkMode] = useState(true);
   const [data, setData] = useState<object[] | AudioData[] | null | undefined>(
@@ -160,8 +160,14 @@ export default function Index() {
                 >
                   {data?.map((unos, idx) => {
                     return (
-                      // @ts-ignore
-                      <AdminAudioComponent key={idx} data={unos} index={idx} handleDelete={() => showModalWithId(unos.id)} />
+                      <AdminAudioComponent
+                        key={idx}
+                        // @ts-ignore
+                        data={unos}
+                        index={idx}
+                        // @ts-ignore
+                        handleDelete={() => showModalWithId(unos.id)}
+                      />
                     );
                   })}
                 </div>
@@ -354,4 +360,8 @@ export default function Index() {
       </Modal>
     </>
   );
-}
+})
+
+Index.displayName = 'Index'
+
+export default Index;

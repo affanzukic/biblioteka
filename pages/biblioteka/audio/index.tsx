@@ -1,5 +1,5 @@
 import Navbar from "../../../components/Navbar";
-import { useState, useEffect } from "react";
+import { useState, useEffect, memo } from "react";
 import { fetchAudioData } from "../../../utils/firebase/firebaseStorage";
 import BookPreviewAudio from "../../../components/BookPreviewAudio";
 import AOS from "aos";
@@ -13,7 +13,7 @@ interface AudioData {
   coverFile: File | null;
 }
 
-export default function Index() {
+const Index = memo(() => {
   const [darkMode, setDarkMode] = useState(true);
   const [data, setData] = useState<(object | AudioData)[] | undefined>(
     undefined
@@ -78,4 +78,8 @@ export default function Index() {
       </div>
     </div>
   );
-}
+})
+
+Index.displayName = 'Index'
+
+export default Index;

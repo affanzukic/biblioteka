@@ -1,6 +1,7 @@
 import { useState, useEffect, MouseEventHandler } from "react";
 import { storage } from "../../firebase/clientApp";
 import { ref, getDownloadURL } from "firebase/storage";
+import { useRouter } from "next/router";
 
 interface IVideoData {
   title: string;
@@ -27,6 +28,7 @@ export default function AdminVideoComponent({
 }: IVideoProps) {
   const [coverUrl, setCoverUrl] = useState("");
   const [videoUrl, setVideoUrl] = useState("");
+  const router = useRouter();
   useEffect(() => {
     async function fetchFiles() {
       // @ts-ignore
@@ -58,8 +60,18 @@ export default function AdminVideoComponent({
           id="content"
           className="flex flex-row rounded-b-lg space-x-32 px-4 py-4 justify-around dark:bg-gray-800 bg-gray-200"
         >
-          <div id="image" className="flex justify-center content-center w-[40vw]">
-            {coverUrl !== "" && <img src={coverUrl} height="500vh" width="500vw" alt="cover photo" />}
+          <div
+            id="image"
+            className="flex justify-center content-center w-[40vw]"
+          >
+            {coverUrl !== "" && (
+              <img
+                src={coverUrl}
+                height="500vh"
+                width="500vw"
+                alt="cover photo"
+              />
+            )}
           </div>
           <div id="data" className="flex flex-col space-y-8 w-[40vw]">
             <div id="title">
@@ -84,18 +96,34 @@ export default function AdminVideoComponent({
             </div>
           </div>
         </div>
+        <div
+          id="video"
+          className="flex flex-col mt-20 mx-auto p-4 justify-center content-center"
+        >
+          <p className="uppercase font-bold">Video fajl</p>
+          {videoUrl !== "" && (
+            <video
+              className="mt-4 w-full h-full bg-gray-800"
+              controls
+              src={videoUrl}
+            />
+          )}
           <div
-            id="video"
-            className="flex flex-col mt-20 mx-auto p-4 justify-center content-center"
+            id="buttons"
+            className="flex flex-col justify-center content-center space-y-2"
           >
-            <p className="uppercase font-bold">Video fajl</p>
-            {videoUrl !== "" && (
-              <video
-                className="mt-4 w-full h-full bg-gray-800"
-                controls
-                src={videoUrl}
-              />
-            )}
+            <button
+              id="edit"
+              className="bg-green-600 px-4 py-2 rounded-md text-white mt-10"
+              onClick={() =>
+                router.push({
+                  pathname: "/admin/video/uredi/[id]",
+                  query: { id },
+                })
+              }
+            >
+              Uredi
+            </button>
             <button
               className="mt-10 bg-red-600 px-4 py-2 rounded-md text-white"
               onClick={handleDelete}
@@ -103,6 +131,7 @@ export default function AdminVideoComponent({
               Izbriši
             </button>
           </div>
+        </div>
       </div>
     </>
   );

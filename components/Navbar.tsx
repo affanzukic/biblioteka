@@ -1,12 +1,20 @@
 import Image from "next/image";
 import Head from "next/head";
+import AOS from "aos";
 import { useRouter } from "next/router";
-import { Fragment, useEffect, useState, FC } from "react";
-import { Disclosure, Menu, Transition } from "@headlessui/react";
+import { useEffect, useState, memo } from "react";
+import { Disclosure } from "@headlessui/react";
 import { MenuIcon, XIcon } from "@heroicons/react/outline";
 import { BsFillMoonFill } from "react-icons/bs";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { db } from "../firebase/clientApp";
+
+import "aos/dist/aos.css";
+
+
+function classNames(...classes: Array<any>) {
+  return classes.filter(Boolean).join(" ");
+}
 
 let navigation = [
   { name: "Početna", href: "/", current: false },
@@ -15,16 +23,13 @@ let navigation = [
   { name: "Video biblioteka", href: "/biblioteka/video", current: false },
 ];
 
-function classNames(...classes: Array<any>) {
-  return classes.filter(Boolean).join(" ");
-}
-
-export default function Navbar() {
+const Navbar = memo(() => {
   const router = useRouter();
   const [isAdmin, setIsAdmin] = useState(false);
   const [darkMode, setDarkMode] = useState(true);
   const [imgUrl, setImgUrl] = useState<string>("");
   const [head, setHead] = useState<string>("");
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
   function toggleDarkMode() {
     if (typeof window !== "undefined") {
       let currentValue = JSON.parse(
@@ -64,13 +69,16 @@ export default function Navbar() {
           : ""
       );
     }
+    AOS.init({
+      duration: 200,
+    });
     setDarkMode(
       JSON.parse(localStorage.getItem("currentUser") || "{}").darkMode
     );
     fetchData();
-    const regexAudio = /(?:\/audio)+/
-    const regexSlikovna = /(?:\/slikovna)+/
-    const regexVideo = /(?:\/video)+/
+    const regexAudio = /(?:\/audio)+/;
+    const regexSlikovna = /(?:\/slikovna)+/;
+    const regexVideo = /(?:\/video)+/;
     if (router.pathname.match(regexAudio)) {
       setHead("Online biblioteka - Audio biblioteka");
       navigation[1].current = true;
@@ -151,75 +159,52 @@ export default function Navbar() {
                     {darkMode ? "Isključi tamni način" : "Uključi tamni način"}
                   </span>
                 </button>
-                <Menu as="div" className="ml-3 relative">
-                  <div>
-                    <Menu.Button className="bg-gray-800 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
-                      <span className="sr-only">Open user menu</span>
-                      {imgUrl !== "" && (
-                        <Image
-                          src={imgUrl}
-                          alt="user avatar"
-                          className="h-8 w-8 rounded-full"
-                          width="35"
-                          height="35"
-                        />
-                      )}
-                    </Menu.Button>
-                  </div>
-                  <Transition
-                    as={Fragment}
-                    enter="transition ease-out duration-100"
-                    enterFrom="transform opacity-0 scale-95"
-                    enterTo="transform opacity-100 scale-100"
-                    leave="transition ease-in duration-75"
-                    leaveFrom="transform opacity-100 scale-100"
-                    leaveTo="transform opacity-0 scale-95"
+                <div id="user-menu" className="ml-3 relative">
+                  <button
+                    id="user-menu-button"
+                    className="bg-gray-800 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
+                    onClick={() => setUserMenuOpen(!userMenuOpen)}
                   >
-                    <Menu.Items className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white dark:bg-gray-900 dark:text-white text-black ring-1 ring-black dark:ring-gray-800 ring-opacity-5 focus:outline-none">
-                      <Menu.Item>
-                        {({ active }) => (
-                          <>
-                            {isAdmin ? (
-                              <button
-                                className={classNames(
-                                  active
-                                    ? "dark:bg-gray-600 bg-gray-300  w-full"
-                                    : "",
-                                  "block px-4 py-2 text-sm w-full text-left text-gray-700 dark:text-white"
-                                )}
-                                onClick={() => {
-                                  router.push("/admin");
-                                }}
-                              >
-                                Upravljačka ploča
-                              </button>
-                            ) : null}
-                          </>
-                        )}
-                      </Menu.Item>
-                      <Menu.Item>
-                        {({ active }) => (
-                          <button
-                            className={classNames(
-                              active
-                                ? "dark:bg-gray-600 bg-gray-300  w-full"
-                                : "",
-                              "block px-4 py-2 text-sm w-full text-left text-gray-700 dark:text-white"
-                            )}
-                            onClick={() => {
-                              localStorage.removeItem("currentUser");
-                              navigation.map((item) => (item.current = false));
-                              router.push("/login");
-                            }}
-                          >
-                            Odjava
-                          </button>
-                        )}
-                      </Menu.Item>
-                    </Menu.Items>
-                  </Transition>
-                </Menu>
+                    {imgUrl !== "" && (
+                      <Image
+                        src={imgUrl}
+                        alt="user avatar"
+                        className="h-8 w-8 rounded-full"
+                        width="35"
+                        height="35"
+                      />
+                    )}
+                  </button>
+                </div>
               </div>
+              {userMenuOpen && (
+                <div
+                  id="user-menu-container"
+                  className="flex flex-col absolute rounded-md right-0 top-[7vh] float-right dark:text-white text-black dark:bg-gray-900 bg-gray-300 space-y-1"
+                  data-aos="fadeInOut"
+                >
+                  {isAdmin && (
+                    <button
+                      id="control-panel"
+                      className="px-8 py-2 rounded-t-md dark:hover:bg-gray-600 hover:bg-gray-400 transition-all duration-200"
+                      onClick={() => router.push("/admin")}
+                    >
+                      Upravljačka ploča
+                    </button>
+                  )}
+                  <button
+                    id="log-out"
+                    className="text-left px-8 py-2 rounded-b-md dark:hover:bg-gray-600 hover:bg-gray-400 transition-all duration-200"
+                    onClick={() => {
+                      localStorage.removeItem("currentUser");
+                      navigation.map((item) => (item.current = false));
+                      router.push("/login");
+                    }}
+                  >
+                    Odjava
+                  </button>
+                </div>
+              )}
             </div>
           </div>
           <Disclosure.Panel className="sm:hidden">
@@ -246,4 +231,8 @@ export default function Navbar() {
       )}
     </Disclosure>
   );
-}
+});
+
+Navbar.displayName = 'Navbar'
+
+export default Navbar;

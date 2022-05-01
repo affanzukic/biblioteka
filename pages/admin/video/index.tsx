@@ -1,4 +1,4 @@
-import { useState, useEffect, SyntheticEvent } from "react";
+import { useState, useEffect, SyntheticEvent, memo } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import AOS from "aos";
@@ -14,7 +14,7 @@ import {
 import { DocumentData } from "firebase/firestore";
 import AdminVideoComponent from "../../../components/admin/AdminVideoComponent";
 
-export default function Index() {
+const Index = memo(() => {
   const router = useRouter();
   const [data, setData] = useState<DocumentData | undefined>(undefined);
   const [deleting, setDeleting] = useState(false);
@@ -266,4 +266,8 @@ export default function Index() {
       </Modal>
     </>
   );
-}
+})
+
+Index.displayName = 'Index'
+
+export default Index;

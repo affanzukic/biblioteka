@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, memo } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import { DocumentData } from "firebase/firestore";
@@ -9,7 +9,7 @@ import { storage } from "../../../../firebase/clientApp";
 import { ref, getDownloadURL } from "firebase/storage";
 import Navbar from "../../../../components/Navbar";
 
-export default function Index() {
+const Index = memo(() => {
   const router = useRouter();
   const { id } = router.query;
   const [darkMode, setDarkMode] = useState(true);
@@ -82,7 +82,15 @@ export default function Index() {
                   id="cover"
                   className="flex content-center justify-center rounded-lg"
                 >
-                  {coverUrl !== "" && <img src={coverUrl} className="my-auto rounded-lg border-2 dark:border-white border-black" height="500vh" width="500vw" alt="cover" />}
+                  {coverUrl !== "" && (
+                    <img
+                      src={coverUrl}
+                      className="my-auto rounded-lg border-2 dark:border-white border-black"
+                      height="500vh"
+                      width="500vw"
+                      alt="cover"
+                    />
+                  )}
                 </div>
                 <div
                   id="info"
@@ -121,4 +129,8 @@ export default function Index() {
       </div>
     </div>
   );
-}
+})
+
+Index.displayName = 'Index'
+
+export default Index;

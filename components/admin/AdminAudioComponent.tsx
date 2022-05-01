@@ -1,6 +1,7 @@
 import { useState, useEffect, MouseEventHandler } from "react";
 import { storage } from "../../firebase/clientApp";
 import { ref, getDownloadURL } from "firebase/storage";
+import { useRouter } from "next/router";
 
 interface AudioData {
   id: string;
@@ -26,6 +27,7 @@ export default function AdminAudioComponent({
   index,
   handleDelete,
 }: DataProps) {
+  const router = useRouter();
   const [coverURL, setCoverURL] = useState("");
   const [audioURL, setAudioURL] = useState("");
   useEffect(() => {
@@ -44,55 +46,78 @@ export default function AdminAudioComponent({
     fetch();
   }, [data]);
   return (
+    <div
+      id={`audio-container-${data.id}`}
+      className="flex flex-col w-full h-full rounded-lg dark:bg-gray-900 bg-gray-200"
+    >
       <div
-        id={`audio-container-${data.id}`}
-        className="flex flex-col w-full h-full rounded-lg dark:bg-gray-900 bg-gray-200"
+        id={`audio-index-${data.id}`}
+        className="flex px-4 py-2 dark:bg-gray-900 bg-gray-400 rounded-t-lg"
+      >
+        <p className="font-bold">{index + 1}.</p>
+      </div>
+      <div
+        id="content"
+        className="flex flex-row rounded-b-lg space-x-16 px-4 py-4 justify-evenly dark:bg-gray-800 bg-gray-200"
       >
         <div
-          id={`audio-index-${data.id}`}
-          className="flex px-4 py-2 dark:bg-gray-900 bg-gray-400 rounded-t-lg"
+          id="image"
+          className="flex h-[70%] justify-center content-center my-auto"
         >
-          <p className="font-bold">{index + 1}.</p>
+          {coverURL !== "" && (
+            <img
+              src={coverURL}
+              width="300vw"
+              height="100vh"
+              alt="cover photo"
+            />
+          )}
+        </div>
+        <div id="data" className="flex flex-col space-y-8 w-[30%]">
+          <div id="title">
+            <p className="uppercase font-bold">Naslov</p>
+            <p>{data.data.title}</p>
+          </div>
+          <div id="publisher">
+            <p className="uppercase font-bold">Izdavač i godina izdanja</p>
+            <p>{data.data.publisher}</p>
+          </div>
+          <div id="author">
+            <p className="uppercase font-bold">Autor</p>
+            <p>{data.data.author === "" ? "-" : data.data.author}</p>
+          </div>
+          <div id="language">
+            <p className="uppercase font-bold">Jezik</p>
+            <p>{data.data.language === "" ? "-" : data.data.language}</p>
+          </div>
+          <div id="description">
+            <p className="uppercase font-bold">Deskripcija</p>
+            <p>{data.data.description}</p>
+          </div>
         </div>
         <div
-          id="content"
-          className="flex flex-row rounded-b-lg space-x-32 px-4 py-4 justify-around dark:bg-gray-800 bg-gray-200"
+          id="audio"
+          className="flex flex-col justify-center content-center -mt-14"
         >
-          <div id="image" className="flex justify-center content-center">
-            {coverURL !== "" && <img src={coverURL} width="300vw" height="300vh" alt="cover photo" />}
-          </div>
-          <div id="data" className="flex flex-col space-y-8 w-[20vw]">
-            <div id="title">
-              <p className="uppercase font-bold">Naslov</p>
-              <p>{data.data.title}</p>
-            </div>
-            <div id="publisher">
-              <p className="uppercase font-bold">Izdavač i godina izdanja</p>
-              <p>{data.data.publisher}</p>
-            </div>
-            <div id="author">
-              <p className="uppercase font-bold">Autor</p>
-              <p>{data.data.author === "" ? "-" : data.data.author}</p>
-            </div>
-            <div id="language">
-              <p className="uppercase font-bold">Jezik</p>
-              <p>{data.data.language === "" ? "-" : data.data.language}</p>
-            </div>
-            <div id="description">
-              <p className="uppercase font-bold">Deskripcija</p>
-              <p>{data.data.description}</p>
-            </div>
-          </div>
-          <div
-            id="audio"
-            className="flex flex-col justify-center content-center -mt-14"
-          >
-            <p className="uppercase font-bold">Audio fajl</p>
-            {audioURL !== "" && (
-              <audio className="mt-4 p-2 rounded-full bg-gray-800" controls>
-                <source src={audioURL} />
-              </audio>
-            )}
+          <p className="uppercase font-bold">Audio fajl</p>
+          {audioURL !== "" && (
+            <audio className="mt-4 p-2 rounded-full bg-gray-800" controls>
+              <source src={audioURL} />
+            </audio>
+          )}
+          <div id="buttons" className="flex flex-col space-y-4">
+            <button
+              id="edit"
+              className="bg-green-600 px-4 py-2 rounded-md text-white mt-10"
+              onClick={() =>
+                router.push({
+                  pathname: "/admin/audio/uredi/[id]",
+                  query: { id: data.id },
+                })
+              }
+            >
+              Uredi
+            </button>
             <button
               className="mt-10 bg-red-600 px-4 py-2 rounded-md text-white"
               onClick={handleDelete}
@@ -102,5 +127,6 @@ export default function AdminAudioComponent({
           </div>
         </div>
       </div>
+    </div>
   );
 }
